@@ -30,4 +30,14 @@ class CourseService
     {
         return $this->repository->delete($id);
     }
+
+    public function getCoursesForAuthenticatedUser(string $id)
+    {
+        return $this->repository->getCoursesForAuthenticatedUser($id);
+    }
+
+    public function getCourseById(string $id)
+    {
+        return $this->repository->getCourseById($id);
+    }
 }

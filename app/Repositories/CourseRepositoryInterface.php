@@ -13,4 +13,9 @@ interface CourseRepositoryInterface
     public function update(string $id, array $data): object|null;
 
     public function delete(string $id): bool;
+
+    public function getCoursesForAuthenticatedUser(): array;
+
+    public function getCourseById(string $id): object|null;
+
 }
