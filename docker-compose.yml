@@ -1,0 +1,75 @@
+name: back-end-frorma-te
+
+services:
+    # image project
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        container_name: api-api
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+        networks:
+            - dev-api
+
+    # nginx
+    webserver:
+        image: nginx:alpine
+        container_name: webserver-api
+        restart: unless-stopped
+        ports:
+            #- "80:80"
+            #- "8080:80"
+            - "8181:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - dev-api
+
+    # db mysql
+    dbApi:
+        image: mysql:8.0
+        platform: linux/x86_64
+        container_name: db-api
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes:
+            - ./.docker/mysql/dbdata:/var/lib/mysql
+        ports:
+            - "3399:3306"
+        networks:
+            - dev-api
+
+    # queue
+    queue:
+        image: 010107/laravel-community:dev
+        container_name: queue-api
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+            - api
+        networks:
+            - dev-api
+
+    # redis
+    redis:
+        image: redis:latest
+        container_name: redis-api
+        networks:
+            - dev-api
+
+networks:
+    dev-api:
+        driver: bridge
