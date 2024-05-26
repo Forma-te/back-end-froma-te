@@ -2,9 +2,14 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\DTO\Course\CreateCourseDTO;
+use App\DTO\Course\UpdateCourseDTO;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
-use App\Repositories\CourseRepositoryInterface;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\PaginationPresenter;
+use App\Repositories\PaginationInterface;
+use stdClass;
 
 class CourseRepository implements CourseRepositoryInterface
 {
@@ -14,6 +19,21 @@ class CourseRepository implements CourseRepositoryInterface
     {
         $this->entity = $model;
     }
+
+    public function paginate(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
+    {
+        $result = $this->entity
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', $filter);
+                    $query->orWhere('name', 'like', "%{$filter}%");
+                }
+            })
+            ->paginate($totalPerPage, ['*'], 'page', $page);
+
+        return new PaginationPresenter($result);
+    }
+
 
 
     public function getAll(string $filter = ''): array
@@ -29,29 +49,26 @@ class CourseRepository implements CourseRepositoryInterface
         return $this->entity->find($id);
     }
 
-    public function create(array $data): object
+    public function new(CreateCourseDTO $dto): Course
     {
-        return $this->entity->create($data);
+        return $this->entity->new((array) $dto);
     }
 
-    public function update(string $id, array $data): object|null
+    public function update(UpdateCourseDTO $dto): Course
     {
-        $course = $this->entity->find($id);
+        $course = $this->entity->find($dto->id);
+
         if ($course) {
-            $course->update($data);
+            $course->update((array) $dto);
             return $course;
         }
+
         return null;
     }
 
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
-        $course = $this->entity->find($id);
-        if ($course) {
-            return $course->delete();
-        }
-        return false;
-
+        $this->entity->findOrFail($id)->delete();
     }
 
     public function getCoursesForAuthenticatedUser(): array

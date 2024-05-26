@@ -16,22 +16,6 @@ class Course extends Model
         'price', 'available',
     ];
 
-    public function rules($id = '')
-    {
-        return [
-            'category_id' => 'required',
-            'name' => 'required|min:5|max:255',
-            'description' => 'nullable',
-            'short_name' => 'required|max:255',
-            'image' => 'nullable|image|mimes:png,jpg|max:5120||dimensions:max_width=600,max_height=450',
-            'file' => 'nullable|file|mimes:pdf',
-            'type' => 'nullable',
-            'code' => "nullable|unique:courses,code,{$id},id",
-            'total_hours' => 'nullable',
-            'price' => 'nullable',
-        ];
-    }
-
     public static function scopeUserByAuth($query)
     {
         return $query->where('user_id', auth()->user()->id);

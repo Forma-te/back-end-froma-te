@@ -7,7 +7,7 @@ use App\Http\Requests\StoreReplySupport;
 use App\Http\Requests\StoreSupport;
 use App\Http\Resources\SupportResource;
 use App\Http\Resources\ReplySupportResource;
-use App\Repositories\SupportRepository;
+use App\Repositories\Eloquent\SupportRepository;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller

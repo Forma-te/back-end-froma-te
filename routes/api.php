@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Api\{
+    CategoryController,
     CourseController
 };
 use App\Http\Controllers\Api\Auth\{
     AuthController,
     ResetPasswordController
 };
+
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -23,8 +25,16 @@ Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'
 Route::post('/reset-password', [ResetPasswordController::class, 'resetSenha'])->middleware('guest');
 
 
-Route::get('/courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
+Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
 Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
+
+Route::apiResource('/courses', CourseController::class)->parameters([
+    'course' => 'id'
+]);
+
+Route::apiResource('/category', CategoryController::class)->parameters([
+    'category' => 'id'
+]);
 
 Route::get('/', function () {
     return response()->json([
