@@ -8,7 +8,9 @@ class UpdateCategoryDTO
 {
     public function __construct(
         public string $id,
-        public string $category,
+        public string $name,
+        public string $description,
+        public string $elegant_font
     ) {
     }
 
@@ -16,7 +18,9 @@ class UpdateCategoryDTO
     {
         return new self(
             $id ?? $request->id,
-            $request->category,
+            $request->name,
+            $request->description,
+            $request->elegant_font,
         );
     }
 }

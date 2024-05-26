@@ -23,7 +23,9 @@ class StoreUpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'category' => 'required',
+            'name' => 'required|min:3|max:150',
+            'description' => 'required|min:3|max:2000',
+            'elegant_font' => 'required|min:3|max:100',
         ];
         return $rules;
 

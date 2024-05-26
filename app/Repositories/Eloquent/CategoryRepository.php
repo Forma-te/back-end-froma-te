@@ -56,10 +56,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function new(CreateCategoryDTO $dto): stdClass
     {
-        $category = $this->model
-                ->create(
-                    (array) $dto
-                );
+        $category = $this->model->create($dto->toArray());
 
         return (object) $category->toArray();
     }
