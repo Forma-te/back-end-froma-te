@@ -44,7 +44,7 @@ class CourseService
         return $this->repository->findById($id);
     }
 
-    public function update(UpdateCourseDTO $dto): Course
+    public function update(UpdateCourseDTO $dto): ?Course
     {
         return $this->repository->update($dto);
     }

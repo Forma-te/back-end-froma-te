@@ -3,6 +3,7 @@
 namespace App\DTO\Course;
 
 use App\Http\Requests\StoreUpdateCourseRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CreateCourseDTO
 {
@@ -19,7 +20,6 @@ class CreateCourseDTO
         public string $published,
         public string $free,
         public string $price,
-        public string $available,
         public $image,
     ) {
     }
@@ -27,12 +27,17 @@ class CreateCourseDTO
     public static function makeFromRequest(StoreUpdateCourseRequest $request): self
     {
         $data = $request->json()->all();
-        $short_name = createUrl($data['short_name']);
+        $url = createUrl($data['short_name']);
         $codigo = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
 
-        $userId = $data['user_id'] = auth()->user()->id;
-        $published = isset($data['published']);
-        $free = isset($data['free']);
+        $user = Auth::user();
+        if (!$user) {
+            throw new \Exception('User not authenticated');
+        }
+
+        $userId = $user->id;
+        $published = isset($data['published']) ? 1 : 0;
+        $free = isset($data['free']) ? 1 : 0;
         $type = 'CURSO';
 
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
@@ -41,9 +46,9 @@ class CreateCourseDTO
         return new self(
             $data['category_id'],
             $userId,
-            $short_name,
+            $data['short_name'],
             $data['name'],
-            $data['url'],
+            $url,
             $data['description'],
             $type,
             $codigo,
@@ -51,7 +56,6 @@ class CreateCourseDTO
             $published,
             $free,
             $data['price'],
-            $data['available'],
             $image,
         );
     }

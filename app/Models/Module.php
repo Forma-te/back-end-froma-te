@@ -14,6 +14,7 @@ class Module extends Model
         'course_id', 'name', 'published',
     ];
 
+    // Verifica se o usuário atual é o proprietário do curso
     public function authorize()
     {
         $course = course::find($this->get('course_id'));
@@ -31,11 +32,13 @@ class Module extends Model
         ];
     }
 
+    // Definição da relação com o modelo Course
     public function course()
     {
         return $this->belongsto(Course::class);
     }
 
+    // Obtém os módulos do usuário autenticado
     public function modulesUser()
     {
         return $this->join('courses', 'courses.id', '=', 'modules.course_id')
@@ -45,7 +48,7 @@ class Module extends Model
 
     public function lessons()
     {
-        //Metodo para retornar os modulos dos cursos relação de um para muitos
+        // Relação de um para muitos com o modelo Lesson
         return $this->hasMany(Lesson::class);
     }
 }

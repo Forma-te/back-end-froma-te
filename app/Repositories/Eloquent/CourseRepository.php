@@ -22,19 +22,44 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function paginate(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
     {
-        $result = $this->entity
-            ->where(function ($query) use ($filter) {
-                if ($filter) {
-                    $query->where('name', $filter);
-                    $query->orWhere('name', 'like', "%{$filter}%");
-                }
-            })
-            ->paginate($totalPerPage, ['*'], 'page', $page);
+        // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
+        $query = $this->entity
+                ->where('type', 'CURSO')
+                //->with('user', 'users')
+                ->userByAuth();
 
+        // Aplicar o filtro se fornecido
+        if ($filter) {
+            $query->where(function ($query) use ($filter) {
+                $query->where('name', $filter)
+                      ->orWhere('name', 'like', "%{$filter}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
+        // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
 
+    public function new(CreateCourseDTO $dto): Course
+    {
+        return $this->entity->create((array) $dto);
 
+    }
+
+    public function update(UpdateCourseDTO $dto): ?Course
+    {
+        $course = $this->entity->find($dto->id);
+
+        if ($course) {
+            $course->update((array) $dto);
+            return $course;
+        }
+
+        return null;
+    }
 
     public function getAll(string $filter = ''): array
     {
@@ -47,23 +72,6 @@ class CourseRepository implements CourseRepositoryInterface
     public function findById(string $id): object|null
     {
         return $this->entity->find($id);
-    }
-
-    public function new(CreateCourseDTO $dto): Course
-    {
-        return $this->entity->new((array) $dto);
-    }
-
-    public function update(UpdateCourseDTO $dto): Course
-    {
-        $course = $this->entity->find($dto->id);
-
-        if ($course) {
-            $course->update((array) $dto);
-            return $course;
-        }
-
-        return null;
     }
 
     public function delete(string $id): void

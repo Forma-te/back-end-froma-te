@@ -23,15 +23,18 @@ class StoreUpdateCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'name' => 'required|min:5|max:255',
             'description' => 'nullable',
             'short_name' => 'required|max:255',
+            'url' => 'nullable|url',
             'image' => 'nullable|image|mimes:png,jpg|max:5120||dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',
             'type' => 'nullable',
             'code' => "nullable|unique:courses,code",
             'total_hours' => 'nullable',
+            'published' => 'sometimes|boolean',
+            'free' => 'sometimes|boolean',
             'price' => 'nullable',
         ];
 

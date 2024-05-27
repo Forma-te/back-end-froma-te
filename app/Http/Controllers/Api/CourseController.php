@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseStoreResource;
+use App\Models\Category;
 use App\Repositories\Eloquent\CourseRepository;
 use App\Services\CourseService;
 use Dotenv\Util\Str;
@@ -21,6 +22,7 @@ class CourseController extends Controller
         protected CourseRepository $repository,
         protected CourseService $courseService
     ) {
+
     }
 
     public function index(Request $request)
@@ -32,6 +34,13 @@ class CourseController extends Controller
         );
 
         return ApiAdapter::paginateToJson($course);
+    }
+
+    public function create()
+    {
+        $categories = Category::get()->pluck('name', 'id');
+
+        return response()->json($categories, Response::HTTP_OK);
     }
 
     private function errorResponse($message, $statusCode)

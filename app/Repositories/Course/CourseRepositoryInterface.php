@@ -16,7 +16,7 @@ interface CourseRepositoryInterface
 
     public function findById(string $id): object|null;
 
-    public function new(CreateCourseDTO $dto): ?Course;
+    public function new(CreateCourseDTO $dto): Course;
 
     public function update(UpdateCourseDTO $dto): ?Course;
 

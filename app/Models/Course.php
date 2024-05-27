@@ -13,7 +13,7 @@ class Course extends Model
 
     protected $fillable = [
         'category_id', 'user_id', 'name', 'short_name', 'url', 'description', 'image', 'file', 'type', 'code', 'total_hours', 'published', 'free',
-        'price', 'available',
+        'price'
     ];
 
     public static function scopeUserByAuth($query)
@@ -51,8 +51,7 @@ class Course extends Model
 
     public function usersCourse()
     {
-        return $this->belongsToMany(User::class)
-            ->join('sales.course_id', '=', 'courses.id')
+        return $this->belongsToMany(User::class, 'sales', 'course_id', 'user_id')
             ->select('sales.course_id');
     }
 
