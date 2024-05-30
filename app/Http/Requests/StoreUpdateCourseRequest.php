@@ -26,7 +26,7 @@ class StoreUpdateCourseRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|min:5|max:255',
             'description' => 'nullable',
-            'short_name' => 'required|max:255',
+            'short_name' => 'nullable|max:255',
             'url' => 'nullable|url',
             'image' => 'nullable|image|mimes:png,jpg|max:5120||dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',

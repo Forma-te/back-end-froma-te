@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class AuthController extends Controller
 {

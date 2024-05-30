@@ -7,6 +7,8 @@ use App\DTO\Course\UpdateCourseDTO;
 use App\Models\Course;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationInterface;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use stdClass;
 
 class CourseService
@@ -32,8 +34,11 @@ class CourseService
     public function new(CreateCourseDTO $dto): Course
     {
         if ($dto->image) {
-            $uploadImagePath = $this->uploadFile->store($dto->image, 'courses');
-            $dto->image = $uploadImagePath;
+            $customImageName = 'course_' . $dto->code . '.' . $dto->image->getClientOriginalExtension();
+
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'course', $customImageName);
+
+            $dto->image = $uploadedFilePath;
         }
 
         return $this->repository->new($dto);
@@ -52,6 +57,11 @@ class CourseService
     public function delete(string $id)
     {
         return $this->repository->delete($id);
+    }
+
+    public function getCoursesForModuleCreation(): array
+    {
+        return $this->repository->getCoursesForModuleCreation();
     }
 
     public function getCoursesForAuthenticatedUser(string $id)

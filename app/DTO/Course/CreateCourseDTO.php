@@ -10,7 +10,6 @@ class CreateCourseDTO
     public function __construct(
         public string $category_id,
         public string $user_id,
-        public string $short_name,
         public string $name,
         public string $url,
         public string $description,
@@ -20,14 +19,14 @@ class CreateCourseDTO
         public string $published,
         public string $free,
         public string $price,
-        public $image,
+        public  $image,
     ) {
     }
 
     public static function makeFromRequest(StoreUpdateCourseRequest $request): self
     {
-        $data = $request->json()->all();
-        $url = createUrl($data['short_name']);
+        $data = $request->all();
+        $url = sprintf('%08X', mt_rand(0, 0xFFFFFFF));
         $codigo = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
 
         $user = Auth::user();
@@ -46,7 +45,6 @@ class CreateCourseDTO
         return new self(
             $data['category_id'],
             $userId,
-            $data['short_name'],
             $data['name'],
             $url,
             $data['description'],

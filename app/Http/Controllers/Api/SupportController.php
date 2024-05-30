@@ -7,8 +7,9 @@ use App\Http\Requests\StoreReplySupport;
 use App\Http\Requests\StoreSupport;
 use App\Http\Resources\SupportResource;
 use App\Http\Resources\ReplySupportResource;
-use App\Repositories\Eloquent\SupportRepository;
+use App\Repositories\Support\SupportRepository;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class SupportController extends Controller
 {

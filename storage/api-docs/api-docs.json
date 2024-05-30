@@ -1,0 +1,220 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Forma-te API Documentation",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "moises-alberto@hotmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0",
+        "x-logo": {
+            "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+        }
+    },
+    "paths": {
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Cursos"
+                ],
+                "summary": "Get all courses",
+                "description": "Retrieves a list of all courses.",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/courses/{courseId}": {
+            "get": {
+                "tags": [
+                    "Cursos"
+                ],
+                "summary": "Get course by ID",
+                "description": "Returns details of a single course based on the provided course ID",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "courseId",
+                        "in": "path",
+                        "description": "ID of course to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Course"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplier"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Course": {
+                "title": "Course model",
+                "description": "Course model",
+                "required": [
+                    "category_id",
+                    "name"
+                ],
+                "properties": {
+                    "category_id": {
+                        "title": "category_id",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "title": "category_id",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string"
+                    },
+                    "url": {
+                        "title": "url",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "description"
+                    },
+                    "image": {
+                        "title": "image",
+                        "type": "string"
+                    },
+                    "code": {
+                        "title": "code",
+                        "type": "string"
+                    },
+                    "total_hours": {
+                        "title": "total_hours"
+                    },
+                    "free": {
+                        "title": "free",
+                        "type": "boolean"
+                    },
+                    "published": {
+                        "title": "published",
+                        "type": "boolean"
+                    },
+                    "price": {
+                        "title": "price",
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Course"
+                }
+            },
+            "User": {
+                "title": "User model",
+                "description": "User model",
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "type": "string",
+                        "format": "msisdn"
+                    },
+                    "url": {
+                        "title": "url",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    },
+                    "image": {
+                        "title": "image",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    },
+                    "bibliography": {
+                        "title": "Bibliografia",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    },
+                    "addresses": {
+                        "title": "addresses",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "type",
+                        "type": "string",
+                        "format": "int64",
+                        "maximum": 255
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

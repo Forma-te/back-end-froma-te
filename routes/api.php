@@ -27,31 +27,37 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->middleware('guest');
 Route::post('/reset-password', [ResetPasswordController::class, 'resetSenha'])->middleware('guest');
 
-Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::apiResource('/courses', CourseController::class)->parameters([
-        'course' => 'id'
-    ]);
 
-    Route::apiResource('/category', CategoryController::class)->parameters([
-        'category' => 'id'
-    ]);
+Route::apiResource('/courses', CourseController::class)->parameters([
+    'course' => 'id'
+]);
 
-    Route::get('/courses/{id}/modules', [ModuleController::class, 'index']);
+Route::apiResource('/categories', CategoryController::class)->parameters([
+    'category' => 'id'
+]);
 
-    Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);
-    Route::get('/lesson/{id}', [LessonController::class, 'show']);
+Route::apiResource('/modules', ModuleController::class)->parameters([
+    'module' => 'id'
+]);
 
-    Route::get('/my-supports', [SupportController::class, 'mySupports']);
-    Route::get('/supports', [SupportController::class, 'index']);
-    Route::post('/supports', [SupportController::class, 'store']);
-    Route::post('/supports/{id}/replies', [SupportController::class, 'createReply']);
+Route::get('courses/module-creation-data', [CourseController::class, 'getCoursesForModuleCreation']);
 
-    Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
-    Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
-    Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
+Route::get('/courses/{id}/modules', [ModuleController::class, 'index']);
 
-});
+//Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);
+//Route::get('/lesson/{id}', [LessonController::class, 'show']);
+
+Route::get('/my-supports', [SupportController::class, 'mySupports']);
+Route::get('/supports', [SupportController::class, 'index']);
+Route::post('/supports', [SupportController::class, 'store']);
+Route::post('/supports/{id}/replies', [SupportController::class, 'createReply']);
+
+Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
+Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
+// Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
+
+
 
 Route::get('/', function () {
     return response()->json([

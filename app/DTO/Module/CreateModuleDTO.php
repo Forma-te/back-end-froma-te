@@ -15,10 +15,13 @@ class CreateModuleDTO
 
     public static function makeFromRequest(StoreUpdateModuleRequest $request): self
     {
+        $data = $request->all();
+        $published = isset($data['published']) ? 1 : 0;
+
         return new self(
-            $request->input('course_id'),
-            $request->input('name'),
-            $request->input('published', false)
+            $data['course_id'],
+            $data['name'],
+            $published
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories\Course;
 
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
@@ -24,9 +24,8 @@ class CourseRepository implements CourseRepositoryInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
-                ->where('type', 'CURSO')
-                //->with('user', 'users')
-                ->userByAuth();
+                ->where('type', 'CURSO');
+        //->userByAuth();
 
         // Aplicar o filtro se fornecido
         if ($filter) {
@@ -61,14 +60,6 @@ class CourseRepository implements CourseRepositoryInterface
         return null;
     }
 
-    public function getAll(string $filter = ''): array
-    {
-        if (!empty($filter)) {
-            return $this->entity->where('name', 'like', "%{$filter}%")->get()->toArray();
-        }
-        return $this->entity->all()->toArray();
-    }
-
     public function findById(string $id): object|null
     {
         return $this->entity->find($id);
@@ -79,6 +70,15 @@ class CourseRepository implements CourseRepositoryInterface
         $this->entity->findOrFail($id)->delete();
     }
 
+    public function getCoursesForModuleCreation(): array
+    {
+        return $this->entity
+                    ->userByAuth()
+                    ->where('type', 'CURSO')
+                    ->pluck('name', 'id')
+                    ->all()->toArray();
+    }
+
     public function getCoursesForAuthenticatedUser(): array
     {
         if (Auth::check()) {
@@ -87,8 +87,10 @@ class CourseRepository implements CourseRepositoryInterface
             return $this->entity->whereHas('users', function ($query) use ($loggedInUserId) {
                 $query->where('users.id', $loggedInUserId);
             })->whereHas('sales', function ($query) {
+
                 $query->where('sales.status', 'approved');
             })->with('modules.lessons.views')->get();
+
         } else {
             return [];
         }

@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReplySupport;
 use App\Http\Resources\ReplySupportResource;
-use App\Repositories\ReplySupportRepository;
+use App\Repositories\Support\ReplySupportRepository;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class ReplySupportController extends Controller
 {

@@ -17,11 +17,10 @@ class CreateCoursesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name', 150)->default(null);
-            $table->string('short_name', 150)->default(null);
+            $table->string('short_name', 150)->nullable();
             $table->string('url', 255)->unique();
             $table->text('description')->nullable();
             $table->boolean('available')->default(true);

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Module\CreateModuleDTO;
 use App\DTO\Module\UpdateModuleDTO;
+use App\Models\Module;
 use App\Repositories\Module\ModuleRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use stdClass;
@@ -27,12 +28,17 @@ class ModuleService
         );
     }
 
-    public function create(CreateModuleDTO $dto): stdClass
+    public function findById(string $id): object|null
     {
-        return $this->repository->create($dto);
+        return $this->repository->findById($id);
     }
 
-    public function update(UpdateModuleDTO $dto): stdClass|null
+    public function new(CreateModuleDTO $dto): Module
+    {
+        return $this->repository->new($dto);
+    }
+
+    public function update(UpdateModuleDTO $dto): Module|null
     {
         return $this->repository->update($dto);
     }
@@ -42,8 +48,4 @@ class ModuleService
         $this->repository->delete($id);
     }
 
-    public function findById(string $id): stdClass|null
-    {
-        return $this->repository->findById($id);
-    }
 }

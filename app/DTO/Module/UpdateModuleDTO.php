@@ -2,6 +2,8 @@
 
 namespace App\DTO\Module;
 
+use App\Http\Requests\StoreUpdateModuleRequest;
+
 class UpdateModuleDTO
 {
     public function __construct(
@@ -18,7 +20,7 @@ class UpdateModuleDTO
             $id,
             $request->input('course_id'),
             $request->input('name'),
-            $request->input('published', false)
+            $request->input('published')
         );
     }
 }

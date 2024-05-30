@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories\Statistics;
 
 use App\Models\Support;
 use App\Models\User;

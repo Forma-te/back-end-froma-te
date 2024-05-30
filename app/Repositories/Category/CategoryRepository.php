@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories\Category;
 
 use App\DTO\Category\CreateCategoryDTO;
 use App\DTO\Category\UpdateCategoryDTO;

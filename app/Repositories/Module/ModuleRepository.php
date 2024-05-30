@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories\Module;
 
 use App\DTO\Module\CreateModuleDTO;
 use App\DTO\Module\UpdateModuleDTO;
@@ -38,14 +38,14 @@ class ModuleRepository implements ModuleRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function create(CreateModuleDTO $dto): stdClass
+    public function new(CreateModuleDTO $dto): Module
     {
         $module = $this->entity->create((array) $dto);
 
         return (object) $module->toArray();
     }
 
-    public function update(UpdateModuleDTO $dto): stdClass|null
+    public function update(UpdateModuleDTO $dto): Module|null
     {
         $module = $this->entity->find($dto->id);
 
@@ -63,7 +63,7 @@ class ModuleRepository implements ModuleRepositoryInterface
         $this->entity->findOrFail($id)->delete();
     }
 
-    public function findById(string $id): stdClass|null
+    public function findById(string $id): object|null
     {
         $module = $this->entity->find($id);
 

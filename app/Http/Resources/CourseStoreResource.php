@@ -17,10 +17,9 @@ class CourseStoreResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category_id' => $this->category_id,
-            'user_id' => $this->user_id,
-            'short_name' => $this->short_name,
-            'name' => $this->name,
+            'Categoria' => $this->category_id,
+            'user' => $this->user_id,
+            'Nome curso' => $this->name,
             'url' => $this->url,
             'description' => $this->description,
             'type' => $this->type,

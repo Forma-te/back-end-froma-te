@@ -7,12 +7,133 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
+use OpenApi\Annotations as OA;
+
+/**
+ * Class Course.
+ *
+ * @author  Moises Bumba <doniysa@gmail.com>
+ *
+ * @OA\Schema(
+ *     description="Course model",
+ *     title="Course model",
+ *     required={"category_id", "name"},
+ *     @OA\Xml(
+ *         name="Course"
+ *     )
+ * )
+ */
+
 class Course extends Model
 {
     use HasFactory;
 
+    /**
+    * @OA\Property(
+    *    title="category_id",
+    * )
+    *
+    * @var int
+    */
+    private $category_id;
+
+    /**
+     * @OA\Property(
+     *    title="category_id",
+     * )
+     *
+     * @var int
+     */
+
+    private $user_id;
+
+    /**
+     * @OA\Property(
+     *    title="name",
+     * )
+     *
+     * @var string
+     */
+
+    private $name;
+
+    /**
+    * @OA\Property(
+    *    title="url",
+    * )
+    *
+    * @var string
+    */
+
+    private $url;
+
+    /**
+     * @OA\Property(
+     *    title="description",
+     * )
+     *
+     * @var text
+     */
+    private $description;
+
+    /**
+    * @OA\Property(
+    *    title="image",
+    * )
+    *
+    * @var string
+    */
+    private $image;
+
+    /**
+    * @OA\Property(
+    *    title="code",
+    * )
+    *
+    * @var string
+    */
+    private $code;
+
+    /**
+    * @OA\Property(
+    *    title="total_hours",
+    * )
+    *
+    * @var time
+    */
+    private $total_hours;
+
+
+    /**
+    * @OA\Property(
+    *    title="free",
+    * )
+    *
+    * @var boolean
+    */
+    private $free;
+
+    /**
+    * @OA\Property(
+    *    title="published",
+    * )
+    *
+    * @var boolean
+    */
+    private $published;
+
+    /**
+    * @OA\Property(
+    *    title="price",
+    * )
+    *
+    * @var double
+    */
+    private $price;
+
+
     protected $fillable = [
-        'category_id', 'user_id', 'name', 'short_name', 'url', 'description', 'image', 'file', 'type', 'code', 'total_hours', 'published', 'free',
+        'category_id', 'user_id', 'name', 'url', 'description', 'image', 'code', 'total_hours', 'published', 'free',
         'price'
     ];
 
@@ -30,18 +151,6 @@ class Course extends Model
     {
         //Metodo para retornar os modulos dos cursos relação de um para muitos
         return $this->hasMany(Module::class);
-    }
-
-    public function requirements()
-    {
-        //Metodo para retornar os cursos relação de um para muitos
-        return $this->hasMany(Requirement::class);
-    }
-
-    public function learns()
-    {
-        //Metodo para retornar os cursos relação de um para muitos
-        return $this->hasMany(Learn::class);
     }
 
     public function user()
@@ -72,19 +181,6 @@ class Course extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function commentCourses()
-    {
-        return $this->hasMany(Comment_course::class)
-            ->join('users', 'users.id', '=', 'comment_courses.user_id')
-            ->select(
-                'comment_courses.id',
-                'comment_courses.description',
-                'comment_courses.name',
-                'users.image',
-                'comment_courses.hour',
-                'comment_courses.date'
-            );
-    }
 
     protected function getImageAttribute($value)
     {

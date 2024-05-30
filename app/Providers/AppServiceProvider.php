@@ -2,24 +2,31 @@
 
 namespace App\Providers;
 
-use App\Models\Plan;
-use App\Observers\PlanObserver;
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
-use App\Repositories\Eloquent\{
-    CategoryRepository,
-    CourseRepository,
-    ReplySupportRepository,
-    StatisticsRepository,
-    SupportRepository,
-    UserRepository
-};
 
-use App\Repositories\Course\CourseRepositoryInterface;
-use App\Repositories\Statistics\StatisticsRepositoryInterface;
-use App\Repositories\Support\ReplySupportRepositoryInterface;
-use App\Repositories\Support\SupportRepositoryInterface;
-use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Support\ServiceProvider;
+use App\Repositories\Course\{
+    CourseRepository,
+    CourseRepositoryInterface
+};
+use App\Repositories\Statistics\{
+    StatisticsRepository,
+    StatisticsRepositoryInterface
+};
+use App\Repositories\Support\{
+    ReplySupportRepository,
+    ReplySupportRepositoryInterface,
+    SupportRepository
+};
+use App\Repositories\Support\{
+    SupportRepositoryInterface
+};
+use App\Repositories\User\{
+    UserRepository,
+    UserRepositoryInterface};
+use Illuminate\Support\{
+    ServiceProvider
+};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -65,6 +72,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Plan::observe(PlanObserver::class);
+
     }
 }

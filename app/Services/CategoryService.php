@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Category\CreateCategoryDTO;
 use App\DTO\Category\UpdateCategoryDTO;
+use App\Http\Controllers\Controller;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use stdClass;

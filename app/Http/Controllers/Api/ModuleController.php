@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Adapters\ApiAdapter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ModuleResource;
-use App\Repositories\Eloquent\ModuleRepository;
+use App\Repositories\Module\ModuleRepository;
+use App\Services\ModuleService;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
-    protected $repository; 
+    public function __construct(
+        protected ModuleService $moduleService
+    ) {
+    }
 
-    public function __construct(ModuleRepository $moduleRepository)
+    public function index(Request $request)
     {
-        $this->repository = $moduleRepository;
-    }  
+        $module = $this->moduleService->paginate(
+            totalPerPage: $request->get('per_page', 15),
+            filter: $request->filter,
+        );
 
-    public function index($courseId) 
-    {
-      $modules = $this->repository->getModulesCourseById($courseId);
+        return ApiAdapter::paginateToJson($module);
 
-      return ModuleResource::collection($modules);
     }
 }

@@ -9,18 +9,18 @@ class UploadFile
 {
     public function store(UploadedFile $file, string $path): string
     {
-        return $file->store($path);
+        return $file->store($path, 's3');
     }
 
     public function storeAs(UploadedFile $file, string $path, string $customName): string
     {
-        return $file->storeAs($path, $customName);
+        return $file->storeAs($path, $customName, 's3');
     }
 
     public function removeFile(string $filePath): bool
     {
-        if (Storage::exists($filePath)) {
-            return Storage::delete($filePath);
+        if (Storage::disk('s3')->exists($filePath)) {
+            return Storage::disk('s3')->delete($filePath);
         }
 
         return false;

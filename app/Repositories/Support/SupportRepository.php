@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories\Support;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
