@@ -41,6 +41,11 @@ class ModuleRepository implements ModuleRepositoryInterface
         return new PaginationPresenter($result);
     }
 
+    public function findById(string $id): object|null
+    {
+        return $this->entity->find($id);
+    }
+
     public function getModulesByCourseId(string $courseId): ?array
     {
         $course = $this->course->find($courseId);

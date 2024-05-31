@@ -72,4 +72,17 @@ class ModuleController extends Controller
         return new ModuleProducerResource($module);
     }
 
+    public function destroy(string $id)
+    {
+        if(!$this->moduleService->findById($id)) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_FOUND);
+        }
+
+        $this->moduleService->delete($id);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
 }

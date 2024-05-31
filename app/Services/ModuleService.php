@@ -28,6 +28,11 @@ class ModuleService
         );
     }
 
+    public function findById(string $id): object|null
+    {
+        return $this->repository->findById($id);
+    }
+
     public function getModulesByCourseId(string $courseId): ?array
     {
         return $this->repository->getModulesByCourseId($courseId);
