@@ -61,17 +61,16 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     }
 
-    public function update(UpdateModuleDTO $dto): Module|null
+    public function update(UpdateModuleDTO $dto): ?Module
     {
         $module = $this->entity->find($dto->id);
 
-        if (!$module) {
-            return null;
+        if ($module) {
+            $module->update((array) $dto);
+            return $module;
         }
 
-        $module->update((array) $dto);
-
-        return (object) $module->toArray();
+        return null;
     }
 
     public function delete(string $id): void

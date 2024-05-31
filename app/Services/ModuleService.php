@@ -38,7 +38,7 @@ class ModuleService
         return $this->repository->new($dto);
     }
 
-    public function update(UpdateModuleDTO $dto): Module|null
+    public function update(UpdateModuleDTO $dto): Module
     {
         return $this->repository->update($dto);
     }

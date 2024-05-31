@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Adapters\ApiAdapter;
 use App\DTO\Module\CreateModuleDTO;
+use App\DTO\Module\UpdateModuleDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateModuleRequest;
 use App\Http\Resources\ModuleProducerResource;
@@ -52,6 +53,21 @@ class ModuleController extends Controller
         $module = $this->moduleService->new(
             CreateModuleDTO::makeFromRequest($request)
         );
+
+        return new ModuleProducerResource($module);
+    }
+
+    public function updateModule(StoreUpdateModuleRequest $request, string $id)
+    {
+        $module = $this->moduleService->update(
+            UpdateModuleDTO::makeFromRequest($request, $id)
+        );
+
+        if(!$module) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_FOUND);
+        }
 
         return new ModuleProducerResource($module);
     }
