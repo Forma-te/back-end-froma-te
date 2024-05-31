@@ -39,7 +39,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/modules",
+     *     path="/api/modules",
      *     operationId="createModule",
      *     tags={"Modules"},
      *     summary="Create a new module",
@@ -112,7 +112,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/courses/{courseId}/modules",
+     *     path="/api/courses/{courseId}/modules",
      *     operationId="getModulesByCourse",
      *     tags={"Modules"},
      *     summary="Get modules by course ID",
@@ -167,7 +167,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/modules/{id}",
+     *     path="/api/modules/{id}",
      *     operationId="updateModule",
      *     tags={"Modules"},
      *     summary="Update an existing module",
@@ -230,7 +230,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/modules/{id}",
+     *     path="/api/modules/{id}",
      *     operationId="destroyModule",
      *     tags={"Modules"},
      *     summary="Delete a module",

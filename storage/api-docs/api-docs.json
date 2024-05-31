@@ -213,7 +213,7 @@
         "/api/courses": {
             "get": {
                 "tags": [
-                    "Cursos"
+                    "Courses"
                 ],
                 "summary": "Get all courses",
                 "description": "Retrieves a list of all courses.",
@@ -242,7 +242,7 @@
             },
             "post": {
                 "tags": [
-                    "Cursos"
+                    "Courses"
                 ],
                 "summary": "Create a new course",
                 "description": "Creates a new course based on the data provided in the request.",
@@ -396,7 +396,7 @@
         "/api/courses/{courseId}": {
             "get": {
                 "tags": [
-                    "Cursos"
+                    "Courses"
                 ],
                 "summary": "Get course by ID",
                 "description": "Returns details of a single course based on the provided course ID",
@@ -444,7 +444,7 @@
             },
             "put": {
                 "tags": [
-                    "Cursos"
+                    "Courses"
                 ],
                 "summary": "Update a course",
                 "description": "Updates an existing course based on the data provided in the request.",
@@ -588,7 +588,7 @@
             },
             "delete": {
                 "tags": [
-                    "Cursos"
+                    "Courses"
                 ],
                 "summary": "Delete a course",
                 "description": "Deletes an existing course based on the provided ID.",
@@ -627,7 +627,7 @@
                 }
             }
         },
-        "/modules": {
+        "/api/modules": {
             "post": {
                 "tags": [
                     "Modules"
@@ -723,7 +723,7 @@
                 }
             }
         },
-        "/courses/{courseId}/modules": {
+        "/api/courses/{courseId}/modules": {
             "get": {
                 "tags": [
                     "Modules"
@@ -788,7 +788,7 @@
                 }
             }
         },
-        "/modules/{id}": {
+        "/api/modules/{id}": {
             "put": {
                 "tags": [
                     "Modules"

@@ -27,7 +27,7 @@ class CourseController extends Controller
     /**
       * @OA\Get(
       *     path="/api/courses",
-      *     tags={"Cursos"},
+      *     tags={"Courses"},
       *     summary="Get all courses",
       *     description="Retrieves a list of all courses.",
       *     operationId="index",
@@ -70,7 +70,7 @@ class CourseController extends Controller
     /**
     * @OA\Get(
     *     path="/api/courses/{courseId}",
-    *     tags={"Cursos"},
+    *     tags={"Courses"},
     *     summary="Get course by ID",
     *     description="Returns details of a single course based on the provided course ID",
     *     operationId="show",
@@ -120,7 +120,7 @@ class CourseController extends Controller
     /**
      * @OA\Post(
      *     path="/api/courses",
-     *     tags={"Cursos"},
+     *     tags={"Courses"},
      *     summary="Create a new course",
      *     description="Creates a new course based on the data provided in the request.",
      *     operationId="store",
@@ -192,7 +192,7 @@ class CourseController extends Controller
     /**
      * @OA\Put(
      *     path="/api/courses/{courseId}",
-     *     tags={"Cursos"},
+     *     tags={"Courses"},
      *     summary="Update a course",
      *     description="Updates an existing course based on the data provided in the request.",
      *     operationId="update",
@@ -264,7 +264,7 @@ class CourseController extends Controller
     /**
      * @OA\Delete(
      *     path="/api/courses/{courseId}",
-     *     tags={"Cursos"},
+     *     tags={"Courses"},
      *     summary="Delete a course",
      *     description="Deletes an existing course based on the provided ID.",
      *     operationId="destroy",
