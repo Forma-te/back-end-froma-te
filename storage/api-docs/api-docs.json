@@ -638,10 +638,39 @@
                     "name"
                 ],
                 "properties": {
-                    "fillable": {
-                        "title": "price",
+                    "category_id": {
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "total_hours": {
+                        "type": "integer"
+                    },
+                    "free": {
+                        "type": "boolean"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    },
+                    "price": {
                         "type": "number",
-                        "format": "float"
+                        "format": "double"
                     }
                 },
                 "type": "object",

@@ -26,88 +26,110 @@ class Course extends Model
 {
     use HasFactory;
 
-
     /**
     * @OA\Property(
-    *    title="category_id",
-    *    type="integer"
+    *
     * )
+    *
+    * @var int
     */
+    private $category_id;
 
     /**
      * @OA\Property(
-     *    title="user_id",
-     *    type="integer"
+     *
      * )
+     *
+     * @var int
      */
+
+    private $user_id;
 
     /**
      * @OA\Property(
-     *    title="name",
-     *    type="string"
+     *
      * )
+     *
+     * @var string
      */
+
+    private $name;
 
     /**
     * @OA\Property(
-    *    title="url",
-    *    type="string"
+    *
     * )
+    *
+    * @var string
     */
+
+    private $url;
 
     /**
      * @OA\Property(
-     *    title="description",
-     *    type="string"
+     *
      * )
+     *
+     * @var string
      */
+    private $description;
 
     /**
     * @OA\Property(
-    *    title="image",
-    *    type="string"
+    *
     * )
+    *
+    * @var string
     */
+    private $image;
 
     /**
     * @OA\Property(
-    *    title="code",
-    *    type="string"
+    *
     * )
+    *
+    * @var string
     */
+    private $code;
 
     /**
     * @OA\Property(
-    *    title="total_hours",
-    *    type="integer"
     * )
+    *
+    * @var integer
     */
+    private $total_hours;
+
 
     /**
     * @OA\Property(
-    *    title="free",
-    *    type="boolean"
     * )
+    *
+    * @var boolean
     */
+    private $free;
 
     /**
     * @OA\Property(
-    *    title="published",
-    *    type="boolean"
+    *
     * )
+    *
+    * @var boolean
     */
+    private $published;
 
     /**
     * @OA\Property(
-    *    title="price",
-    *    type="number",
-    *    format="float"
     * )
+    *
+    * @var double
     */
+    private $price;
 
 
     protected $fillable = [
-        'category_id', 'user_id', 'name', 'url', 'description', 'image', 'code', 'total_hours', 'published', 'free', 'price'
+        'category_id', 'user_id', 'name', 'url','description', 'image', 'code', 'total_hours', 'published', 'free',
+        'price'
     ];
 
     public static function scopeUserByAuth($query)
