@@ -11,6 +11,7 @@ use App\Http\Resources\ModuleProducerResource;
 use App\Http\Resources\ModuleResource;
 use App\Repositories\Module\ModuleRepository;
 use App\Services\ModuleService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -156,13 +157,15 @@ class ModuleController extends Controller
 
     public function getModulesByCourse(string $courseId)
     {
-        $module = $this->moduleService->getModulesByCourseId($courseId);
+        $modules = $this->moduleService->getModulesByCourseId($courseId);
 
-        if(!$module) {
-            return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
+        if ($modules instanceof Collection && $modules->isEmpty()) {
+            return response()->json([
+                'error' => 'Resource not found'
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        return new ModuleProducerResource($module);
+        return ModuleProducerResource::collection($modules);
     }
 
     /**
