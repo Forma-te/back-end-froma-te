@@ -28,9 +28,9 @@ class ModuleService
         );
     }
 
-    public function findById(string $id): object|null
+    public function getModulesByCourseId(string $courseId): ?array
     {
-        return $this->repository->findById($id);
+        return $this->repository->getModulesByCourseId($courseId);
     }
 
     public function new(CreateModuleDTO $dto): Module

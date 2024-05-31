@@ -19,11 +19,11 @@
         "/api/auth": {
             "post": {
                 "tags": [
-                    "Autenticação"
+                    "Authenticated"
                 ],
-                "summary": "Autenticar usuário",
-                "description": "Autentica um usuário com base nas credenciais fornecidas.",
-                "operationId": "authenticateUser",
+                "summary": "Authenticate user",
+                "description": "Authenticates a user based on the provided credentials.",
+                "operationId": "auth",
                 "requestBody": {
                     "description": "Dados de autenticação",
                     "required": true,
@@ -102,6 +102,112 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/getAuthenticatedUser": {
+            "get": {
+                "tags": [
+                    "Authenticated"
+                ],
+                "summary": "Get authenticated user data",
+                "description": "Returns the data of the currently authenticated user.",
+                "operationId": "getAuthenticatedUser",
+                "responses": {
+                    "200": {
+                        "description": "Authenticated user data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Moises Bumba"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "moises.bumba@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not authorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authenticated"
+                ],
+                "summary": "User Logout",
+                "description": "Revokes all tokens from the authenticated user, effectively logging out.",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Successful logout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Not authorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/courses": {
@@ -532,48 +638,10 @@
                     "name"
                 ],
                 "properties": {
-                    "category_id": {
-                        "title": "category_id",
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "title": "category_id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "name",
-                        "type": "string"
-                    },
-                    "url": {
-                        "title": "url",
-                        "type": "string"
-                    },
-                    "description": {
-                        "title": "description"
-                    },
-                    "image": {
-                        "title": "image",
-                        "type": "string"
-                    },
-                    "code": {
-                        "title": "code",
-                        "type": "string"
-                    },
-                    "total_hours": {
-                        "title": "total_hours"
-                    },
-                    "free": {
-                        "title": "free",
-                        "type": "boolean"
-                    },
-                    "published": {
-                        "title": "published",
-                        "type": "boolean"
-                    },
-                    "price": {
+                    "fillable": {
                         "title": "price",
                         "type": "number",
-                        "format": "double"
+                        "format": "float"
                     }
                 },
                 "type": "object",

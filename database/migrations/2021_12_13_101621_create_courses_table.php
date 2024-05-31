@@ -27,7 +27,6 @@ class CreateCoursesTable extends Migration
             $table->text('spotlight')->nullable();
             $table->string('image', 225)->nullable();
             $table->string('file', 225)->nullable();
-            $table->string('type', 225);
             $table->string('code', 255)->unique()->default(null);
             $table->time('total_hours');
             $table->boolean('published');

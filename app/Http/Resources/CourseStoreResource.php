@@ -17,12 +17,11 @@ class CourseStoreResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'Categoria' => $this->category_id,
-            'user' => $this->user_id,
-            'Nome curso' => $this->name,
+            'category_id' => $this->category_id,
+            'user_id' => $this->user_id,
+            'nameCourse' => $this->name,
             'url' => $this->url,
             'description' => $this->description,
-            'type' => $this->type,
             'quantidade' => $this->code,
             'total_hours' => $this->total_hours,
             'published' => $this->published,

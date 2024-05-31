@@ -11,7 +11,7 @@ class Module extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id', 'name', 'published',
+        'course_id', 'name', 'published'
     ];
 
     // Verifica se o usuário atual é o proprietário do curso

@@ -9,6 +9,8 @@ use App\Repositories\Course\{
     CourseRepository,
     CourseRepositoryInterface
 };
+use App\Repositories\Module\ModuleRepository;
+use App\Repositories\Module\ModuleRepositoryInterface;
 use App\Repositories\Statistics\{
     StatisticsRepository,
     StatisticsRepositoryInterface
@@ -63,6 +65,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CategoryRepositoryInterface::class,
             CategoryRepository::class,
+        );
+
+        $this->app->singleton(
+            ModuleRepositoryInterface::class,
+            ModuleRepository::class,
         );
 
     }

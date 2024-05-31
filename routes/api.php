@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Auth
  */
-Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+Route::get('/getAuthenticatedUser', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
@@ -37,13 +37,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'category' => 'id'
     ]);
 
-    Route::apiResource('/modules', ModuleController::class)->parameters([
-        'module' => 'id'
-    ]);
+    /**
+    * Route Modules
+    */
+    Route::get('/courses/{courseId}/modules', [ModuleController::class, 'getModulesByCourse']);
+    Route::post('/modules', [ModuleController::class, 'createModule']);
+    Route::put('/modules/{Id}', [ModuleController::class, 'updateModule']);
 
-    Route::get('courses/module-creation-data', [CourseController::class, 'getCoursesForModuleCreation']);
-
-    Route::get('/courses/{id}/modules', [ModuleController::class, 'index']);
 
     //Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);
     //Route::get('/lesson/{id}', [LessonController::class, 'show']);

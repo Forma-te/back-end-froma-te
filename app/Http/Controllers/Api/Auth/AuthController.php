@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 /**
- * Class User.
+ * Class AuthController.
  *
  * @author  Moises Bumba <moises-alberto@hotmail.com>
  */
@@ -21,10 +21,10 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/auth",
-     *     tags={"Autenticação"},
-     *     summary="Autenticar usuário",
-     *     description="Autentica um usuário com base nas credenciais fornecidas.",
-     *     operationId="authenticateUser",
+     *     tags={"Authenticated"},
+     *     summary="Authenticate user",
+     *     description="Authenticates a user based on the provided credentials.",
+     *     operationId="auth",
      *     @OA\RequestBody(
      *         required=true,
      *         description="Dados de autenticação",
@@ -75,11 +75,63 @@ class AuthController extends Controller
 
     }
 
-    public function me()
+    /**
+     * @OA\Get(
+     *     path="/api/getAuthenticatedUser",
+     *     tags={"Authenticated"},
+     *     summary="Get authenticated user data",
+     *     description="Returns the data of the currently authenticated user.",
+     *     operationId="getAuthenticatedUser",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Authenticated user data",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="name", type="string", example="Moises Bumba"),
+     *             @OA\Property(property="email", type="string", example="moises.bumba@example.com"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Not authorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthorized")
+     *         ),
+     *     ),
+     * )
+     */
+
+    public function getAuthenticatedUser()
     {
         $user = auth()->user();
         return new UserResource($user);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     tags={"Authenticated"},
+     *     summary="User Logout",
+     *     description="Revokes all tokens from the authenticated user, effectively logging out.",
+     *     operationId="logout",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful logout",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true)
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Not authorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthorized")
+     *         ),
+     *     ),
+     * )
+     */
 
     public function logout()
     {
