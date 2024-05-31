@@ -6,9 +6,49 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
+use OpenApi\Annotations as OA;
+
+/**
+ * Class Module.
+ *
+ * @OA\Schema(
+ *     description="Module model",
+ *     title="Module model",
+ *     required={"course_id", "name"},
+ *     @OA\Xml(
+ *         name="Module"
+ *     )
+ * )
+ */
+
 class Module extends Model
 {
     use HasFactory;
+
+    /**
+    * @OA\Property(
+    *
+    * )
+    *
+    * @var int
+    */
+    private $course_id;
+
+    /**
+    * @OA\Property(
+    * )
+    *
+    * @var string
+    */
+    private $name;
+
+    /**
+    * @OA\Property(
+    * )
+    *
+    * @var boolean
+    */
+    private $published;
 
     protected $fillable = [
         'course_id', 'name', 'published'

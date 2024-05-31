@@ -6,6 +6,30 @@ use App\Models\Course;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Schema(
+ *     schema="StoreUpdateModuleRequest",
+ *     required={"name", "course_id"},
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="The name of the module"
+ *     ),
+ *     @OA\Property(
+ *         property="course_id",
+ *         type="integer",
+ *         description="The ID of the course"
+ *     ),
+ *     @OA\Property(
+ *         property="published",
+ *         type="boolean",
+ *         description="The published status of the module"
+ *     )
+ * )
+ */
+
 class StoreUpdateModuleRequest extends FormRequest
 {
     /**
