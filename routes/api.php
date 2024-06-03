@@ -29,13 +29,19 @@ Route::post('/reset-password', [ResetPasswordController::class, 'resetSenha'])->
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::apiResource('/courses', CourseController::class)->parameters([
-        'course' => 'id'
-    ]);
-
     Route::apiResource('/categories', CategoryController::class)->parameters([
         'category' => 'id'
     ]);
+
+    /**
+    * Route Course
+    */
+    Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/course/{Id}', [CourseController::class, 'getCourseById']);
+    Route::post('/course', [CourseController::class, 'createCourse']);
+    Route::put('/course/{Id}', [CourseController::class, 'updateCourse']);
+    Route::delete('/course/{Id}', [CourseController::class, 'destroyCourse']);
+
 
     /**
     * Route Modules

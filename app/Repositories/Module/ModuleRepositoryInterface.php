@@ -16,5 +16,4 @@ interface ModuleRepositoryInterface
     public function new(CreateModuleDTO $dto): Module;
     public function update(UpdateModuleDTO $dto): ?Module;
     public function delete(string $id): void;
-
 }

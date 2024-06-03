@@ -9,36 +9,39 @@ class UpdateCourseDTO
     public function __construct(
         public string $id,
         public string $category_id,
-        public string $user_id,
         public string $name,
         public string $url,
         public string $description,
-        public string $type,
         public string $code,
         public string $total_hours,
         public string $published,
         public string $free,
         public string $price,
-        public string $available,
+        public  $image,
     ) {
     }
 
     public static function makeFromRequest(StoreUpdateCourseRequest $request, string $id = null): self
     {
+        $data = $request->all();
+        $published = isset($data['published']) ? 1 : 0;
+        $free = isset($data['free']) ? 1 : 0;
+
+        // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
+        $image = $request->hasFile('image') ? $request->file('image') : null;
+
         return new self(
             $id ?? $request->id,
-            $request->category_id,
-            $request->user_id,
-            $request->name,
-            $request->url,
-            $request->description,
-            $request->type,
-            $request->code,
-            $request->total_hours,
-            $request->published,
-            $request->free,
-            $request->price,
-            $request->available
+            $data['category_id'],
+            $data['name'],
+            $data['url'],
+            $data['description'],
+            $data['code'],
+            $data['total_hours'],
+            $published,
+            $free,
+            $data['price'],
+            $image
         );
     }
 }

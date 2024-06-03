@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
    * @OA\Schema(
@@ -35,13 +36,17 @@ class StoreUpdateLessonRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $id = $this->route('Id') ?? ''; // Obter o ID dos parâmetros da rota
+
+        $rules = [
             'module_id' => 'required',
             'name' => 'required|min:5|max:100',
-            'file' => 'nullable|file|mimes:pdf',
-            'url' => "nullable|min:3|max:100|unique:lessons,url",
+            'file' => 'sometimes|file|mimes:pdf',
+            'url' => "nullable|min:3|max:100|unique:lessons,url,{$id},Id",
             'description' => 'nullable',
             'video' => 'nullable',
         ];
+
+        return $rules;
     }
 }

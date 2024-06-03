@@ -27,7 +27,9 @@ class StoreUpdateCourseRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $id = $this->route('Id') ?? ''; // Obter o ID dos parâmetros da rota
+
+        $rules = [
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|min:5|max:255',
             'description' => 'nullable',
@@ -36,19 +38,12 @@ class StoreUpdateCourseRequest extends FormRequest
             'image' => 'nullable|image|mimes:png,jpg|max:5120||dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',
             'type' => 'nullable',
-            'code' => "nullable|unique:courses,code",
+            'code' => "required|unique:courses,code,{$id},Id",
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
             'price' => 'nullable',
         ];
-
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $rules['code'] = [
-                'required',
-                Rule::unique('courses')->ignore($this->route('id')),
-            ];
-        }
 
         return $rules;
     }

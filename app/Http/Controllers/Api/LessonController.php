@@ -163,6 +163,9 @@ class LessonController extends Controller
 
     public function updateLesson(StoreUpdateLessonRequest $request, string $id)
     {
+        // Adiciona o ID ao pedido
+        $request->merge(['id' => $id]);
+
         $module = $this->lessonService->update(
             UpdateLessonDTO::makeFromRequest($request, $id)
         );

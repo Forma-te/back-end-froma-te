@@ -104,11 +104,11 @@ class CourseController extends Controller
 
     /**
     * @OA\Get(
-    *     path="/api/courses/{courseId}",
+    *     path="/api/course/{courseId}",
     *     tags={"Courses"},
     *     summary="Get course by ID",
     *     description="Returns details of a single course based on the provided course ID",
-    *     operationId="show",
+    *     operationId="getCourseById",
     *     @OA\Parameter(
     *         name="courseId",
     *         in="path",
@@ -141,7 +141,7 @@ class CourseController extends Controller
     * @param int $id
     */
 
-    public function show(string $id)
+    public function getCourseById(string $id)
     {
         $course = $this->courseService->findById($id);
 
@@ -158,7 +158,7 @@ class CourseController extends Controller
      *     tags={"Courses"},
      *     summary="Create a new course",
      *     description="Creates a new course based on the data provided in the request.",
-     *     operationId="store",
+     *     operationId="createCourse",
      *     @OA\RequestBody(
      *         required=true,
      *         description="Course data",
@@ -214,7 +214,7 @@ class CourseController extends Controller
      * )
      */
 
-    public function store(StoreUpdateCourseRequest $request)
+    public function createCourse(StoreUpdateCourseRequest $request)
     {
         // Cria um novo curso a partir dos dados do request
         $course = $this->courseService->new(
@@ -230,7 +230,7 @@ class CourseController extends Controller
      *     tags={"Courses"},
      *     summary="Update a course",
      *     description="Updates an existing course based on the data provided in the request.",
-     *     operationId="update",
+     *     operationId="updateCourse",
      *     @OA\Parameter(
      *         name="courseId",
      *         in="path",
@@ -281,7 +281,7 @@ class CourseController extends Controller
      * )
      */
 
-    public function update(StoreUpdateCourseRequest $request, string $id)
+    public function updateCourse(StoreUpdateCourseRequest $request, string $id)
     {
         $course = $this->courseService->update(
             UpdateCourseDTO::makeFromRequest($request, $id)
@@ -302,7 +302,7 @@ class CourseController extends Controller
      *     tags={"Courses"},
      *     summary="Delete a course",
      *     description="Deletes an existing course based on the provided ID.",
-     *     operationId="destroy",
+     *     operationId="destroyCourse",
      *     @OA\Parameter(
      *         name="courseId",
      *         in="path",
@@ -324,7 +324,7 @@ class CourseController extends Controller
      * )
      */
 
-    public function destroy(string $id)
+    public function destroyCourse(string $id)
     {
         if (!$this->courseService->findById($id)) {
             return response()->json([
@@ -355,7 +355,7 @@ class CourseController extends Controller
         return CourseResource::collection($this->repository->getCoursesForAuthenticatedUser());
     }
 
-    public function getCourseById($id): object
+    public function getCourseByIdForUser($id): object
     {
         return new CourseResource($this->repository->getCourseById($id));
     }

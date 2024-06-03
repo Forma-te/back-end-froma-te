@@ -15,5 +15,4 @@ interface LessonRepositoryInterface
     public function new(CreateLessonDTO $dto): Lesson;
     public function update(UpdateLessonDTO $dto): ?Lesson;
     public function delete(string $id): void;
-
 }
