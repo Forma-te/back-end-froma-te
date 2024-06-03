@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Course;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,6 +13,10 @@ class StoreUpdateCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        //$id = $this->segment(3);
+        //$course = Course::find($id);
+        //return $course->user_id == auth()->user()->id;
+
         return true;
     }
 
@@ -27,7 +32,7 @@ class StoreUpdateCourseRequest extends FormRequest
             'name' => 'required|min:5|max:255',
             'description' => 'nullable',
             'short_name' => 'nullable|max:255',
-            'url' => 'nullable|url',
+            'url' => 'nullable',
             'image' => 'nullable|image|mimes:png,jpg|max:5120||dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',
             'type' => 'nullable',
@@ -38,10 +43,10 @@ class StoreUpdateCourseRequest extends FormRequest
             'price' => 'nullable',
         ];
 
-        if ($this->method() === 'PUT' || $this->method() === 'PATCH') {
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules['code'] = [
                 'required',
-                Rule::unique('Courses')->ignore($this->id),
+                Rule::unique('courses')->ignore($this->route('id')),
             ];
         }
 

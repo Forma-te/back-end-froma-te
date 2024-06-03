@@ -9,12 +9,12 @@ class CreateLessonDTO
     public function __construct(
         public string $module_id,
         public string $name,
-        public bool $file,
         public string $url,
         public string $description,
-        public bool $free,
-        public bool $video,
-        public bool $published
+        public string $free,
+        public string $video,
+        public string $published,
+        public $file,
     ) {
     }
 
@@ -23,16 +23,20 @@ class CreateLessonDTO
         $data = $request->all();
         $published = isset($data['published']) ? 1 : 0;
         $free = isset($data['published']) ? 1 : 0;
+        $url = sprintf('%08X', mt_rand(0, 0xFFFFFFF));
+
+        // Se o file estiver presente na requisição, obtenha o UploadedFile correspondente
+        $file = $request->hasFile('file') ? $request->file('file') : null;
 
         return new self(
-            $data['course_id'],
+            $data['module_id'],
             $data['name'],
-            $data['file'],
-            $data['url'],
+            $url,
             $data['description'],
             $free,
             $data['video'],
-            $published
+            $published,
+            $file
         );
     }
 }

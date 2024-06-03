@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
+use Illuminate\Support\Facades\Gate;
 use stdClass;
 
 class CourseRepository implements CourseRepositoryInterface
@@ -51,6 +52,8 @@ class CourseRepository implements CourseRepositoryInterface
     public function update(UpdateCourseDTO $dto): ?Course
     {
         $course = $this->entity->find($dto->id);
+
+        Gate::authorize('owner-course', $course);
 
         if ($course) {
             $course->update((array) $dto);

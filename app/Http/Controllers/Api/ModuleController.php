@@ -40,7 +40,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/modules",
+     *     path="/api/module",
      *     operationId="createModule",
      *     tags={"Modules"},
      *     summary="Create a new module",
@@ -113,7 +113,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/courses/{courseId}/modules",
+     *     path="/api/course/{courseId}/modules",
      *     operationId="getModulesByCourse",
      *     tags={"Modules"},
      *     summary="Get modules by course ID",
@@ -170,7 +170,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/modules/{id}",
+     *     path="/api/module/{id}",
      *     operationId="updateModule",
      *     tags={"Modules"},
      *     summary="Update an existing module",
@@ -233,7 +233,7 @@ class ModuleController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/modules/{id}",
+     *     path="/api/module/{id}",
      *     operationId="destroyModule",
      *     tags={"Modules"},
      *     summary="Delete a module",
@@ -275,7 +275,7 @@ class ModuleController extends Controller
      * )
      */
 
-    public function destroy(string $id)
+    public function destroyModule(string $id)
     {
         if(!$this->moduleService->findById($id)) {
             return response()->json([

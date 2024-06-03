@@ -40,16 +40,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Modules
     */
-    Route::get('/courses/{courseId}/modules', [ModuleController::class, 'getModulesByCourse']);
-    Route::post('/modules', [ModuleController::class, 'createModule']);
-    Route::put('/modules/{Id}', [ModuleController::class, 'updateModule']);
-    Route::delete('/modules/{Id}', [ModuleController::class, 'destroy']);
+    Route::get('/course/{courseId}/modules', [ModuleController::class, 'getModulesByCourse']);
+    Route::post('/module', [ModuleController::class, 'createModule']);
+    Route::put('/module/{Id}', [ModuleController::class, 'updateModule']);
+    Route::delete('/module/{Id}', [ModuleController::class, 'destroyModule']);
 
     /**
-    * Route Modules
+    * Route Lesson
     */
-    Route::get('/modules/{moduleId}/lesson', [LessonController::class, 'getLessonByModuleId']);
+    Route::get('/module/{moduleId}/lessons', [LessonController::class, 'getLessonByModuleId']);
     Route::post('/lesson', [LessonController::class, 'createLesson']);
+    Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
+    Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
 
 
     //Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);

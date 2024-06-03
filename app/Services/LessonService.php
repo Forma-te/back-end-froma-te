@@ -7,11 +7,13 @@ use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\PaginationInterface;
+use Illuminate\Support\Str;
 
 class LessonService
 {
     public function __construct(
-        protected LessonRepositoryInterface $repository
+        protected LessonRepositoryInterface $repository,
+        protected UploadFile $uploadFile
     ) {
     }
     public function paginate(
@@ -38,6 +40,15 @@ class LessonService
 
     public function new(CreateLessonDTO $dto): Lesson
     {
+        if ($dto->file) {
+            $file = $dto->file;
+            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
+
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'lessonPdf', $customImageName);
+
+            $dto->file = $uploadedFilePath;
+        }
+
         return $this->repository->new($dto);
     }
 

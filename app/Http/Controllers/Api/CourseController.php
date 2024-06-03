@@ -25,31 +25,66 @@ class CourseController extends Controller
     }
 
     /**
-      * @OA\Get(
-      *     path="/api/courses",
-      *     tags={"Courses"},
-      *     summary="Get all courses",
-      *     description="Retrieves a list of all courses.",
-      *     operationId="index",
-      *
-      *     @OA\Response(
-      *         response=200,
-      *         description="Successful operation",
-      *         @OA\JsonContent(
-      *             type="array",
-      *             @OA\Items(ref="#/components/schemas/Course")
-      *         )
-      *     ),
-      *     @OA\Response(
-      *         response=400,
-      *         description="Bad request"
-      *     ),
-      *     @OA\Response(
-      *         response=500,
-      *         description="Internal server error"
-      *     )
-      * )
-      */
+     * @OA\Get(
+     *     path="/api/courses",
+     *     summary="Get a paginated list of courses",
+     *     description="Returns a paginated list of courses based on the provided query parameters.",
+     *     operationId="index",
+     *     tags={"Courses"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Current page number",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=15)
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter",
+     *         in="query",
+     *         description="Additional filter for searching courses",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Paginated list of courses",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Course")
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(property="from", type="integer"),
+     *                 @OA\Property(property="last_page", type="integer"),
+     *                 @OA\Property(property="path", type="string"),
+     *                 @OA\Property(property="per_page", type="integer"),
+     *                 @OA\Property(property="to", type="integer"),
+     *                 @OA\Property(property="total", type="integer")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid request"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error"
+     *     )
+     * )
+     */
 
     public function index(Request $request)
     {

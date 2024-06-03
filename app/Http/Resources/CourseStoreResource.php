@@ -22,7 +22,7 @@ class CourseStoreResource extends JsonResource
             'nameCourse' => $this->name,
             'url' => $this->url,
             'description' => $this->description,
-            'quantidade' => $this->code,
+            'code' => $this->code,
             'total_hours' => $this->total_hours,
             'published' => $this->published,
             'free' => $this->free,

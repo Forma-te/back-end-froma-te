@@ -215,28 +215,90 @@
                 "tags": [
                     "Courses"
                 ],
-                "summary": "Get all courses",
-                "description": "Retrieves a list of all courses.",
+                "summary": "Get a paginated list of courses",
+                "description": "Returns a paginated list of courses based on the provided query parameters.",
                 "operationId": "index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Current page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Additional filter for searching courses",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "Paginated list of courses",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Course"
-                                    }
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Course"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Invalid request"
                     },
                     "500": {
-                        "description": "Internal server error"
+                        "description": "Server error"
                     }
                 }
             },
@@ -627,7 +689,205 @@
                 }
             }
         },
-        "/api/modules": {
+        "/api/lesson": {
+            "post": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Create a new lesson",
+                "description": "Creates a new lesson based on the provided request data.",
+                "operationId": "createLesson",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateLessonRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Lesson created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LessonProducerResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/module/{moduleId}/lessons": {
+            "get": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Get lessons by module ID",
+                "description": "Retrieves all lessons associated with a given module ID.",
+                "operationId": "getLessonByModuleId",
+                "parameters": [
+                    {
+                        "name": "moduleId",
+                        "in": "path",
+                        "description": "ID of the module",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/LessonProducerResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Resource not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/lesson/{id}": {
+            "put": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Update a lesson",
+                "description": "Updates an existing lesson based on the provided request data.",
+                "operationId": "updateLesson",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the lesson to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateLessonRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Lesson updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LessonProducerResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Delete a lesson",
+                "description": "Deletes an existing lesson based on the provided ID.",
+                "operationId": "deleteLesson",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the lesson to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Lesson deleted successfully"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/module": {
             "post": {
                 "tags": [
                     "Modules"
@@ -723,7 +983,7 @@
                 }
             }
         },
-        "/api/courses/{courseId}/modules": {
+        "/api/course/{courseId}/modules": {
             "get": {
                 "tags": [
                     "Modules"
@@ -788,7 +1048,7 @@
                 }
             }
         },
-        "/api/modules/{id}": {
+        "/api/module/{id}": {
             "put": {
                 "tags": [
                     "Modules"
@@ -927,6 +1187,44 @@
     },
     "components": {
         "schemas": {
+            "StoreUpdateLessonRequest": {
+                "required": [
+                    "module_id",
+                    "name"
+                ],
+                "properties": {
+                    "module_id": {
+                        "description": "The ID of the module",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the lesson",
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 5
+                    },
+                    "file": {
+                        "description": "The file associated with the lesson",
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "url": {
+                        "description": "The URL of the lesson",
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 3
+                    },
+                    "description": {
+                        "description": "The description of the lesson",
+                        "type": "string"
+                    },
+                    "video": {
+                        "description": "The video associated with the lesson",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "StoreUpdateModuleRequest": {
                 "required": [
                     "name",
@@ -944,6 +1242,31 @@
                     "published": {
                         "description": "The published status of the module",
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "LessonProducerResource": {
+                "properties": {
+                    "id": {
+                        "description": "The ID of the lesson",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the lesson",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the lesson",
+                        "type": "string"
+                    },
+                    "video": {
+                        "description": "The video associated with the lesson",
+                        "type": "string"
+                    },
+                    "file": {
+                        "description": "The file associated with the lesson",
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -1010,6 +1333,60 @@
                     "price": {
                         "type": "number",
                         "format": "double"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Course"
+                }
+            },
+            "Lesson": {
+                "title": "Lesson model",
+                "description": "Lesson model",
+                "required": [
+                    "module_id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The ID of the lesson",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "module_id": {
+                        "description": "The ID of the module",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "name": {
+                        "description": "The name of the lesson",
+                        "type": "string",
+                        "example": "Introduction to Biology"
+                    },
+                    "file": {
+                        "description": "The file associated with the lesson",
+                        "type": "string",
+                        "example": "path/to/file.pdf"
+                    },
+                    "url": {
+                        "description": "The URL of the lesson",
+                        "type": "string",
+                        "example": "http://example.com/lesson"
+                    },
+                    "description": {
+                        "description": "The description of the lesson",
+                        "type": "string",
+                        "example": "0F380364"
+                    },
+                    "free": {
+                        "description": "Indicates if the lesson is free",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "video": {
+                        "description": "The video associated with the lesson",
+                        "type": "string",
+                        "example": "http://example.com/video.mp4"
                     }
                 },
                 "type": "object",
