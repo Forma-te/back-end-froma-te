@@ -226,7 +226,7 @@ class CourseController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/courses/{courseId}",
+     *     path="/api/course/{courseId}",
      *     tags={"Courses"},
      *     summary="Update a course",
      *     description="Updates an existing course based on the data provided in the request.",
@@ -298,7 +298,7 @@ class CourseController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/courses/{courseId}",
+     *     path="/api/course/{courseId}",
      *     tags={"Courses"},
      *     summary="Delete a course",
      *     description="Deletes an existing course based on the provided ID.",
