@@ -11,6 +11,8 @@ use App\Repositories\Course\{
 };
 use App\Repositories\Ebook\EbookRepository;
 use App\Repositories\Ebook\EbookRepositoryInterface;
+use App\Repositories\EbookContent\EbookContentRepository;
+use App\Repositories\EbookContent\EbookContentRepositoryInterface;
 use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\Module\ModuleRepository;
@@ -84,6 +86,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             EbookRepositoryInterface::class,
             EbookRepository::class,
+        );
+
+        $this->app->singleton(
+            EbookContentRepositoryInterface::class,
+            EbookContentRepository::class,
         );
 
     }

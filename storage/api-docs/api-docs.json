@@ -357,13 +357,13 @@
                     "Courses"
                 ],
                 "summary": "Update a course",
-                "description": "Updates an existing course based on the data provided in the request.",
+                "description": "Update an existing course by ID",
                 "operationId": "updateCourse",
                 "parameters": [
                     {
-                        "name": "courseId",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID of the course to update",
+                        "description": "The ID of the course to update.",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -371,59 +371,11 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Course data",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "category_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Course Name"
-                                    },
-                                    "url": {
-                                        "type": "string",
-                                        "example": "ABC123"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Course Description"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "example": "https://example.com/images/course.jpg"
-                                    },
-                                    "code": {
-                                        "type": "string",
-                                        "example": "ABC123"
-                                    },
-                                    "total_hours": {
-                                        "type": "integer",
-                                        "example": 60
-                                    },
-                                    "free": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
-                                    "published": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 99.99
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/StoreUpdateCourseRequest"
                             }
                         }
                     }
@@ -434,52 +386,13 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Updated Course Name"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Updated Course Description"
-                                        },
-                                        "image": {
-                                            "type": "string",
-                                            "example": "Updated https://example.com/images/course.jpg"
-                                        },
-                                        "code": {
-                                            "type": "string",
-                                            "example": "Updated ABC123"
-                                        },
-                                        "total_hours": {
-                                            "type": "integer",
-                                            "example": 60
-                                        },
-                                        "free": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "published": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "price": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 99.99
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CourseStoreResource"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Course not found",
+                        "description": "Not Found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -487,6 +400,42 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Duplicate entry for the course URL",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Duplicate entry for the course URL"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the course",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "An error occurred while updating the course"
+                                        },
+                                        "details": {
+                                            "type": "string",
+                                            "example": "Error details here"
                                         }
                                     },
                                     "type": "object"
@@ -681,6 +630,325 @@
                                                 }
                                             },
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ebook-content": {
+            "post": {
+                "tags": [
+                    "Ebook Contents"
+                ],
+                "summary": "Create a new EbookContent",
+                "description": "Creates a new EbookContent using the provided data",
+                "operationId": "createEbookContent",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateEbookContentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "EbookContent created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EbookContentResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid input"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Forbidden"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ebook/{ebookId}/ebook-content": {
+            "get": {
+                "tags": [
+                    "Ebook Contents"
+                ],
+                "summary": "Get modules by EbookContent ID",
+                "description": "Returns the EbookContent associated with a given course ID",
+                "operationId": "getContentByEbookId",
+                "parameters": [
+                    {
+                        "name": "ebookId",
+                        "in": "path",
+                        "description": "The ID of the ebook",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Modules retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EbookContentResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Resource not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ebook-contents/{id}": {
+            "put": {
+                "tags": [
+                    "Ebook Contents"
+                ],
+                "summary": "Update an ebook content",
+                "description": "Update an existing ebook content by ID",
+                "operationId": "updateEbookContent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of the ebook content to update.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateEbookContentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ebook content updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EbookContentResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Duplicate entry for the ebook content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Duplicate entry for the ebook content"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the ebook content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "An error occurred while updating the ebook content"
+                                        },
+                                        "details": {
+                                            "type": "string",
+                                            "example": "Error details here"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ebook-content/{id}": {
+            "delete": {
+                "tags": [
+                    "Ebook Contents"
+                ],
+                "summary": "Delete a EbookContent",
+                "description": "Deletes an existing EbookContent by its ID",
+                "operationId": "destroyEbookContent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of the EbookContent to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "EbookContent deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error"
                                         }
                                     },
                                     "type": "object"
@@ -1610,6 +1878,113 @@
     },
     "components": {
         "schemas": {
+            "StoreUpdateCourseRequest": {
+                "required": [
+                    "category_id",
+                    "name"
+                ],
+                "properties": {
+                    "category_id": {
+                        "description": "The ID of the category",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the course",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 5
+                    },
+                    "description": {
+                        "description": "The description of the course",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "short_name": {
+                        "description": "The short name of the course",
+                        "type": "string",
+                        "maxLength": 255,
+                        "nullable": true
+                    },
+                    "url": {
+                        "description": "The URL of the course",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "image": {
+                        "description": "The image of the course",
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "file": {
+                        "description": "The file associated with the course",
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "type": {
+                        "description": "The type of the course",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "code": {
+                        "description": "The unique code of the course",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "total_hours": {
+                        "description": "The total hours of the course",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "published": {
+                        "description": "The published status of the course",
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "free": {
+                        "description": "The free status of the course",
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "price": {
+                        "description": "The price of the course",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreUpdateEbookContentRequest": {
+                "required": [
+                    "ebook_id",
+                    "name"
+                ],
+                "properties": {
+                    "ebook_id": {
+                        "description": "The ID of the ebook",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the EbookContent",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the EbookContent",
+                        "type": "string"
+                    },
+                    "file": {
+                        "description": "The file of the EbookContent",
+                        "type": "string"
+                    },
+                    "published": {
+                        "description": "The published status of the EbookContent",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
             "StoreUpdateLessonRequest": {
                 "required": [
                     "module_id",
@@ -1664,6 +2039,99 @@
                     },
                     "published": {
                         "description": "The published status of the module",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "CourseStoreResource": {
+                "properties": {
+                    "id": {
+                        "description": "The ID of the course",
+                        "type": "integer"
+                    },
+                    "category_id": {
+                        "description": "The ID of the category",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "The ID of the user",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the course",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL of the course",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the course",
+                        "type": "string"
+                    },
+                    "code": {
+                        "description": "The code of the course",
+                        "type": "string"
+                    },
+                    "total_hours": {
+                        "description": "The total hours of the course",
+                        "type": "string"
+                    },
+                    "published": {
+                        "description": "The published status of the course",
+                        "type": "boolean"
+                    },
+                    "free": {
+                        "description": "The free status of the course",
+                        "type": "boolean"
+                    },
+                    "price": {
+                        "description": "The price of the course",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "available": {
+                        "description": "The availability of the course",
+                        "type": "boolean"
+                    },
+                    "image": {
+                        "description": "The image of the course",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "EbookContentResource": {
+                "title": "Ebook Content Resource",
+                "description": "Resource representation of Ebook Content",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the ebook content",
+                        "type": "integer"
+                    },
+                    "ebook_id": {
+                        "description": "The ID of the associated ebook",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the ebook content",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the ebook content",
+                        "type": "string"
+                    },
+                    "file": {
+                        "description": "The file associated with the ebook content",
+                        "type": "string"
+                    },
+                    "free": {
+                        "description": "Indicates if the ebook content is free",
+                        "type": "boolean"
+                    },
+                    "published": {
+                        "description": "Indicates if the ebook content is published",
                         "type": "boolean"
                     }
                 },

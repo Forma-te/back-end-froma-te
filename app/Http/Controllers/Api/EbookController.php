@@ -83,13 +83,13 @@ class EbookController extends Controller
 
     public function getAllEbook(Request $request)
     {
-        $course = $this->EbookService->paginate(
+        $ebook = $this->EbookService->paginate(
             page: $request->get('page', 1),
             totalPerPage: $request->get('per_page', 15),
             filter: $request->filter,
         );
 
-        return ApiAdapter::paginateToJson($course);
+        return ApiAdapter::paginateToJson($ebook);
     }
 
     private function errorResponse($message, $statusCode)
@@ -138,13 +138,13 @@ class EbookController extends Controller
 
     public function getEbookById(string $id)
     {
-        $course = $this->EbookService->findById($id);
+        $ebook = $this->EbookService->findById($id);
 
-        if (!$course) {
+        if (!$ebook) {
             return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
         }
 
-        return new EbookResource($course);
+        return new EbookResource($ebook);
     }
 
     /**
@@ -204,11 +204,11 @@ class EbookController extends Controller
     public function createEbook(StoreUpdateEbookRequest $request)
     {
         // Cria um novo curso a partir dos dados do request
-        $course = $this->EbookService->new(
+        $ebook = $this->EbookService->new(
             CreateEbookDTO::makeFromRequest($request)
         );
 
-        return new EbookResource($course);
+        return new EbookResource($ebook);
     }
 
     /**
@@ -262,17 +262,17 @@ class EbookController extends Controller
 
     public function updateEbook(StoreUpdateEbookRequest $request, string $id)
     {
-        $course = $this->EbookService->update(
+        $ebook = $this->EbookService->update(
             UpdateEbookDTO::makeFromRequest($request, $id)
         );
 
-        if (!$course) {
+        if (!$ebook) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return new EbookResource($course);
+        return new EbookResource($ebook);
     }
 
     /**

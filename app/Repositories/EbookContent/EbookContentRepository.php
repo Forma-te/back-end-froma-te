@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Repositories\Module;
+namespace App\Repositories\EbookContent;
 
-use App\DTO\Module\CreateModuleDTO;
-use App\DTO\Module\UpdateModuleDTO;
-use App\Models\Course;
-use App\Models\Module;
-use App\Repositories\Module\ModuleRepositoryInterface;
+use App\DTO\EbookContent\CreateEbookContentDTO;
+use App\DTO\EbookContent\UpdateEbookContentDTO;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
+use App\Models\Ebook;
+use App\Models\EbookContent;
+use Illuminate\Support\Facades\Gate;
 
-class ModuleRepository implements ModuleRepositoryInterface
+class EbookContentRepository implements EbookContentRepositoryInterface
 {
     protected $entity;
-    protected $course;
+    protected $ebook;
 
-    public function __construct(Module $model, Course $course)
+    public function __construct(EbookContent $model, Ebook $ebook)
     {
         $this->entity = $model;
-        $this->course = $course;
+        $this->ebook = $ebook;
     }
 
     public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface
@@ -45,33 +45,33 @@ class ModuleRepository implements ModuleRepositoryInterface
         return $this->entity->find($id);
     }
 
-    public function getModulesByCourseId(string $courseId): ?array
+    public function getContentByEbookId(string $ebookId): ?array
     {
-        $course = $this->course->find($courseId);
+        $ebook = $this->ebook->find($ebookId);
 
-        $modules = $course->modules()->get();
-
-        if ($modules->isEmpty()) {
-            return null;
+        if (is_null($ebook)) {
+            return [];
         }
 
-        return $modules->toArray();
+        $ebookContent = $ebook->ebookContents()->get();
+
+        return $ebookContent->toArray();
 
     }
 
-    public function new(CreateModuleDTO $dto): Module
+    public function new(CreateEbookContentDTO $dto): EbookContent
     {
         return $this->entity->create((array) $dto);
 
     }
 
-    public function update(UpdateModuleDTO $dto): ?Module
+    public function update(UpdateEbookContentDTO $dto): ?EbookContent
     {
-        $module = $this->entity->find($dto->id);
+        $ebookContent = $this->entity->find($dto->id);
 
-        if ($module) {
-            $module->update((array) $dto);
-            return $module;
+        if ($ebookContent) {
+            $ebookContent->update((array) $dto);
+            return $ebookContent;
         }
 
         return null;
@@ -80,14 +80,6 @@ class ModuleRepository implements ModuleRepositoryInterface
     public function delete(string $id): void
     {
         $this->entity->findOrFail($id)->delete();
-    }
-
-    public function getModulesCourseById(string $courseId)
-    {
-        return $this->entity
-                    ->with('lessons.views')
-                    ->where('course_id', $courseId)
-                    ->get();
     }
 
 }

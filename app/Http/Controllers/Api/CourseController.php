@@ -13,6 +13,7 @@ use App\Repositories\Course\CourseRepository;
 use App\Services\CourseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Database\QueryException;
 use OpenApi\Annotations as OA;
 
 class CourseController extends Controller
@@ -225,75 +226,97 @@ class CourseController extends Controller
     }
 
     /**
+     * Updates an existing course.
+     *
+     * @param StoreUpdateCourseRequest $request The request object containing the course update data.
+     * @param string $id The ID of the course to update.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the updated course data or an error message.
+     *
      * @OA\Put(
      *     path="/api/course/{courseId}",
-     *     tags={"Courses"},
      *     summary="Update a course",
-     *     description="Updates an existing course based on the data provided in the request.",
+     *     description="Update an existing course by ID",
      *     operationId="updateCourse",
+     *     tags={"Courses"},
      *     @OA\Parameter(
-     *         name="courseId",
+     *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID of the course to update",
-     *         @OA\Schema(type="string")
+     *         @OA\Schema(
+     *             type="string"
+     *         )
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Course data",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="category_id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Course Name"),
-     *             @OA\Property(property="url", type="string", example="ABC123"),
-     *             @OA\Property(property="description", type="string", example="Course Description"),
-     *             @OA\Property(property="image", type="string", example="https://example.com/images/course.jpg"),
-     *             @OA\Property(property="code", type="string", example="ABC123"),
-     *             @OA\Property(property="total_hours", type="integer", example=60),
-     *             @OA\Property(property="free", type="boolean", example=true),
-     *             @OA\Property(property="published", type="boolean", example=true),
-     *             @OA\Property(property="price", type="number", format="float", example=99.99),
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/StoreUpdateCourseRequest")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Course updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Updated Course Name"),
-     *             @OA\Property(property="description", type="string", example="Updated Course Description"),
-     *             @OA\Property(property="image", type="string", example="Updated https://example.com/images/course.jpg"),
-     *             @OA\Property(property="code", type="string", example="Updated ABC123"),
-     *             @OA\Property(property="total_hours", type="integer", example=60),
-     *             @OA\Property(property="free", type="boolean", example=true),
-     *             @OA\Property(property="published", type="boolean", example=true),
-     *             @OA\Property(property="price", type="number", format="float", example=99.99),
-     *         ),
+     *         @OA\JsonContent(ref="#/components/schemas/CourseStoreResource")
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Course not found",
+     *         description="Not Found",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="string", example="Not Found")
-     *         ),
+     *         )
      *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Duplicate entry for the course URL",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Duplicate entry for the course URL")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="An error occurred while updating the course",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="An error occurred while updating the course"),
+     *             @OA\Property(property="details", type="string", example="Error details here")
+     *         )
+     *     )
      * )
+     *
+     * @throws \Illuminate\Database\QueryException If there is a database query error.
+     * @throws \Exception For any other type of error.
      */
 
     public function updateCourse(StoreUpdateCourseRequest $request, string $id)
     {
-        $course = $this->courseService->update(
-            UpdateCourseDTO::makeFromRequest($request, $id)
-        );
+        try {
+            $course = $this->courseService->update(
+                UpdateCourseDTO::makeFromRequest($request, $id)
+            );
 
-        if (!$course) {
+            if (!$course) {
+                return response()->json([
+                    'error' => 'Not Found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return new CourseStoreResource($course);
+        } catch (QueryException $exception) {
+            if ($exception->errorInfo[1] == 1062) {
+                // Erro de violação de chave única
+                return response()->json([
+                    'error' => 'Entrada duplicada para o URL do curso',
+                ], Response::HTTP_CONFLICT);
+            }
+
+            // Outros erros de query
             return response()->json([
-                'error' => 'Not Found'
-            ], Response::HTTP_NOT_FOUND);
+                'error' => 'Ocorreu um erro ao atualizar o curso',
+                'details' => $exception->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Exception $exception) {
+            // Outros erros não relacionados ao banco de dados
+            return response()->json([
+                'error' => 'Ocorreu um erro ao atualizar o curso',
+                'details' => $exception->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return new CourseStoreResource($course);
     }
 
     /**

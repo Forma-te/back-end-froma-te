@@ -86,9 +86,9 @@ class EbookContent extends Model
     // Verifica se o usuário atual é o proprietário do curso
     public function authorize()
     {
-        $ebook = course::find($this->get('ebook_id'));
+        $ebook = Ebook::find($this->get('ebook_id'));
 
-        return Gate::allows('owner-course', $ebook);
+        return Gate::allows('owner-ebook', $ebook);
     }
 
     // Definição da relação com o modelo Course

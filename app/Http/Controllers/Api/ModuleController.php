@@ -8,8 +8,6 @@ use App\DTO\Module\UpdateModuleDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateModuleRequest;
 use App\Http\Resources\ModuleProducerResource;
-use App\Http\Resources\ModuleResource;
-use App\Repositories\Module\ModuleRepository;
 use App\Services\ModuleService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;

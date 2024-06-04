@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\{
     CategoryController,
     CourseController,
+    EbookContentController,
     EbookController,
     LessonController,
     ModuleController,
@@ -38,11 +39,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Course
     */
     Route::get('/courses', [CourseController::class, 'index']);
-    Route::get('/course/{Id}', [CourseController::class, 'getCourseById']);
+    Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
     Route::post('/course', [CourseController::class, 'createCourse']);
     Route::put('/course/{Id}', [CourseController::class, 'updateCourse']);
     Route::delete('/course/{Id}', [CourseController::class, 'destroyCourse']);
-
 
     /**
     * Route Modules
@@ -70,6 +70,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/ebook/{Id}', [EbookController::class, 'updateEbook']);
     Route::delete('/ebook/{Id}', [EbookController::class, 'destroyEbook']);
 
+    /**
+    * Route Ebook Content
+    */
+    Route::get('/ebook/{ebookId}/ebook-content', [EbookContentController::class, 'getContentByEbookId']);
+    Route::post('/ebook-content', [EbookContentController::class, 'createEbookContent']);
+    Route::put('/ebook-content/{Id}', [EbookContentController::class, 'updateEbookContent']);
+    Route::delete('/ebook-content/{Id}', [EbookContentController::class, 'destroyEbookContent']);
 
 
     //Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);

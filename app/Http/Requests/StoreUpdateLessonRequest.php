@@ -18,7 +18,6 @@ use Illuminate\Validation\Rule;
    * )
    */
 
-
 class StoreUpdateLessonRequest extends FormRequest
 {
     /**

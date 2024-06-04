@@ -9,6 +9,7 @@ use App\Models\Ebook;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EbookRepository implements EbookRepositoryInterface
 {
@@ -50,7 +51,7 @@ class EbookRepository implements EbookRepositoryInterface
     {
         $ebook = $this->entity->find($dto->id);
 
-        Gate::authorize('owner-course', $ebook);
+        Gate::authorize('owner-ebook', $ebook);
 
         if ($ebook) {
             $ebook->update((array) $dto);
@@ -68,6 +69,7 @@ class EbookRepository implements EbookRepositoryInterface
     public function delete(string $id): void
     {
         $this->entity->findOrFail($id)->delete();
+
     }
 
 }
