@@ -9,6 +9,8 @@ use App\Repositories\Course\{
     CourseRepository,
     CourseRepositoryInterface
 };
+use App\Repositories\Ebook\EbookRepository;
+use App\Repositories\Ebook\EbookRepositoryInterface;
 use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\Module\ModuleRepository;
@@ -77,6 +79,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             LessonRepositoryInterface::class,
             LessonRepository::class,
+        );
+
+        $this->app->singleton(
+            EbookRepositoryInterface::class,
+            EbookRepository::class,
         );
 
     }

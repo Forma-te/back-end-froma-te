@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\{
     CategoryController,
     CourseController,
+    EbookController,
     LessonController,
     ModuleController,
     SupportController
@@ -58,6 +59,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/lesson', [LessonController::class, 'createLesson']);
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
     Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
+
+
+    /**
+    * Route Ebook
+    */
+    Route::get('/ebooks', [EbookController::class, 'getAllEbook']);
+    Route::get('/ebook/{Id}', [EbookController::class, 'getEbookById']);
+    Route::post('/ebook', [EbookController::class, 'createEbook']);
+    Route::put('/ebook/{Id}', [EbookController::class, 'updateEbook']);
+    Route::delete('/ebook/{Id}', [EbookController::class, 'destroyEbook']);
+
 
 
     //Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);

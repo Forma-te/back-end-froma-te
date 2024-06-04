@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\DTO\Course\CreateCourseDTO;
-use App\DTO\Course\UpdateCourseDTO;
-use App\Models\Course;
-use App\Repositories\Course\CourseRepositoryInterface;
+use App\DTO\Ebook\CreateEbookDTO;
+use App\DTO\Ebook\UpdateEbookDTO;
+use App\Models\Ebook;
+use App\Repositories\Ebook\EbookRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-class CourseService
+class EbookService
 {
     public function __construct(
-        protected CourseRepositoryInterface $repository,
+        protected EbookRepositoryInterface $repository,
         protected UploadFile $uploadFile
     ) {
     }
@@ -30,12 +30,12 @@ class CourseService
         );
     }
 
-    public function new(CreateCourseDTO $dto): Course
+    public function new(CreateEbookDTO $dto): Ebook
     {
         if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
 
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'course', $customImageName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'coverEbooks', $customImageName);
 
             $dto->image = $uploadedFilePath;
         }
@@ -48,16 +48,16 @@ class CourseService
         return $this->repository->findById($id);
     }
 
-    public function update(UpdateCourseDTO $dto): ?Course
+    public function update(UpdateEbookDTO $dto): ?Ebook
     {
-        // Buscar a course existente
-        $course = $this->repository->findById($dto->id);
+        // Buscar a lição existente
+        $ebook = $this->repository->findById($dto->id);
 
         // Verificar instância da classe UploadedFile
         if ($dto->image instanceof UploadedFile) {
-            if ($course && $course->image) {
+            if ($ebook && $ebook->image) {
                 // Remover o ficheiro existente, se houver
-                $this->uploadFile->removeFile($course->image);
+                $this->uploadFile->removeFile($ebook->image);
             }
             // Processar o novo ficheiro
             $file = $dto->image;
@@ -78,20 +78,5 @@ class CourseService
     public function delete(string $id)
     {
         return $this->repository->delete($id);
-    }
-
-    public function getCoursesForModuleCreation(): array
-    {
-        return $this->repository->getCoursesForModuleCreation();
-    }
-
-    public function getCoursesForAuthenticatedUser(string $id)
-    {
-        return $this->repository->getCoursesForAuthenticatedUser($id);
-    }
-
-    public function getCourseById(string $id)
-    {
-        return $this->repository->getCourseById($id);
     }
 }

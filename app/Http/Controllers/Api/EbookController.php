@@ -3,34 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Adapters\ApiAdapter;
-use App\DTO\Course\CreateCourseDTO;
-use App\DTO\Course\UpdateCourseDTO;
+use App\DTO\Ebook\CreateEbookDTO;
+use App\DTO\Ebook\UpdateEbookDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateCourseRequest;
-use App\Http\Resources\CourseResource;
-use App\Http\Resources\CourseStoreResource;
-use App\Repositories\Course\CourseRepository;
-use App\Services\CourseService;
+use App\Http\Requests\StoreUpdateEbookRequest;
+use App\Http\Resources\EbookResource;
+use App\Services\EbookService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use OpenApi\Annotations as OA;
 
-class CourseController extends Controller
+class EbookController extends Controller
 {
     public function __construct(
-        protected CourseRepository $repository,
-        protected CourseService $courseService
+        protected EbookService $EbookService
     ) {
-
     }
 
     /**
      * @OA\Get(
-     *     path="/api/courses",
-     *     summary="Get a paginated list of courses",
-     *     description="Returns a paginated list of courses based on the provided query parameters.",
-     *     operationId="index",
-     *     tags={"Courses"},
+     *     path="/api/ebooks",
+     *     summary="Get a paginated list of ebooks",
+     *     description="Returns a paginated list of ebooks based on the provided query parameters.",
+     *     operationId="getAllEbook",
+     *     tags={"Ebooks"},
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
@@ -48,19 +43,19 @@ class CourseController extends Controller
      *     @OA\Parameter(
      *         name="filter",
      *         in="query",
-     *         description="Additional filter for searching courses",
+     *         description="Additional filter for searching ebooks",
      *         required=false,
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Paginated list of courses",
+     *         description="Paginated list of ebooks",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Course")
+     *                 @OA\Items(ref="#/components/schemas/Ebook")
      *             ),
      *             @OA\Property(
      *                 property="meta",
@@ -86,9 +81,9 @@ class CourseController extends Controller
      * )
      */
 
-    public function index(Request $request)
+    public function getAllEbook(Request $request)
     {
-        $course = $this->courseService->paginate(
+        $course = $this->EbookService->paginate(
             page: $request->get('page', 1),
             totalPerPage: $request->get('per_page', 15),
             filter: $request->filter,
@@ -104,15 +99,15 @@ class CourseController extends Controller
 
     /**
     * @OA\Get(
-    *     path="/api/course/{courseId}",
-    *     tags={"Courses"},
-    *     summary="Get course by ID",
-    *     description="Returns details of a single course based on the provided course ID",
-    *     operationId="getCourseById",
+    *     path="/api/ebook/{ebookId}",
+    *     tags={"Ebooks"},
+    *     summary="Get ebook by ID",
+    *     description="Returns details of a single ebook based on the provided ebook ID",
+    *     operationId="getEbookById",
     *     @OA\Parameter(
-    *         name="courseId",
+    *         name="ebookId",
     *         in="path",
-    *         description="ID of course to return",
+    *         description="ID of ebook to return",
     *         required=true,
     *         @OA\Schema(
     *             type="integer",
@@ -122,8 +117,8 @@ class CourseController extends Controller
     *      @OA\Response(
     *         response=200,
     *         description="successful operation",
-    *         @OA\JsonContent(ref="#/components/schemas/Course"),
-    *         @OA\XmlContent(ref="#/components/schemas/Course"),
+    *         @OA\JsonContent(ref="#/components/schemas/Ebook"),
+    *         @OA\XmlContent(ref="#/components/schemas/Ebook"),
     *     ),
     *     @OA\Response(
     *         response=400,
@@ -141,37 +136,36 @@ class CourseController extends Controller
     * @param int $id
     */
 
-    public function getCourseById(string $id)
+    public function getEbookById(string $id)
     {
-        $course = $this->courseService->findById($id);
+        $course = $this->EbookService->findById($id);
 
         if (!$course) {
             return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
         }
 
-        return new CourseStoreResource($course);
+        return new EbookResource($course);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/course",
-     *     tags={"Courses"},
-     *     summary="Create a new course",
-     *     description="Creates a new course based on the data provided in the request.",
-     *     operationId="createCourse",
+     *     path="/api/ebook",
+     *     tags={"Ebooks"},
+     *     summary="Create a new ebook",
+     *     description="Creates a new ebook based on the data provided in the request.",
+     *     operationId="createEbook",
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Course data",
+     *         description="ebook data",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="category_id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Course Name"),
+     *             @OA\Property(property="name", type="string", example="ebook Name"),
      *             @OA\Property(property="url", type="string", example="ABC123"),
-     *             @OA\Property(property="description", type="string", example="Course Description"),
-     *             @OA\Property(property="image", type="string", example="https://example.com/images/course.jpg"),
+     *             @OA\Property(property="description", type="string", example="ebook Description"),
+     *             @OA\Property(property="image", type="string", example="https://example.com/images/ebook.jpg"),
      *             @OA\Property(property="code", type="string", example="ABC123"),
-     *             @OA\Property(property="total_hours", type="integer", example=60),
      *             @OA\Property(property="free", type="boolean", example=true),
      *             @OA\Property(property="published", type="boolean", example=true),
      *             @OA\Property(property="price", type="number", format="float", example=99.99),
@@ -179,7 +173,7 @@ class CourseController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Course created successfully",
+     *         description="ebook created successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="id", type="integer"),
      *             @OA\Property(property="category_id", type="integer"),
@@ -189,7 +183,6 @@ class CourseController extends Controller
      *             @OA\Property(property="description", type="string"),
      *             @OA\Property(property="image", type="string"),
      *             @OA\Property(property="code", type="string"),
-     *             @OA\Property(property="total_hours", type="integer"),
      *             @OA\Property(property="free", type="boolean"),
      *             @OA\Property(property="published", type="boolean"),
      *             @OA\Property(property="price", type="number", format="float"),
@@ -214,41 +207,41 @@ class CourseController extends Controller
      * )
      */
 
-    public function createCourse(StoreUpdateCourseRequest $request)
+    public function createEbook(StoreUpdateEbookRequest $request)
     {
         // Cria um novo curso a partir dos dados do request
-        $course = $this->courseService->new(
-            CreateCourseDTO::makeFromRequest($request)
+        $course = $this->EbookService->new(
+            CreateEbookDTO::makeFromRequest($request)
         );
 
-        return new CourseStoreResource($course);
+        return new EbookResource($course);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/course/{courseId}",
-     *     tags={"Courses"},
-     *     summary="Update a course",
-     *     description="Updates an existing course based on the data provided in the request.",
-     *     operationId="updateCourse",
+     *     path="/api/ebook/{ebookId}",
+     *     tags={"Ebooks"},
+     *     summary="Update a ebook",
+     *     description="Updates an existing ebook based on the data provided in the request.",
+     *     operationId="updateEbook",
      *     @OA\Parameter(
-     *         name="courseId",
+     *         name="ebookId",
      *         in="path",
      *         required=true,
-     *         description="ID of the course to update",
+     *         description="ID of the ebook to update",
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         description="Course data",
+     *         description="Ebook data",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="category_id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Course Name"),
+     *             @OA\Property(property="name", type="string", example="ebook Name"),
      *             @OA\Property(property="url", type="string", example="ABC123"),
-     *             @OA\Property(property="description", type="string", example="Course Description"),
-     *             @OA\Property(property="image", type="string", example="https://example.com/images/course.jpg"),
+     *             @OA\Property(property="description", type="string", example="ebook Description"),
+     *             @OA\Property(property="image", type="string", example="https://example.com/images/ebook.jpg"),
      *             @OA\Property(property="code", type="string", example="ABC123"),
      *             @OA\Property(property="total_hours", type="integer", example=60),
      *             @OA\Property(property="free", type="boolean", example=true),
@@ -258,12 +251,12 @@ class CourseController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Course updated successfully",
+     *         description="ebook updated successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Updated Course Name"),
-     *             @OA\Property(property="description", type="string", example="Updated Course Description"),
-     *             @OA\Property(property="image", type="string", example="Updated https://example.com/images/course.jpg"),
+     *             @OA\Property(property="name", type="string", example="Updated ebook Name"),
+     *             @OA\Property(property="description", type="string", example="Updated ebook Description"),
+     *             @OA\Property(property="image", type="string", example="Updated https://example.com/images/ebook.jpg"),
      *             @OA\Property(property="code", type="string", example="Updated ABC123"),
      *             @OA\Property(property="total_hours", type="integer", example=60),
      *             @OA\Property(property="free", type="boolean", example=true),
@@ -273,7 +266,7 @@ class CourseController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Course not found",
+     *         description="ebook not found",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="string", example="Not Found")
      *         ),
@@ -281,10 +274,10 @@ class CourseController extends Controller
      * )
      */
 
-    public function updateCourse(StoreUpdateCourseRequest $request, string $id)
+    public function updateEbook(StoreUpdateEbookRequest $request, string $id)
     {
-        $course = $this->courseService->update(
-            UpdateCourseDTO::makeFromRequest($request, $id)
+        $course = $this->EbookService->update(
+            UpdateEbookDTO::makeFromRequest($request, $id)
         );
 
         if (!$course) {
@@ -293,30 +286,30 @@ class CourseController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return new CourseStoreResource($course);
+        return new EbookResource($course);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/course/{courseId}",
-     *     tags={"Courses"},
-     *     summary="Delete a course",
-     *     description="Deletes an existing course based on the provided ID.",
-     *     operationId="destroyCourse",
+     *     path="/api/ebook/{ebookId}",
+     *     tags={"Ebooks"},
+     *     summary="Delete a ebook",
+     *     description="Deletes an existing ebook based on the provided ID.",
+     *     operationId="destroyEbook",
      *     @OA\Parameter(
-     *         name="courseId",
+     *         name="ebookId",
      *         in="path",
      *         required=true,
-     *         description="ID of the course to delete",
+     *         description="ID of the ebook to delete",
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="Course deleted successfully",
+     *         description="ebook deleted successfully",
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Course not found",
+     *         description="ebook not found",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="string", example="Not Found")
      *         ),
@@ -324,39 +317,18 @@ class CourseController extends Controller
      * )
      */
 
-    public function destroyCourse(string $id)
+    public function destroyEbook(string $id)
     {
-        if (!$this->courseService->findById($id)) {
+        if (!$this->EbookService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $this->courseService->delete($id);
+        $this->EbookService->delete($id);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
 
     }
 
-    public function getCoursesForModuleCreation()
-    {
-        $courses = $this->courseService->getCoursesForModuleCreation();
-
-        if (empty($courses)) {
-            return response()->json([
-                'error' => 'Resource not found'
-            ], Response::HTTP_NOT_FOUND);
-        }
-        return response()->json($courses);
-    }
-
-    public function getCoursesForAuthenticatedUser()
-    {
-        return CourseResource::collection($this->repository->getCoursesForAuthenticatedUser());
-    }
-
-    public function getCourseByIdForUser($id): object
-    {
-        return new CourseResource($this->repository->getCourseById($id));
-    }
 }

@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourseStoreResource extends JsonResource
+class EbookResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,7 +22,6 @@ class CourseStoreResource extends JsonResource
             'url' => $this->url,
             'description' => $this->description,
             'code' => $this->code,
-            'total_hours' => $this->total_hours,
             'published' => $this->published,
             'free' => $this->free,
             'price' => $this->price,

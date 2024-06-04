@@ -1,20 +1,18 @@
 <?php
 
-namespace App\DTO\Course;
+namespace App\DTO\Ebook;
 
-use App\Http\Requests\StoreUpdateCourseRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreUpdateEbookRequest;
 
-class CreateCourseDTO
+class UpdateEbookDTO
 {
     public function __construct(
+        public string $id,
         public string $category_id,
-        public string $user_id,
         public string $name,
         public string $url,
         public string $description,
         public string $code,
-        public string $total_hours,
         public string $published,
         public string $free,
         public string $price,
@@ -22,37 +20,26 @@ class CreateCourseDTO
     ) {
     }
 
-    public static function makeFromRequest(StoreUpdateCourseRequest $request): self
+    public static function makeFromRequest(StoreUpdateEbookRequest $request, string $id = null): self
     {
         $data = $request->all();
-        $url = sprintf('%08X', mt_rand(0, 0xFFFFFFF));
-        $codigo = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
-
-        $user = Auth::user();
-        if (!$user) {
-            throw new \Exception('User not authenticated');
-        }
-
-        $userId = $user->id;
         $published = isset($data['published']) ? 1 : 0;
         $free = isset($data['free']) ? 1 : 0;
-
 
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
 
         return new self(
+            $id ?? $request->id,
             $data['category_id'],
-            $userId,
             $data['name'],
-            $url,
+            $data['url'],
             $data['description'],
-            $codigo,
-            $data['total_hours'],
+            $data['code'],
             $published,
             $free,
             $data['price'],
-            $image,
+            $image
         );
     }
 }
