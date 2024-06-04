@@ -11,10 +11,7 @@ class UpdateEbookDTO
         public string $category_id,
         public string $name,
         public string $url,
-        public string $description,
         public string $code,
-        public string $published,
-        public string $free,
         public string $price,
         public  $image,
     ) {
@@ -23,8 +20,6 @@ class UpdateEbookDTO
     public static function makeFromRequest(StoreUpdateEbookRequest $request, string $id = null): self
     {
         $data = $request->all();
-        $published = isset($data['published']) ? 1 : 0;
-        $free = isset($data['free']) ? 1 : 0;
 
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
@@ -36,8 +31,6 @@ class UpdateEbookDTO
             $data['url'],
             $data['description'],
             $data['code'],
-            $published,
-            $free,
             $data['price'],
             $image
         );

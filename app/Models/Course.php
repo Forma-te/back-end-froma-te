@@ -144,7 +144,7 @@ class Course extends Model
 
     public function modules()
     {
-        //Metodo para retornar os modulos dos cursos relação de um para muitos
+        //Metodo para retornar os modulos do curso relação de um para muitos
         return $this->hasMany(Module::class);
     }
 

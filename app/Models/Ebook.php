@@ -12,7 +12,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     description="Ebook model",
  *     title="Ebook model",
- *     required={"category_id", "name"},
+ *     required={"category_id", "user_id", "name"},
  *     @OA\Xml(
  *         name="Ebook"
  *     )
@@ -63,15 +63,6 @@ class Ebook extends Model
     private $url;
 
     /**
-     * @OA\Property(
-     *
-     * )
-     *
-     * @var string
-     */
-    private $description;
-
-    /**
     * @OA\Property(
     *
     * )
@@ -93,36 +84,27 @@ class Ebook extends Model
     * @OA\Property(
     * )
     *
-    * @var boolean
-    */
-    private $free;
-
-    /**
-    * @OA\Property(
-    *
-    * )
-    *
-    * @var boolean
-    */
-    private $published;
-
-    /**
-    * @OA\Property(
-    * )
-    *
     * @var double
     */
     private $price;
 
-
-
     protected $fillable = [
-        'category_id', 'user_id', 'name', 'url','description', 'image', 'code', 'published', 'free',
-        'price'
+        'category_id', 'user_id', 'name', 'url', 'image', 'code', 'price'
     ];
 
     public static function scopeUserByAuth($query)
     {
         return $query->where('user_id', auth()->user()->id);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class); // Definindo o relacionamento "has many" com o modelo Sale
+    }
+
+    public function ebookContents()
+    {
+        //Metodo para retornar os EbookContent do ebook relação de um para muitos
+        return $this->hasMany(EbookContent::class);
     }
 }

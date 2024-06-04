@@ -12,12 +12,9 @@ class CreateEbookDTO
         public string $user_id,
         public string $name,
         public string $url,
-        public string $description,
         public string $code,
-        public string $published,
-        public string $free,
         public string $price,
-        public  $image,
+        public  $image
     ) {
     }
 
@@ -33,8 +30,6 @@ class CreateEbookDTO
         }
 
         $userId = $user->id;
-        $published = isset($data['published']) ? 1 : 0;
-        $free = isset($data['free']) ? 1 : 0;
 
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
@@ -44,12 +39,9 @@ class CreateEbookDTO
             $userId,
             $data['name'],
             $url,
-            $data['description'],
             $code,
-            $published,
-            $free,
             $data['price'],
-            $image,
+            $image
         );
     }
 }

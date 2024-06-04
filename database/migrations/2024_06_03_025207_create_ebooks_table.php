@@ -17,14 +17,9 @@ return new class () extends Migration {
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name', 150)->default(null);
-            $table->string('url', 255)->unique();
-            $table->text('description')->nullable();
-            $table->boolean('available')->default(true);
-            $table->string('image', 225)->nullable();
-            $table->string('file', 225)->nullable();
             $table->string('code', 255)->unique()->default(null);
-            $table->boolean('published');
-            $table->boolean('free')->default(false);
+            $table->string('url', 255)->unique();
+            $table->string('image', 225)->nullable();
             $table->double('price', 10, 2);
             $table->timestamps();
         });

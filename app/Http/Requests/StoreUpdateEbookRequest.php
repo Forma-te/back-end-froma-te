@@ -26,13 +26,9 @@ class StoreUpdateEbookRequest extends FormRequest
         $rules = [
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|min:5|max:255',
-            'description' => 'nullable',
             'url' => 'nullable',
             'image' => 'nullable|image|mimes:png,jpg|max:5120||dimensions:max_width=600,max_height=450',
-            'file' => 'nullable|file|mimes:pdf',
             'code' => "nullable|unique:courses,code,{$id},Id",
-            'published' => 'sometimes|boolean',
-            'free' => 'sometimes|boolean',
             'price' => 'nullable',
         ];
 

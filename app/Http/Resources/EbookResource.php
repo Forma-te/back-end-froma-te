@@ -20,12 +20,8 @@ class EbookResource extends JsonResource
             'user_id' => $this->user_id,
             'name' => $this->name,
             'url' => $this->url,
-            'description' => $this->description,
             'code' => $this->code,
-            'published' => $this->published,
-            'free' => $this->free,
             'price' => $this->price,
-            'available' => $this->available,
             'imagem' => $this->image
         ];
     }

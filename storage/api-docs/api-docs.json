@@ -874,10 +874,6 @@
                                         "type": "string",
                                         "example": "ABC123"
                                     },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "ebook Description"
-                                    },
                                     "image": {
                                         "type": "string",
                                         "example": "https://example.com/images/ebook.jpg"
@@ -885,18 +881,6 @@
                                     "code": {
                                         "type": "string",
                                         "example": "ABC123"
-                                    },
-                                    "total_hours": {
-                                        "type": "integer",
-                                        "example": 60
-                                    },
-                                    "free": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
-                                    "published": {
-                                        "type": "boolean",
-                                        "example": true
                                     },
                                     "price": {
                                         "type": "number",
@@ -924,10 +908,6 @@
                                             "type": "string",
                                             "example": "Updated ebook Name"
                                         },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Updated ebook Description"
-                                        },
                                         "image": {
                                             "type": "string",
                                             "example": "Updated https://example.com/images/ebook.jpg"
@@ -935,18 +915,6 @@
                                         "code": {
                                             "type": "string",
                                             "example": "Updated ABC123"
-                                        },
-                                        "total_hours": {
-                                            "type": "integer",
-                                            "example": 60
-                                        },
-                                        "free": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "published": {
-                                            "type": "boolean",
-                                            "example": true
                                         },
                                         "price": {
                                             "type": "number",
@@ -1049,10 +1017,6 @@
                                         "type": "string",
                                         "example": "ABC123"
                                     },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "ebook Description"
-                                    },
                                     "image": {
                                         "type": "string",
                                         "example": "https://example.com/images/ebook.jpg"
@@ -1060,14 +1024,6 @@
                                     "code": {
                                         "type": "string",
                                         "example": "ABC123"
-                                    },
-                                    "free": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
-                                    "published": {
-                                        "type": "boolean",
-                                        "example": true
                                     },
                                     "price": {
                                         "type": "number",
@@ -1102,20 +1058,11 @@
                                         "url": {
                                             "type": "string"
                                         },
-                                        "description": {
-                                            "type": "string"
-                                        },
                                         "image": {
                                             "type": "string"
                                         },
                                         "code": {
                                             "type": "string"
-                                        },
-                                        "free": {
-                                            "type": "boolean"
-                                        },
-                                        "published": {
-                                            "type": "boolean"
                                         },
                                         "price": {
                                             "type": "number",
@@ -1821,6 +1768,7 @@
                 "description": "Ebook model",
                 "required": [
                     "category_id",
+                    "user_id",
                     "name"
                 ],
                 "properties": {
@@ -1836,20 +1784,11 @@
                     "url": {
                         "type": "string"
                     },
-                    "description": {
-                        "type": "string"
-                    },
                     "image": {
                         "type": "string"
                     },
                     "code": {
                         "type": "string"
-                    },
-                    "free": {
-                        "type": "boolean"
-                    },
-                    "published": {
-                        "type": "boolean"
                     },
                     "price": {
                         "type": "number",
@@ -1859,6 +1798,38 @@
                 "type": "object",
                 "xml": {
                     "name": "Ebook"
+                }
+            },
+            "EbookContent": {
+                "title": "EbookContent model",
+                "description": "EbookContent model",
+                "required": [
+                    "ebook_id",
+                    "name"
+                ],
+                "properties": {
+                    "ebook_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "file": {
+                        "type": "string"
+                    },
+                    "free": {
+                        "type": "boolean"
+                    },
+                    "published": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "EbookContent"
                 }
             },
             "Lesson": {
