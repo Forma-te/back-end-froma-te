@@ -2,6 +2,8 @@
 
 namespace App\Repositories\User;
 
+use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateUserDTO;
 use App\Models\User as Model;
 use App\Repositories\User\UserRepositoryInterface;
 
@@ -37,19 +39,27 @@ class UserRepository implements UserRepositoryInterface
                     ->find($id);
     }
 
-    public function create(array $data): object
+    public function findByEmail(string $email): ?object
     {
-        return $this->model->create($data);
-
+        return $this->model->where('email', $email)->first();
     }
 
-    public function update(string $id, array $data): object|null
+    public function create(CreateUserDTO $dto): object
     {
-        if (!$user = $this->findById($id)) {
+        return $this->model->create([
+            'name' => $dto->name,
+            'email' => $dto->email,
+            'password' => $dto->password
+        ]);
+    }
+
+    public function update(UpdateUserDTO $dto): object|null
+    {
+        if (!$user = $this->findById($dto->id)) {
             return null;
         }
 
-        $user->update($data);
+        $user->update($dto);
 
         return $user;
     }

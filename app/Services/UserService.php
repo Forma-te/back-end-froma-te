@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateUserDTO;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Hash;
 use stdClass;
 
 class UserService
@@ -26,14 +29,32 @@ class UserService
     {
         return $this->repository->findById($id);
     }
-    public function create(array $data): object
+
+    public function findByEmail($email): ?object
     {
-        return $this->repository->create($data);
+        return $this->findByEmail($email);
     }
-    public function update(string $id, array $data): object|null
+
+    public function create(CreateUserDTO $dto): object
     {
-        return $this->repository->update($id, $data);
+        // Criar o usuário no repositório
+        $user = $this->repository->create($dto);
+
+        // Gerar o token de autenticação
+        $token = $user->createToken($dto->device_name)->plainTextToken;
+
+        // Retornar o usuário e o token
+        return (object) [
+            'user' => $user,
+            'token' => $token
+        ];
     }
+
+    public function update(UpdateUserDTO $dto): object|null
+    {
+        return $this->repository->update($dto);
+    }
+
     public function delete(string $id): bool
     {
         return $this->repository->delete($id);

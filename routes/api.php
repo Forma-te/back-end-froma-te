@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\{
     EbookController,
     LessonController,
     ModuleController,
-    SupportController
+    SupportController,
+    UserController
 };
 use App\Http\Controllers\Api\Auth\{
     AuthController,
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Auth
  */
+Route::post('register', [UserController::class, 'register']);
 Route::get('/getAuthenticatedUser', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -28,6 +30,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
  */
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])->middleware('guest');
 Route::post('/reset-password', [ResetPasswordController::class, 'resetSenha'])->middleware('guest');
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
 

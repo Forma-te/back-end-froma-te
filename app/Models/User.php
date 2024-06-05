@@ -184,15 +184,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-    * The accessors to append to the model's array form.
-    *
-    * @var array
-    */
-    protected $appends = [
-        'profile_photo_url',
-    ];
-
     protected function image(): Attribute
     {
         return Attribute::make(
@@ -204,6 +195,12 @@ class User extends Authenticatable
     {
         return $query->where('id', auth()->user()->id);
     }
+
+    public function banks()
+    {
+        return $this->hasMany(Bank::class);
+    }
+
 
     public function CoursesTutor()
     {

@@ -175,7 +175,7 @@ class EbookContentController extends Controller
      * @return \Illuminate\Http\JsonResponse The JSON response containing the updated ebook content data or an error message.
      *
      * @OA\Put(
-     *     path="/api/ebook-contents/{id}",
+     *     path="/api/ebook-content/{id}",
      *     summary="Update an ebook content",
      *     description="Update an existing ebook content by ID",
      *     operationId="updateEbookContent",

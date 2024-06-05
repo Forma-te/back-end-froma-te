@@ -801,7 +801,7 @@
                 }
             }
         },
-        "/api/ebook-contents/{id}": {
+        "/api/ebook-content/{id}": {
             "put": {
                 "tags": [
                     "Ebook Contents"
@@ -894,9 +894,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/ebook-content/{id}": {
+            },
             "delete": {
                 "tags": [
                     "Ebook Contents"
