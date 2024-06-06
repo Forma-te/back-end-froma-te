@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Bank\BankRepository;
+use App\Repositories\Bank\BankRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
 
@@ -91,6 +93,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             EbookContentRepositoryInterface::class,
             EbookContentRepository::class,
+        );
+
+        $this->app->singleton(
+            BankRepositoryInterface::class,
+            BankRepository::class,
         );
 
     }

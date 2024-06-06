@@ -15,7 +15,7 @@ use Illuminate\Http\Response;
 class EbookController extends Controller
 {
     public function __construct(
-        protected EbookService $EbookService
+        protected EbookService $ebookService
     ) {
     }
 
@@ -83,7 +83,7 @@ class EbookController extends Controller
 
     public function getAllEbook(Request $request)
     {
-        $ebook = $this->EbookService->paginate(
+        $ebook = $this->ebookService->paginate(
             page: $request->get('page', 1),
             totalPerPage: $request->get('per_page', 15),
             filter: $request->filter,
@@ -138,7 +138,7 @@ class EbookController extends Controller
 
     public function getEbookById(string $id)
     {
-        $ebook = $this->EbookService->findById($id);
+        $ebook = $this->ebookService->findById($id);
 
         if (!$ebook) {
             return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
@@ -204,7 +204,7 @@ class EbookController extends Controller
     public function createEbook(StoreUpdateEbookRequest $request)
     {
         // Cria um novo curso a partir dos dados do request
-        $ebook = $this->EbookService->new(
+        $ebook = $this->ebookService->new(
             CreateEbookDTO::makeFromRequest($request)
         );
 
@@ -262,7 +262,7 @@ class EbookController extends Controller
 
     public function updateEbook(StoreUpdateEbookRequest $request, string $id)
     {
-        $ebook = $this->EbookService->update(
+        $ebook = $this->ebookService->update(
             UpdateEbookDTO::makeFromRequest($request, $id)
         );
 
@@ -305,13 +305,13 @@ class EbookController extends Controller
 
     public function destroyEbook(string $id)
     {
-        if (!$this->EbookService->findById($id)) {
+        if (!$this->ebookService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $this->EbookService->delete($id);
+        $this->ebookService->delete($id);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
 

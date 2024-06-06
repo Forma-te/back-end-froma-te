@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\{
+    BankController,
     CategoryController,
     CourseController,
     EbookContentController,
@@ -93,6 +94,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
     Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
     // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
+
+    /**
+    * Route Bank
+    */
+    Route::post('/bank', [BankController::class, 'createBank']);
 
 });
 
