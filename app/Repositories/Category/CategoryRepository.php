@@ -70,6 +70,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             $category->update((array) $dto);
             return (object) $category->toArray();
         }
+
         return null;
     }
 

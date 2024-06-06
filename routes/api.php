@@ -99,6 +99,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Bank
     */
     Route::post('/bank', [BankController::class, 'createBank']);
+    Route::put('/bank/{Id}', [BankController::class, 'updateBank']);
+    Route::delete('/bank/{Id}', [BankController::class, 'deleteBank']);
 
 });
 

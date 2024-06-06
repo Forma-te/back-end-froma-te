@@ -31,15 +31,16 @@ class BankRepository implements BankRepositoryInterface
         return $users;
     }
 
-    public function findById(string $id): object|null
+    public function findOne(string $id): ?stdClass
     {
-        return $this->model
-                    ->where('type', 'instructor')
-                    ->with('CoursesTutor', 'student')
-                    ->find($id);
+        $bank = $this->model->find($id);
+        if (!$bank) {
+            return null;
+        }
+        return (object) $bank->toArray();
     }
 
-    public function findByUserId(string $userId): ?object
+    public function findBankByUserId(string $userId): ?object
     {
         return $this->model->where('user_id', $userId)->get();
     }
@@ -51,23 +52,20 @@ class BankRepository implements BankRepositoryInterface
         return (object) $bank->toArray();
     }
 
-    public function update(UpdateBankDTO $dto): object|null
+    public function update(UpdateBankDTO $dto): stdClass|null
     {
-        if (!$bank = $this->findById($dto->id)) {
-            return null;
+        $bank = $this->model->find($dto->id);
+
+        if ($bank) {
+            $bank->update((array) $dto);
+            return (object) $bank->toArray();
         }
 
-        $bank->update($dto);
-
-        return $bank;
+        return null;
     }
 
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
-        if (!$user = $this->findById($id)) {
-            return false;
-        }
-
-        return $user->delete();
+        $this->model->findOrFail($id)->delete();
     }
 }

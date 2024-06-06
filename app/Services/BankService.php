@@ -21,14 +21,14 @@ class BankService
         return $bank =  $this->repository->getAll($filter);
     }
 
-    public function findById(string $id): object|null
+    public function findOne(string $id): stdClass|null
     {
-        return $this->repository->findById($id);
+        return $this->repository->findOne($id);
     }
 
-    public function findByEmail($userId): ?object
+    public function findBankByUserId($userId): ?object
     {
-        return $this->findByEmail($userId);
+        return $this->findBankByUserId($userId);
     }
 
     public function create(CreateBankDTO $dto): stdClass
@@ -36,13 +36,13 @@ class BankService
         return $this->repository->create($dto);
     }
 
-    public function update(UpdateBankDTO $dto): object|null
+    public function update(UpdateBankDTO $dto): stdClass|null
     {
         return $this->repository->update($dto);
     }
 
-    public function delete(string $id): bool
+    public function delete(string $id): void
     {
-        return $this->repository->delete($id);
+        $this->repository->delete($id);
     }
 }
