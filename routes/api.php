@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\{
     EbookController,
     LessonController,
     ModuleController,
+    SaleController,
     SupportController,
     UserController
 };
@@ -101,6 +102,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/bank', [BankController::class, 'createBank']);
     Route::put('/bank/{Id}', [BankController::class, 'updateBank']);
     Route::delete('/bank/{Id}', [BankController::class, 'deleteBank']);
+
+    /**
+    * Route Sale
+    */
+    Route::post('/new-sale', [SaleController::class, 'newSale']);
 
 });
 

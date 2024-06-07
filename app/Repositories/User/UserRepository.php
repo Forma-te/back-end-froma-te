@@ -25,9 +25,7 @@ class UserRepository implements UserRepositoryInterface
                             $query->orWhere('name', 'LIKE', "%{$filter}%");
                         }
                     })
-                      ->where('type', 'instructor')
-                      ->with('CoursesTutor', 'student')
-                      ->get();
+                    ->get();
         return $users;
     }
 
@@ -39,9 +37,14 @@ class UserRepository implements UserRepositoryInterface
                     ->find($id);
     }
 
-    public function findByEmail(string $email): ?object
+    public function findByEmail(string $email)
     {
-        return $this->model->where('email', $email)->first();
+        return $this->model->where('email', $email)->get();
+    }
+
+    public function findByAuth()
+    {
+        return $this->model->UserByAuth()->get();
     }
 
     public function create(CreateUserDTO $dto): object

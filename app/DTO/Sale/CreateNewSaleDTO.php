@@ -8,13 +8,12 @@ class CreateNewSaleDTO
 {
     public function __construct(
         public string $course_id,
-        public string $user_id,
-        public string $instrutor_id,
+        public ?string $user_id,
+        public string $name,
+        public ?string $instrutor_id,
         public string $transaction,
         public string $email_student,
-        public string $payment_mode,
         public string $blocked,
-        public string $status,
         public string $date_created,
         public string $date_expired
     ) {
@@ -23,16 +22,19 @@ class CreateNewSaleDTO
     {
         $data = $request->all();
 
+        $transaction = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
+        $blocked = isset($data['published']) ? 1 : 0;
+        $date_created = now();
+
         return new self(
             $data['course_id'],
-            $data['user_id'],
-            $data['instrutor_id'],
-            $data['transaction'],
+            $data['user_id'] ?? null,
+            $data['name'],
+            $data['instrutor_id'] ?? null,
+            $transaction,
             $data['email_student'],
-            $data['payment_mode'],
-            $data['blocked'],
-            $data['status'],
-            $data['date_created'],
+            $blocked,
+            $date_created,
             $data['date_expired']
         );
     }

@@ -14,14 +14,12 @@ class UserService
 
     public function __construct(UserRepositoryInterface $repository)
     {
-
         $this->repository = $repository;
-
     }
 
     public function getAll(string $filter = '')
     {
-        return $users =  $this->repository->getAll($filter);
+        return $this->repository->getAll($filter);
 
     }
 
@@ -30,9 +28,9 @@ class UserService
         return $this->repository->findById($id);
     }
 
-    public function findByEmail($email): ?object
+    public function findByEmail(string $email)
     {
-        return $this->findByEmail($email);
+        return $this->repository->findByEmail($email);
     }
 
     public function create(CreateUserDTO $dto): object

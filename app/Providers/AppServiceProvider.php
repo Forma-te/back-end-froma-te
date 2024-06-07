@@ -19,6 +19,8 @@ use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\Module\ModuleRepository;
 use App\Repositories\Module\ModuleRepositoryInterface;
+use App\Repositories\Sale\SaleRepository;
+use App\Repositories\Sale\SaleRepositoryInterface;
 use App\Repositories\Statistics\{
     StatisticsRepository,
     StatisticsRepositoryInterface
@@ -98,6 +100,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             BankRepositoryInterface::class,
             BankRepository::class,
+        );
+
+        $this->app->singleton(
+            SaleRepositoryInterface::class,
+            SaleRepository::class,
         );
 
     }

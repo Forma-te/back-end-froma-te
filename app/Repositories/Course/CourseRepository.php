@@ -25,7 +25,6 @@ class CourseRepository implements CourseRepositoryInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
-                ->where('type', 'CURSO')
                 ->userByAuth();
 
         // Aplicar o filtro se fornecido

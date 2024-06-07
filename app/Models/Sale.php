@@ -18,7 +18,7 @@ class Sale extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'status', 'date', 'date_expired'
+        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'status', 'date_created', 'date_expired'
     ];
 
     public function getDateAttribute($value)
