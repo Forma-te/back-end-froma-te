@@ -55,7 +55,7 @@ class SaleRepository implements SaleRepositoryInterface
             'email_student' => $dto->email_student,
             'transaction' => $dto->transaction,
             'date_expired' => $dto->date_expired,
-            'status' => 'approved',
+            'status' => $dto->status,
             'blocked' => $dto->blocked,
             'payment_mode' => 'banco',
             'date_created' => $dto->date_created

@@ -18,7 +18,14 @@ class Sale extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'status', 'date_created', 'date_expired'
+        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created', 'date_expired'
+    ];
+
+    public $statusOptions = [
+        'S' => 'Iniciado, Aguardar Validação',
+        'A' => 'Aprovado',
+        'E' => 'Expirado',
+        'P' => 'Pendente'
     ];
 
     public function getDateAttribute($value)
@@ -34,15 +41,13 @@ class Sale extends Model
     public function rules()
     {
         return [
-
             'course_id' => 'required',
             'name' => 'required',
             'email' => 'required|email',
             'bank' => 'nullable',
             'account' => 'nullable',
             'iban' => 'nullable',
-            'date_expired' => 'required',
-
+            'date_expired' => 'required'
         ];
     }
 
@@ -118,77 +123,6 @@ class Sale extends Model
     {
         return $this->mySales($keySearch);
 
-    }
-
-    public function newSale($data)
-    {
-        $course = Course::where('code', $data['prod'])->get()->first();
-        if ($course == null) {
-            return response()->json(['error' => 'Curso nao encontrado'], 404);
-        }
-
-        $user = User::where('id', $data['hottok'])->get()->first();
-
-        $bankusers = Bank::where('user_id', $user['id'])->get();
-
-        $Bank_transfer = 'Transferência bancaria';
-
-        if ($user == null) {
-            return response()->json(['error' => 'Instrutor nao encontrado'], 404);
-        }
-
-        if ($course->user_id != $user->id) {
-            return response()->json(['error' => 'Not Permission'], 401);
-        }
-
-        if ($data['status'] == 'canceled') {
-            $sale = Sale::where('transaction', $data['transaction'])->get()->first();
-
-            if ($sale) {
-                Sale::where('transaction', $data['transaction'])->update([
-                    'status' => 'canceled',
-                ]);
-            }
-        }
-        if ($data['status'] != 'started') {
-            return response()->json(['status' => 'Pedido não Liberado'], 200);
-        }
-
-        $student = User::where('email', $data['email'])->get()->first();
-
-        if ($student == null) {
-            $password = generatePassword();
-            $student = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'url' => createUrl($data['name']),
-                'password' => bcrypt($password),
-            ]);
-            Mail::to($data['email'])->send(new SendMailNewStudentSale($student, $course, $password, $bankusers));
-        } else {
-            Mail::to($data['email'])->send(new NewSaleStudent($student, $course, $bankusers));
-        }
-
-        //$date = Carbon::createFromFormat('d/m/Y', $request->purchase_date)->format('Y-m-d');
-        $date = Carbon::createFromFormat('d/m/Y', $data['purchase_date'])->format('Y-m-d');
-        $newSale = Sale::create([
-            'course_id' => $course->id,
-            'user_id' => $student->id,
-            'instrutor_id' => $user->id,
-            'payment_mode' => $Bank_transfer,
-            'email_student' => $student->email,
-            'transaction' => $data['transaction'],
-            'status' => $data['status'],
-            'date' => $date,
-        ]);
-
-        if ($newSale) {
-            return redirect()
-                ->route('encomennda.success')
-                ->with(['success' => 'Encomenda realizado com sucesso']);
-        } else {
-            return response()->json(['error' => 'Fail Insert', 500]);
-        }
     }
 
     public function course()

@@ -13,6 +13,7 @@ class CreateNewSaleDTO
         public ?string $instrutor_id,
         public string $transaction,
         public string $email_student,
+        public string $status,
         public string $blocked,
         public string $date_created,
         public string $date_expired
@@ -23,7 +24,7 @@ class CreateNewSaleDTO
         $data = $request->all();
 
         $transaction = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
-        $blocked = isset($data['published']) ? 1 : 0;
+        $data['blocked'] = isset($data['blocked']);
         $date_created = now();
 
         return new self(
@@ -33,7 +34,8 @@ class CreateNewSaleDTO
             $data['instrutor_id'] ?? null,
             $transaction,
             $data['email_student'],
-            $blocked,
+            $data['status'],
+            $data['blocked'],
             $date_created,
             $data['date_expired']
         );

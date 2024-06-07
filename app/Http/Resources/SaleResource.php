@@ -23,6 +23,7 @@ class SaleResource extends JsonResource
             'transaction' => $this->transaction,
             'date_expired' => $this->date_expired,
             'status' => $this->status,
+            'blocked' => $this->blocked,
             'payment_mode' => $this->payment_mode,
             'date_created' => $this->date_created
         ];

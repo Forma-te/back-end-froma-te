@@ -29,8 +29,8 @@ class StoreUpdateSaleRequest extends FormRequest
             'transaction' => 'nullable',
             'email_student' => 'required|email',
             'payment_mode' => 'nullable',
-            'blocked' => 'nullable',
-            'status' => 'nullable',
+            'blocked' => 'required',
+            'status' => 'required',
             'date_expired' => 'required'
         ];
     }
