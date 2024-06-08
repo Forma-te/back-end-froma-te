@@ -2,7 +2,7 @@
 # Olá, {{ $member->name }}<br>
 Boas notícias! O produto {{$course->name}}, está disponível.
 
-<x-mail::button :url="route('')">
+<x-mail::button :url="''">
 Acesso à plataforma Forma-te
 </x-mail::button>
 

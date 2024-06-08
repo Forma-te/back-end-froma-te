@@ -56,6 +56,7 @@ class SaleRepository implements SaleRepositoryInterface
         $bankUsers = $this->bankRepository->findBankByUserId($authUser->first()->id);
         $member = $this->userRepository->findByEmail($dto->email_student);
 
+        $password = null;
         if($member === null) {
             $password = generatePassword();
             $userDto = new CreateUserDTO(
@@ -79,7 +80,6 @@ class SaleRepository implements SaleRepositoryInterface
             'blocked' => $dto->blocked,
             'payment_mode' => 'banco',
             'date_created' => $dto->date_created
-
             ]);
 
         event(new SaleToNewAndOldMembers($member, $course, $password, $bankUsers));

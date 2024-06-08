@@ -6,7 +6,7 @@ Boas notícias! O produto {{$course->name}}, está disponível.
 Usuário: {{$member->email}}<br>
 Senha: {{$password}}
 
-<x-mail::button :url="route('')">
+<x-mail::button :url="''">
 Acesso à plataforma Forma-te
 </x-mail::button>
 
