@@ -23,8 +23,6 @@ class UpdateNewSaleDTO
     {
         $data = $request->all();
 
-        $data['blocked'] = isset($data['blocked']);
-
         return new self(
             $id ?? $request->id,
             $data['course_id'],

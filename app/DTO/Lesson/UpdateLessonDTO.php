@@ -22,8 +22,6 @@ class UpdateLessonDTO
     public static function makeFromRequest(StoreUpdateLessonRequest  $request, string $id = null): self
     {
         $data = $request->all();
-        $published = isset($data['published']) ? 1 : 0;
-        $free = isset($data['free']) ? 1 : 0;
 
         // Se o file estiver presente na requisição, obtenha o UploadedFile correspondente
         $file = $request->hasFile('file') ? $request->file('file') : null;
@@ -34,9 +32,9 @@ class UpdateLessonDTO
             $data['name'],
             $data['url'],
             $data['description'],
-            $free,
+            $data['free'],
             $data['video'],
-            $published,
+            $data['published'],
             $file
         );
     }

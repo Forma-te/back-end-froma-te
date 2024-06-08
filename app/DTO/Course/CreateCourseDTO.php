@@ -34,10 +34,6 @@ class CreateCourseDTO
         }
 
         $userId = $user->id;
-        $published = isset($data['published']) ? 1 : 0;
-        $free = isset($data['free']) ? 1 : 0;
-
-
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
 
@@ -49,8 +45,8 @@ class CreateCourseDTO
             $data['description'],
             $codigo,
             $data['total_hours'],
-            $published,
-            $free,
+            $data['published'],
+            $data['free'],
             $data['price'],
             $image,
         );

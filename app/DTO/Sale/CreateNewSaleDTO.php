@@ -24,7 +24,6 @@ class CreateNewSaleDTO
         $data = $request->all();
 
         $transaction = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
-        $data['blocked'] = isset($data['blocked']);
         $date_created = now();
 
         return new self(

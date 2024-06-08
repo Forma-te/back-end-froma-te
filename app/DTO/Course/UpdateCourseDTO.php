@@ -24,8 +24,6 @@ class UpdateCourseDTO
     public static function makeFromRequest(StoreUpdateCourseRequest $request, string $id = null): self
     {
         $data = $request->all();
-        $data['published'] = isset($data['published']);
-        $data['free'] = isset($data['free']);
 
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;

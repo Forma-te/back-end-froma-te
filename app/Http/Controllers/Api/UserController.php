@@ -15,8 +15,6 @@ class UserController extends Controller
     ) {
     }
 
-
-
     public function register(StoreUpdateUserRequest $request)
     {
         $user = $this->userService->create(
@@ -28,4 +26,5 @@ class UserController extends Controller
             'user' => $user->user
         ], 201);
     }
+
 }
