@@ -10,7 +10,6 @@ class UpdateUserDTO
         public string $id,
         public ?string $name = null,
         public ?string $email = null,
-        public ?string $password = null,
         public ?string $bibliography = null,
         public ?string $phone_number = null,
         public ?string $image = null,
@@ -22,15 +21,10 @@ class UpdateUserDTO
     {
         $data = $request->validated();
 
-        if (isset($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        }
-
         return new self(
             $id,
             $data['name'] ?? null,
             $data['email'] ?? null,
-            $data['password'] ?? null,
             $data['bibliography'] ?? null,
             $data['phone_number'] ?? null,
             $data['image'] ?? null,

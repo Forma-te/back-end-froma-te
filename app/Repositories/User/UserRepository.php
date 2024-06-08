@@ -32,8 +32,6 @@ class UserRepository implements UserRepositoryInterface
     public function findById(string $id): object|null
     {
         return $this->model
-                    ->where('type', 'instructor')
-                    ->with('CoursesTutor', 'student')
                     ->find($id);
     }
 

@@ -38,7 +38,7 @@ class SaleRepository implements SaleRepositoryInterface
         }
 
         // Paginar os resultados
-        $result = $query->with('student', 'instrutor')->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('student', 'instrutor', 'course')->paginate($totalPerPage, ['*'], 'page', $page);
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
