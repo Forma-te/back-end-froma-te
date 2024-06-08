@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\SaleCreated;
+use App\Listeners\SendSaleNotification;
 use App\Repositories\Bank\BankRepository;
 use App\Repositories\Bank\BankRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
@@ -39,6 +41,7 @@ use App\Repositories\User\{
 use Illuminate\Support\{
     ServiceProvider
 };
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -114,6 +117,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Event::listen(
+            SaleCreated::class,
+            SendSaleNotification::class,
+        );
 
     }
 }

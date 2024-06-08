@@ -36,7 +36,7 @@ class CourseRepository implements CourseRepositoryInterface
         }
 
         // Paginar os resultados
-        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('user')->paginate($totalPerPage, ['*'], 'page', $page);
 
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
@@ -45,7 +45,6 @@ class CourseRepository implements CourseRepositoryInterface
     public function new(CreateCourseDTO $dto): Course
     {
         return $this->entity->create((array) $dto);
-
     }
 
     public function update(UpdateCourseDTO $dto): ?Course
@@ -64,7 +63,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function findById(string $id): object|null
     {
-        return $this->entity->find($id);
+        return $this->entity->with('user')->find($id);
     }
 
     public function delete(string $id): void
@@ -76,7 +75,6 @@ class CourseRepository implements CourseRepositoryInterface
     {
         return $this->entity
                     ->userByAuth()
-                    ->where('type', 'CURSO')
                     ->pluck('name', 'id')
                     ->all()->toArray();
     }

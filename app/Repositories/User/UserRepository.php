@@ -39,7 +39,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function findByEmail(string $email)
     {
-        return $this->model->where('email', $email)->get();
+        return $this->model->where('email', $email)->first();
     }
 
     public function findByAuth()

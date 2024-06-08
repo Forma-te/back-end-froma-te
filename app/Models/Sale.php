@@ -134,4 +134,9 @@ class Sale extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function instrutor()
+    {
+        return $this->belongsTo(User::class, 'instrutor_id');
+    }
 }

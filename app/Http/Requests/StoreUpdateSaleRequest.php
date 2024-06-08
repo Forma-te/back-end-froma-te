@@ -24,7 +24,7 @@ class StoreUpdateSaleRequest extends FormRequest
         return [
             'course_id' => 'required',
             'user_id' => 'nullable',
-            'name' => 'required',
+            'name' => 'sometimes|required',
             'instrutor_id' => 'nullable',
             'transaction' => 'nullable',
             'email_student' => 'required|email',

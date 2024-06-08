@@ -38,6 +38,7 @@ class CourseStoreResource extends JsonResource
             'id' => $this->id,
             'category_id' => $this->category_id,
             'user_id' => $this->user_id,
+            'user_name' => $this->user->name,
             'name' => $this->name,
             'url' => $this->url,
             'description' => $this->description,

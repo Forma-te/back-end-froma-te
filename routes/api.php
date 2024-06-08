@@ -106,7 +106,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Sale
     */
+    Route::get('/sales', [SaleController::class, 'getAllSales']);
+    Route::get('/sale/{Id}', [SaleController::class, 'getSaleById']);
     Route::post('/new-sale', [SaleController::class, 'newSale']);
+    Route::put('/sale/{Id}', [SaleController::class, 'updateSale']);
+    Route::delete('/sale/{Id}', [SaleController::class, 'destroySele']);
 
 });
 

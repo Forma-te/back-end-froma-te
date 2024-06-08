@@ -14,6 +14,7 @@ use App\Services\CourseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Gate;
 use OpenApi\Annotations as OA;
 
 class CourseController extends Controller
@@ -145,6 +146,10 @@ class CourseController extends Controller
     public function getCourseById(string $id)
     {
         $course = $this->courseService->findById($id);
+
+        if (Gate::denies('owner-course', $course)) {
+            return response()->json(['error' => 'Forbidden'], Response::HTTP_FORBIDDEN);
+        }
 
         if (!$course) {
             return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
