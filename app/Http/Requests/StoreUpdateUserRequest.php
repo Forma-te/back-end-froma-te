@@ -28,16 +28,16 @@ class StoreUpdateUserRequest extends FormRequest
             'email' => "sometimes|required|string|email|max:255|unique:users,email,{$id},Id",
             'password' => 'sometimes|string|min:8|confirmed',
             'password_confirmation' => 'sometimes|required_with:password|string|min:8',
-            'bibliography' => 'nullable',
+            'bibliography' => 'nullable|string',
             'phone_number' => [
                 'sometimes',
                 'nullable',
                 'string',
                 'regex:/^\d{12}$/'
             ],
-            'image' => 'nullable',
-            'addresses' => 'nullable',
-            'device_name' => 'required|string|max:255'
+            'image' => 'nullable|file',
+            'bi' => 'nullable|string',
+            'device_name' => 'nullable|string|max:255'
         ];
     }
 

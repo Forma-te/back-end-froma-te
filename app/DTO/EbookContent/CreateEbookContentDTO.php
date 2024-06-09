@@ -20,9 +20,6 @@ class CreateEbookContentDTO
     {
         $data = $request->all();
 
-        $published = isset($data['published']) ? 1 : 0;
-        $free = isset($data['free']) ? 1 : 0;
-
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $file = $request->hasFile('file') ? $request->file('file') : null;
 
@@ -30,8 +27,8 @@ class CreateEbookContentDTO
             $data['ebook_id'],
             $data['name'],
             $data['description'],
-            $free,
-            $published,
+            $data['free'],
+            $data['published'],
             $file
         );
     }

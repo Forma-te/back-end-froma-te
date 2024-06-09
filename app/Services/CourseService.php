@@ -35,7 +35,7 @@ class CourseService
         if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
 
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'course', $customImageName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'courses', $customImageName);
 
             $dto->image = $uploadedFilePath;
         }
@@ -61,9 +61,9 @@ class CourseService
             }
             // Processar o novo ficheiro
             $file = $dto->image;
-            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
+            $customImageName = Str::of($dto->code)->slug('-') . '.' . $file->getClientOriginalExtension();
             // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'lessonPdf', $customImageName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'course', $customImageName);
 
             // Atualizar o DTO com o caminho relativo do ficheiro armazenado
             $dto->image = $uploadedFilePath;

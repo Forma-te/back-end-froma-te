@@ -143,8 +143,7 @@ class User extends Authenticatable
         'image',
         'bibliography',
         'phone_number',
-        'addresses',
-        'type',
+        'bi'
     ];
 
     public function rules($id = '')

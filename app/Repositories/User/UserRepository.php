@@ -5,7 +5,9 @@ namespace App\Repositories\User;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User as Model;
+use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Gate;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -54,15 +56,16 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    public function update(UpdateUserDTO $dto): object|null
+    public function update(UpdateUserDTO $dto): ?User
     {
-        if (!$user = $this->findById($dto->id)) {
-            return null;
+        $user = $this->model->find($dto->id);
+
+        if($user) {
+            $user->update((array) $dto);
+            return $user;
         }
 
-        $user->update($dto);
-
-        return $user;
+        return null;
     }
 
     public function delete(string $id): bool

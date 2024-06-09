@@ -8,27 +8,30 @@ class UpdateUserDTO
 {
     public function __construct(
         public string $id,
-        public ?string $name = null,
-        public ?string $email = null,
-        public ?string $bibliography = null,
-        public ?string $phone_number = null,
-        public ?string $image = null,
-        public ?array $addresses = null
+        public string $name,
+        public string $email,
+        public string $bibliography,
+        public string $phone_number,
+        public string $bi,
+        public $image
     ) {
     }
 
     public static function makeFromRequest(StoreUpdateUserRequest $request, string $id): self
     {
-        $data = $request->validated();
+        $data = $request->all();
+
+        $image = $request->hasFile('image') ? $request->file('image') : null;
 
         return new self(
-            $id,
-            $data['name'] ?? null,
-            $data['email'] ?? null,
-            $data['bibliography'] ?? null,
-            $data['phone_number'] ?? null,
-            $data['image'] ?? null,
-            $data['addresses'] ?? null
+            $id ?? $request->id,
+            $data['name'],
+            $data['email'],
+            $data['bibliography'],
+            $data['phone_number'],
+            $data['bi'],
+            $image
         );
     }
+
 }

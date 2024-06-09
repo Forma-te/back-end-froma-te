@@ -35,5 +35,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('owner-sale', function (User $user, Sale $sale) {
             return $sale->instrutor_id == $user->id;
         });
+
+        // Verifica se o usuário está tentando modificar seu próprio registro
+        Gate::define('owner-user', function (User $currentUser, User $userToUpdate) {
+            return $currentUser->id === $userToUpdate->id;
+        });
     }
 }

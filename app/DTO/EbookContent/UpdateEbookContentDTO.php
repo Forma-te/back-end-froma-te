@@ -32,8 +32,8 @@ class UpdateEbookContentDTO
             $data['ebook_id'],
             $data['name'],
             $data['description'],
-            $free,
-            $published,
+            $data['free'],
+            $data['published'],
             $file
         );
     }
