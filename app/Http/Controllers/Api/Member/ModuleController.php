@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Member;
 
 use App\Adapters\ApiAdapter;
 use App\DTO\Module\CreateModuleDTO;

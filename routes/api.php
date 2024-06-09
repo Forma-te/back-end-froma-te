@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\{
+use App\Http\Controllers\Api\Member\{
     BankController,
     CategoryController,
     CourseController,

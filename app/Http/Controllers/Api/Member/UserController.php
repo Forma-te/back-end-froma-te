@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Member;
 
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
@@ -43,7 +43,5 @@ class UserController extends Controller
         }
 
         return new UserResource($user);
-
     }
-
 }
