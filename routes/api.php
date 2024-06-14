@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Auth
  */
-Route::post('/register', [UserController::class, 'register']);
+Route::post('/register', [UserController::class, 'registerUser']);
 Route::put('/update-user/{Id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum');
 Route::get('/getAuthenticatedUser', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
