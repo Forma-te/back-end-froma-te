@@ -32,6 +32,28 @@ class SaleController extends Controller
         return ApiAdapter::paginateToJson($sale);
     }
 
+    public function getMyStudents(Request $request)
+    {
+        $sales = $this->saleService->getMyStudents(
+            page: $request->get('page', 1),
+            totalPerPage: $request->get('per_page', 15),
+            filter: $request->filter,
+        );
+
+        return ApiAdapter::paginateToJson($sales);
+    }
+
+    public function getMyStudentsStatusExpired(Request $request)
+    {
+        $sales = $this->saleService->getMyStudentsStatusExpired(
+            page: $request->get('page', 1),
+            totalPerPage: $request->get('per_page', 15),
+            filter: $request->filter,
+        );
+
+        return ApiAdapter::paginateToJson($sales);
+    }
+
     private function errorResponse($message, $statusCode)
     {
         return response()->json(['error' => $message], $statusCode);

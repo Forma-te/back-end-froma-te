@@ -37,9 +37,15 @@ Route::post('/reset-password', [ResetPasswordController::class, 'resetSenha'])->
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::apiResource('/categories', CategoryController::class)->parameters([
-        'category' => 'id'
-    ]);
+    /**
+    * Route categories
+    */
+    Route::get('/categories', [CategoryController::class, 'getAllCategories']);
+    Route::get('/categories/{categoryId}', [CategoryController::class, 'getCategoryById']);
+    Route::post('/categories', [CategoryController::class, 'storeCategory']);
+    Route::put('/categories/{Id}', [CategoryController::class, 'updateCategory']);
+    Route::delete('/categories/{Id}', [CategoryController::class, 'destroyCategory']);
+
 
     /**
     * Route Course
@@ -108,10 +114,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Sale
     */
     Route::get('/sales', [SaleController::class, 'getAllSales']);
+    Route::get('/my-students', [SaleController::class, 'getMyStudents']);
+    Route::get('/my-students-expired', [SaleController::class, 'getMyStudentsStatusExpired']);
     Route::get('/sale/{Id}', [SaleController::class, 'getSaleById']);
     Route::post('/new-sale', [SaleController::class, 'newSale']);
     Route::put('/sale/{Id}', [SaleController::class, 'updateSale']);
     Route::delete('/sale/{Id}', [SaleController::class, 'destroySele']);
+    Route::delete('/sale/{Id}', [SaleController::class, 'getMyStudents']);
+
 
 });
 

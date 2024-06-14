@@ -27,10 +27,36 @@ class SaleService
         );
     }
 
+    public function getMyStudents(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getMyStudents(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
+    }
+
+    public function getMyStudentsStatusExpired(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getMyStudentsStatusExpired(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
+    }
+
+
     public function findById(string $id): object|null
     {
         return $this->repository->findById($id);
     }
+
 
     public function createNewSale(CreateNewSaleDTO $dto)
     {

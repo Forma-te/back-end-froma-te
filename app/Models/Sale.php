@@ -43,7 +43,7 @@ class Sale extends Model
         return [
             'course_id' => 'required',
             'name' => 'required',
-            'email' => 'required|email',
+            'email_student' => 'required|email',
             'bank' => 'nullable',
             'account' => 'nullable',
             'iban' => 'nullable',
@@ -70,7 +70,7 @@ class Sale extends Model
                     ->join('courses', 'modules.course_id', '=', 'courses.id')
                     ->whereColumn('courses.id', 'sales.course_id');
             }, 'lesson_count')
-            ->where('sales.user_id', auth()->user()->id)
+            ->where('sales.instrutor_id', auth()->user()->id)
             ->where('sales.status', 'approved')
             ->where('courses.type', 'CURSO')
             ->distinct()
@@ -98,31 +98,14 @@ class Sale extends Model
             ->get();
     }
 
-    public function mySales($keySearch)
+    public function mySales()
     {
         return $this->join('courses', 'courses.id', '=', 'sales.course_id')
             ->join('users', 'users.id', '=', 'sales.user_id')
             ->select('sales.transaction', 'sales.status', 'sales.date', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
-            ->Where('sales.email_student', 'LIKE', "%{$keySearch}%")
             ->where('courses.user_id', auth()->user()->id)
             ->where('sales.status', 'approved')
             ->paginate(10);
-    }
-
-    public function mySalesExpired()
-    {
-        return $this->join('courses', 'courses.id', '=', 'sales.course_id')
-            ->join('users', 'users.id', '=', 'sales.user_id')
-            ->select('sales.transaction', 'sales.status', 'sales.date', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
-            ->where('courses.user_id', auth()->user()->id)
-            ->where('sales.status', 'expired')
-            ->get();
-    }
-
-    public function myStudents($keySearch)
-    {
-        return $this->mySales($keySearch);
-
     }
 
     public function course()

@@ -162,7 +162,7 @@ class Course extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'sales', 'course_id', 'user_id')
-            ->where('sales.status', 'approved');
+            ->where('sales.status', 'A');
     }
 
     public function usersEnrolled()
