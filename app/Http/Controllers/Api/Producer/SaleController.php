@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Member;
+namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
 use App\DTO\Sale\CreateNewSaleDTO;
