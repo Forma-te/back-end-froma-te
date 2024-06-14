@@ -2186,6 +2186,495 @@
                     }
                 }
             }
+        },
+        "/api/sales": {
+            "get": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Get a paginated list of sales",
+                "description": "Returns a paginated list of sales based on the provided query parameters.",
+                "operationId": "getAllSales",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Current page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Additional filter for searching sales",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of sales",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Sale"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Create a new sale",
+                "description": "Create a new sale record.",
+                "operationId": "newSale",
+                "requestBody": {
+                    "description": "Sale data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateSaleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sale created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Sale"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request. The request body is invalid or missing required fields."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authentication credentials are missing or invalid."
+                    },
+                    "422": {
+                        "description": "Validation error. The request body failed validation rules."
+                    },
+                    "500": {
+                        "description": "Server error. An unexpected error occurred on the server."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/members": {
+            "get": {
+                "tags": [
+                    "My Members"
+                ],
+                "summary": "Get my students",
+                "description": "Returns a paginated list of students related to the authenticated user.",
+                "operationId": "getMyMembers",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Current page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Additional filter for searching students",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of students",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Sale"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/member/expired": {
+            "get": {
+                "tags": [
+                    "My Members"
+                ],
+                "summary": "Get my students with expired status",
+                "description": "Returns a paginated list of students with expired status related to the authenticated user.",
+                "operationId": "getMyMembersStatusExpired",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Current page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Additional filter for searching students",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of students with expired status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Sale"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/sales/{id}": {
+            "get": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Get sale by ID",
+                "description": "Returns the sale details by its ID.",
+                "operationId": "getSaleById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the sale",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sale details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Sale"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Delete a sale",
+                "description": "Delete an existing sale record.",
+                "operationId": "destroySale",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the sale to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sale deleted successfully"
+                    },
+                    "404": {
+                        "description": "Not Found. The specified sale was not found."
+                    },
+                    "500": {
+                        "description": "Server error. An unexpected error occurred on the server."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Update a sale",
+                "description": "Update an existing sale record.",
+                "operationId": "updateSale",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the sale to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated sale data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateSaleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sale updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Sale"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request. The request body is invalid or missing required fields."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authentication credentials are missing or invalid."
+                    },
+                    "404": {
+                        "description": "Not Found. The specified sale was not found."
+                    },
+                    "500": {
+                        "description": "Server error. An unexpected error occurred on the server."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -2377,6 +2866,65 @@
                     "published": {
                         "description": "The published status of the module",
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreUpdateSaleRequest": {
+                "required": [
+                    "course_id",
+                    "name",
+                    "email_student",
+                    "blocked",
+                    "status",
+                    "date_expired"
+                ],
+                "properties": {
+                    "course_id": {
+                        "description": "ID of the course",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID of the user",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "name": {
+                        "description": "Name of the sale",
+                        "type": "string"
+                    },
+                    "instrutor_id": {
+                        "description": "ID of the instructor",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "transaction": {
+                        "description": "Transaction ID",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email_student": {
+                        "description": "Email of the student",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "payment_mode": {
+                        "description": "Payment mode",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "blocked": {
+                        "description": "Blocked status",
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "description": "Status of the sale",
+                        "type": "string"
+                    },
+                    "date_expired": {
+                        "description": "Expiration date of the sale",
+                        "type": "string",
+                        "format": "date"
                     }
                 },
                 "type": "object"
@@ -2740,6 +3288,62 @@
                 "xml": {
                     "name": "Module"
                 }
+            },
+            "Sale": {
+                "title": "Sale",
+                "description": "Model representing a sale.",
+                "properties": {
+                    "course_id": {
+                        "description": "ID of the course related to the sale",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID of the user who made the purchase",
+                        "type": "integer"
+                    },
+                    "instrutor_id": {
+                        "description": "ID of the instructor related to the course",
+                        "type": "integer"
+                    },
+                    "email_student": {
+                        "description": "Email of the student who made the purchase",
+                        "type": "string"
+                    },
+                    "payment_mode": {
+                        "description": "Payment mode used for the purchase",
+                        "type": "string"
+                    },
+                    "transaction": {
+                        "description": "Transaction ID related to the purchase",
+                        "type": "string"
+                    },
+                    "blocked": {
+                        "description": "Indicates if the sale is blocked or not",
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "description": "Status of the sale. Possible values: S (Iniciado, Aguardar Validação), A (Aprovado), E (Expirado), P (Pendente)",
+                        "type": "string",
+                        "enum": [
+                            "S",
+                            "A",
+                            "E",
+                            "P"
+                        ],
+                        "example": "S"
+                    },
+                    "date_created": {
+                        "description": "Date and time when the sale was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "date_expired": {
+                        "description": "Date and time when the sale expires",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
             },
             "User": {
                 "title": "User model",

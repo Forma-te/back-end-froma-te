@@ -2,14 +2,73 @@
 
 namespace App\Models;
 
-use App\Mail\NewSaleStudent;
-use App\Mail\SendMailNewStudentSale;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+
+/**
+ * @OA\Schema(
+ *     schema="Sale",
+ *     title="Sale",
+ *     description="Model representing a sale.",
+ *     @OA\Property(
+ *         property="course_id",
+ *         type="integer",
+ *         description="ID of the course related to the sale"
+ *     ),
+ *     @OA\Property(
+ *         property="user_id",
+ *         type="integer",
+ *         description="ID of the user who made the purchase"
+ *     ),
+ *     @OA\Property(
+ *         property="instrutor_id",
+ *         type="integer",
+ *         description="ID of the instructor related to the course"
+ *     ),
+ *     @OA\Property(
+ *         property="email_student",
+ *         type="string",
+ *         description="Email of the student who made the purchase"
+ *     ),
+ *     @OA\Property(
+ *         property="payment_mode",
+ *         type="string",
+ *         description="Payment mode used for the purchase"
+ *     ),
+ *     @OA\Property(
+ *         property="transaction",
+ *         type="string",
+ *         description="Transaction ID related to the purchase"
+ *     ),
+ *     @OA\Property(
+ *         property="blocked",
+ *         type="boolean",
+ *         description="Indicates if the sale is blocked or not"
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         type="string",
+ *         description="Status of the sale. Possible values: S (Iniciado, Aguardar Validação), A (Aprovado), E (Expirado), P (Pendente)",
+ *         enum={"S", "A", "E", "P"},
+ *         example="S"
+ *     ),
+ *     @OA\Property(
+ *         property="date_created",
+ *         type="string",
+ *         format="date-time",
+ *         description="Date and time when the sale was created"
+ *     ),
+ *     @OA\Property(
+ *         property="date_expired",
+ *         type="string",
+ *         format="date-time",
+ *         description="Date and time when the sale expires"
+ *     )
+ * )
+ */
 
 class Sale extends Model
 {
