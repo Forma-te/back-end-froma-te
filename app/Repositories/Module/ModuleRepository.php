@@ -9,6 +9,7 @@ use App\Models\Module;
 use App\Repositories\Module\ModuleRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
+use Illuminate\Support\Facades\Gate;
 
 class ModuleRepository implements ModuleRepositoryInterface
 {
@@ -45,17 +46,31 @@ class ModuleRepository implements ModuleRepositoryInterface
         return $this->entity->find($id);
     }
 
+    public function createModule(): ?array
+    {
+        $courses = $this->course->userByAuth()->pluck('name', 'id');
+
+        return $courses->toArray();
+    }
+
     public function getModulesByCourseId(string $courseId): ?array
     {
         $course = $this->course->find($courseId);
-
-        $modules = $course->modules()->get();
-
-        if ($modules->isEmpty()) {
-            return null;
+        if (!$course) {
+            return ['message' => 'Curso não encontrado'];
         }
 
-        return $modules->toArray();
+        if (Gate::authorize('owner-course', $course)) {
+            $modules = $course->modules()->get();
+
+            if ($modules->isEmpty()) {
+                return [];
+            }
+
+            return $modules->toArray();
+        }
+
+        return null; // Autorização falhou
 
     }
 
@@ -79,15 +94,13 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public function delete(string $id): void
     {
-        $this->entity->findOrFail($id)->delete();
-    }
+        $module = $this->entity->find($id);
 
-    public function getModulesCourseById(string $courseId)
-    {
-        return $this->entity
-                    ->with('lessons.views')
-                    ->where('course_id', $courseId)
-                    ->get();
+        $course =  $module->course;
+
+        if (Gate::authorize('owner-course', $course)) {
+            $module->delete();
+        }
     }
 
 }

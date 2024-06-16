@@ -20,7 +20,7 @@ class LessonController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function getAllLesson(Request $request)
     {
         $module = $this->lessonService->paginate(
             totalPerPage: $request->get('per_page', 15),

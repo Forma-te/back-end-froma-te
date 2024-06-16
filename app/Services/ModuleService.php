@@ -33,6 +33,11 @@ class ModuleService
         return $this->repository->findById($id);
     }
 
+    public function createModule(): ?array
+    {
+        return $this->repository->createModule();
+    }
+
     public function getModulesByCourseId(string $courseId): ?array
     {
         return $this->repository->getModulesByCourseId($courseId);

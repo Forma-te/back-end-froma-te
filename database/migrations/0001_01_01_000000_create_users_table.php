@@ -17,7 +17,7 @@ return new class () extends Migration {
             $table->string('email')->unique();
             $table->text('bibliography')->nullable();
             $table->text('phone_number')->nullable();
-            $table->text('bi')->unique()->nullable();
+            $table->text('bi', 255)->nullable();
             $table->string('image', 225)->nullable();
             $table->text('type')->nullable();
             $table->timestamp('email_verified_at')->nullable();

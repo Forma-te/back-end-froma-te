@@ -147,15 +147,7 @@ class CourseController extends Controller
     {
         $course = $this->courseService->findById($id);
 
-        if (Gate::denies('owner-course', $course)) {
-            return response()->json(['error' => 'Forbidden'], Response::HTTP_FORBIDDEN);
-        }
-
-        if (!$course) {
-            return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
-        }
-
-        return new CourseStoreResource($course);
+        return new CourseResource($course);
     }
 
     /**

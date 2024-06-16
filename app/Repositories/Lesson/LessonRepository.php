@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\Module;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
+use Illuminate\Support\Facades\Gate;
 
 class LessonRepository implements LessonRepositoryInterface
 {
@@ -30,7 +31,7 @@ class LessonRepository implements LessonRepositoryInterface
         }
 
         // Paginar os resultados
-        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('modules')->paginate($totalPerPage, ['*'], 'page', $page);
 
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
@@ -44,6 +45,10 @@ class LessonRepository implements LessonRepositoryInterface
     public function getLessonByModuleId(string $moduleId): ?array
     {
         $module = $this->module->find($moduleId);
+
+        $course = $module->course;
+
+        Gate::authorize('owner-course', $course);
 
         $lessons = $module->lessons()->get();
 

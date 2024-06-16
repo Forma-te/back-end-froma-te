@@ -37,7 +37,9 @@ class StoreUpdateModuleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $course = Course::find($this->get('course_id'));
+
+        return Gate::allows('owner-course', $course);
     }
 
     /**

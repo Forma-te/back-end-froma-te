@@ -190,6 +190,16 @@ class User extends Authenticatable
         );
     }
 
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'sales');
+    }
+
     public static function scopeUserByAuth($query)
     {
         return $query->where('id', auth()->user()->id);
@@ -220,7 +230,7 @@ class User extends Authenticatable
         $permission = $this->join('sales', 'sales.user_id', '=', 'users.id')
             ->where('sales.user_id', auth()->user()->id)
             ->where('sales.course_id', $idCourse)
-            ->where('sales.status', 'approved')
+            ->where('sales.status', 'A')
             ->count();
         if ($permission > 0) {
             return true;

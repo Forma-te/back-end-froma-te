@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Support;
+namespace App\Repositories\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;

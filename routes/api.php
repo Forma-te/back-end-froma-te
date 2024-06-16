@@ -9,14 +9,16 @@ use App\Http\Controllers\Api\Producer\{
     LessonController,
     ModuleController,
     SaleController,
-    SupportController,
     UserController
 };
 use App\Http\Controllers\Api\Auth\{
     AuthController,
     ResetPasswordController
 };
-
+use App\Http\Controllers\Api\Member\{
+    MemberController,
+    SupportController
+};
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -65,6 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Lesson
     */
+    Route::get('/lessons', [LessonController::class, 'getAllLesson']);
     Route::get('/module/{moduleId}/lessons', [LessonController::class, 'getLessonByModuleId']);
     Route::post('/lesson', [LessonController::class, 'createLesson']);
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
@@ -117,6 +120,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/sales', [SaleController::class, 'newSale']);
     Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);
     Route::delete('/sales/{Id}', [SaleController::class, 'destroySele']);
+
+    /**
+    * Route Member
+    */
+    Route::get('/courses/member', [MemberController::class, 'getAllCourseMember']);
+    Route::get('/courses/{id}/member', [MemberController::class, 'getCourseByIdMember']);
 
 });
 

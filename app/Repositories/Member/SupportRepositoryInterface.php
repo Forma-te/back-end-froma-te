@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Support;
+namespace App\Repositories\Member;
 
 interface SupportRepositoryInterface
 {

@@ -9,6 +9,8 @@ use App\Models\Course;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
 use stdClass;
 
@@ -50,9 +52,7 @@ class CourseRepository implements CourseRepositoryInterface
     {
         $course = $this->entity->find($dto->id);
 
-        Gate::authorize('owner-course', $course);
-
-        if ($course) {
+        if ($course && Gate::authorize('owner-course', $course)) {
             $course->update((array) $dto);
             return $course;
         }
@@ -62,12 +62,26 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function findById(string $id): object|null
     {
-        return $this->entity->with('user')->find($id);
+        return $this->entity->find($id);
     }
 
     public function delete(string $id): void
     {
-        $this->entity->findOrFail($id)->delete();
+        try {
+            $course = $this->entity->findOrFail($id);
+
+            if (Gate::authorize('owner-course', $course)) {
+                $course->delete();
+            }
+        } catch (ModelNotFoundException $e) {
+            // Lidar com o caso onde o curso não foi encontrado
+            // Pode-se lançar uma exceção personalizada ou apenas registrar o erro
+            throw new FileNotFoundException("Curso não encontrado");
+        } catch (\Exception $e) {
+            // Lidar com outras possíveis exceções
+            // Pode-se lançar uma exceção personalizada ou apenas registrar o erro
+            throw new \Exception("Erro ao eliminar o curso");
+        }
     }
 
     public function getCoursesForModuleCreation(): array

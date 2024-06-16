@@ -13,6 +13,7 @@ interface ModuleRepositoryInterface
     public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface;
     public function findById(string $id): object|null;
     public function getModulesByCourseId(string $courseId): ?array;
+    public function createModule(): ?array;
     public function new(CreateModuleDTO $dto): Module;
     public function update(UpdateModuleDTO $dto): ?Module;
     public function delete(string $id): void;

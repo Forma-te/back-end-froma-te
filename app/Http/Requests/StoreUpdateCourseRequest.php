@@ -33,10 +33,6 @@ class StoreUpdateCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //$id = $this->segment(3);
-        //$course = Course::find($id);
-        //return $course->user_id == auth()->user()->id;
-
         return true;
     }
 

@@ -16,7 +16,7 @@ class CourseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => (string)$this->id,
             'name' => $this->name,
             'description' => $this->description,
             'modules' => ModuleResource::collection($this->whenLoaded('modules')),

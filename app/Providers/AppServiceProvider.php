@@ -30,10 +30,12 @@ use App\Repositories\Statistics\{
 use App\Repositories\Support\{
     ReplySupportRepository,
     ReplySupportRepositoryInterface,
-    SupportRepository
 };
-use App\Repositories\Support\{
-    SupportRepositoryInterface
+use App\Repositories\Member\{
+    MemberRepository,
+    MemberRepositoryInterface,
+    SupportRepositoryInterface,
+    SupportRepository
 };
 use App\Repositories\User\{
     UserRepository,
@@ -108,6 +110,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             SaleRepositoryInterface::class,
             SaleRepository::class,
+        );
+
+        $this->app->singleton(
+            MemberRepositoryInterface::class,
+            MemberRepository::class,
         );
 
     }

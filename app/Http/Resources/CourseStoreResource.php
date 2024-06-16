@@ -35,7 +35,7 @@ class CourseStoreResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'course_id' => $this->id,
             'category_id' => $this->category_id,
             'user_id' => $this->user_id,
             'user_name' => $this->user->name,
