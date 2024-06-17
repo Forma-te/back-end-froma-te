@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class CourseResource extends JsonResource
 {
@@ -16,12 +15,11 @@ class CourseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (string)$this->id,
-            'name' => $this->name,
+            'id' => $this->id,
+            'name' => ucwords(strtolower($this->name)),
             'description' => $this->description,
-            'modules' => ModuleResource::collection($this->whenLoaded('modules')),
             'image' => $this->image,
-            'file' => $this->file ? Storage::url($this->file) : '',
+            'modules' => ModuleResource::collection($this->whenLoaded('modules')),
         ];
     }
 }

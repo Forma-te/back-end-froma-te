@@ -165,7 +165,7 @@ class SaleController extends Controller
             filter: $request->filter,
         );
 
-        return ApiAdapter::paginateToJson($sales);
+        return ApiAdapter::paginateToJson($sales, '');
     }
 
     /**

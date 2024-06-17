@@ -3,6 +3,7 @@
 namespace App\Repositories\Member;
 
 use App\Models\Course;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class MemberRepository
@@ -16,23 +17,36 @@ class MemberRepository
 
     public function getAllCourseMember()
     {
-        try {
-            // Obter cursos com módulos, lições e visualizações
-            $courses = $this->entity->with('modules.lessons.views')->get();
-            // Log dos cursos obtidos
-            Log::info('Cursos obtidos: ', $courses->toArray());
+        if (Auth::check()) {
+            $loggedInUserId = Auth::id();
 
-            return $courses;
-        } catch (\Exception $e) {
-            // Registar o erro
-            Log::error('Erro ao obter cursos: ' . $e->getMessage());
-            // Lançar exceção ou retornar uma resposta adequada
-            throw new \Exception('Erro ao obter cursos');
+            return $this->entity->whereHas('users', function ($query) use ($loggedInUserId) {
+                $query->where('users.id', $loggedInUserId);
+            })->whereHas('sales', function ($query) {
+                $query->where('sales.status', 'A');
+            })->with('modules.lessons.views')->get();
+        } else {
+            return [];
         }
     }
 
     public function getCourseByIdMember(string $identify)
     {
-        return $this->entity->with('modules.lessons')->findOrFail($identify);
+        // Tenta encontrar o curso pelo ID
+        $course = $this->entity->findOrFail($identify);
+
+        // Verifica se o curso tem usuários associados e vendas com status "A"
+        $course = $this->entity->where('id', $identify)
+                               ->whereHas('users', function ($query) {
+                               })
+                               ->whereHas('sales', function ($query) {
+                                   $query->where('sales.status', 'A');
+                               })
+                               ->with('modules.lessons')
+                               ->first();
+
+        // Retorna o resultado ou um array vazio se não encontrar nada
+        return $course ?: [];
     }
+
 }

@@ -111,6 +111,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/bank/{Id}', [BankController::class, 'deleteBank']);
 
     /**
+    * Route Member
+    */
+    Route::get('/courses-member', [MemberController::class, 'getAllCourseMember']);
+    Route::get('/course/{id}/member', [MemberController::class, 'getCourseByIdMember']);
+
+    /**
     * Route Sale
     */
     Route::get('/sales', [SaleController::class, 'getAllSales']);
@@ -121,11 +127,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);
     Route::delete('/sales/{Id}', [SaleController::class, 'destroySele']);
 
-    /**
-    * Route Member
-    */
-    Route::get('/courses/member', [MemberController::class, 'getAllCourseMember']);
-    Route::get('/courses/{id}/member', [MemberController::class, 'getCourseByIdMember']);
 
 });
 
