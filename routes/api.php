@@ -91,14 +91,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/ebook-content/{Id}', [EbookContentController::class, 'destroyEbookContent']);
 
 
-    //Route::get('/modules/{id}/lessons', [LessonController::class, 'index']);
-    //Route::get('/lesson/{id}', [LessonController::class, 'show']);
-
-    Route::get('/my-supports', [SupportController::class, 'mySupports']);
-    Route::get('/supports', [SupportController::class, 'index']);
-    Route::post('/supports', [SupportController::class, 'store']);
-    Route::post('/supports/{id}/replies', [SupportController::class, 'createReply']);
-
     Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
     Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
     // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
@@ -126,6 +118,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/sales', [SaleController::class, 'newSale']);
     Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);
     Route::delete('/sales/{Id}', [SaleController::class, 'destroySele']);
+
+    /**
+    * Route supports
+    */
+    Route::post('/supports', [SupportController::class, 'createSupport']);
 
 
 });

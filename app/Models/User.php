@@ -210,33 +210,14 @@ class User extends Authenticatable
         return $this->hasMany(Bank::class);
     }
 
-    public function CoursesTutor()
+    public function views()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(View::class);
     }
 
-    public function student()
+    public function supports()
     {
-        return $this->belongsToMany(User::class, 'sales', 'instrutor_id')
-                ->where('sales.status', 'approved');
-    }
-
-    public function checkAccess($idCourse)
-    {
-        if (! auth()->check()) {
-            return false;
-        }
-
-        $permission = $this->join('sales', 'sales.user_id', '=', 'users.id')
-            ->where('sales.user_id', auth()->user()->id)
-            ->where('sales.course_id', $idCourse)
-            ->where('sales.status', 'A')
-            ->count();
-        if ($permission > 0) {
-            return true;
-        }
-
-        return false;
+        return $this->hasMany(Support::class);
     }
 
     public function hasProfile($profile)

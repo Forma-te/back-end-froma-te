@@ -443,6 +443,147 @@
                 }
             }
         },
+        "/api/supports": {
+            "post": {
+                "tags": [
+                    "Support"
+                ],
+                "summary": "Create a new support request",
+                "description": "Creates a new support request and returns the created support details.",
+                "operationId": "createSupport",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "P",
+                                            "A",
+                                            "C"
+                                        ],
+                                        "example": "P"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "The lesson field is required. (and 2 more errors)"
+                                    },
+                                    "lesson_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Support request created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "P"
+                                        },
+                                        "status_label": {
+                                            "type": "string",
+                                            "example": "Pendente, Aguardar Professor"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "The lesson field is required. (and 2 more errors)"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Siara Bumba"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "moises.alberto.king.bumba@gmail.com"
+                                                },
+                                                "bibliography": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "phone_number": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "bi": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "lesson": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Lesson 2"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "CNN PRIME TIME"
+                                                },
+                                                "video": {
+                                                    "type": "string",
+                                                    "example": "https://www.youtube.com/watch?v=a1HjPcJbB3c"
+                                                },
+                                                "file": {
+                                                    "type": "string",
+                                                    "example": "https://forma-te-ebooks-bucket.s3.amazonaws.com/lessonPdf/lesson-2.pdf"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "dt_updated": {
+                                            "type": "string",
+                                            "example": "17/06/2024 22:50:36"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -3753,6 +3894,54 @@
                         "description": "Date and time when the sale expires",
                         "type": "string",
                         "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Support": {
+                "title": "Support",
+                "description": "Support model",
+                "properties": {
+                    "id": {
+                        "description": "ID of the support request",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "status": {
+                        "description": "Status of the support request",
+                        "type": "string",
+                        "enum": [
+                            "P",
+                            "A",
+                            "C"
+                        ],
+                        "example": "P"
+                    },
+                    "status_label": {
+                        "description": "Human-readable status label",
+                        "type": "string",
+                        "example": "Pendente, Aguardar Professor"
+                    },
+                    "description": {
+                        "description": "Description of the support request",
+                        "type": "string",
+                        "example": "The lesson field is required. (and 2 more errors)"
+                    },
+                    "lesson_id": {
+                        "description": "ID of the associated lesson",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "lesson": {
+                        "$ref": "#/components/schemas/Lesson"
+                    },
+                    "dt_updated": {
+                        "description": "Date and time when the support request was last updated",
+                        "type": "string",
+                        "example": "17/06/2024 22:50:36"
                     }
                 },
                 "type": "object"
