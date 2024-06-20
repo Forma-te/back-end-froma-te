@@ -15,18 +15,6 @@ class SaleService
     ) {
     }
 
-    public function paginate(
-        int $page = 1,
-        int $totalPerPage  = 15,
-        string $filter = null
-    ): PaginationInterface {
-        return $this->repository->paginate(
-            page: $page,
-            totalPerPage: $totalPerPage,
-            filter: $filter,
-        );
-    }
-
     public function getMyStudents(
         int $page = 1,
         int $totalPerPage  = 15,
@@ -39,18 +27,19 @@ class SaleService
         );
     }
 
-    public function getMyStudentsStatusExpired(
+    public function getMembersByStatus(
         int $page = 1,
         int $totalPerPage  = 15,
+        string $status = null,
         string $filter = null
     ): PaginationInterface {
-        return $this->repository->getMyStudentsStatusExpired(
+        return $this->repository->getMembersByStatus(
             page: $page,
             totalPerPage: $totalPerPage,
-            filter: $filter,
+            status: $status,
+            filter: $filter
         );
     }
-
 
     public function findById(string $id): object|null
     {

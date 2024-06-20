@@ -3210,19 +3210,35 @@
                 }
             }
         },
-        "/api/sales": {
+        "/api/members-status": {
             "get": {
                 "tags": [
-                    "Sales"
+                    "My Members"
                 ],
-                "summary": "Get a paginated list of sales",
-                "description": "Returns a paginated list of sales based on the provided query parameters.",
-                "operationId": "getAllSales",
+                "summary": "Get all members",
+                "description": "Fetches a list of all members with the given status and pagination details.",
+                "operationId": "getMembersByStatus",
                 "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status of the members to filter",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "",
+                            "enum": [
+                                "Iniciado, Aguardar Validação",
+                                "Aprovado",
+                                "Expirado",
+                                "Pendente"
+                            ]
+                        }
+                    },
                     {
                         "name": "page",
                         "in": "query",
-                        "description": "Current page number",
+                        "description": "Page number for pagination",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -3238,52 +3254,118 @@
                             "type": "integer",
                             "default": 15
                         }
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "description": "Additional filter for searching sales",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of sales",
+                        "description": "Successfully retrieved the list of members",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Sale"
-                                            }
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "meta": {
+                                        "data": {
                                             "properties": {
-                                                "current_page": {
-                                                    "type": "integer"
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "course_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "user_id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "instrutor_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "transaction": {
+                                                                "type": "string",
+                                                                "example": "234B21C"
+                                                            },
+                                                            "email_student": {
+                                                                "type": "string",
+                                                                "example": "example@gmail.com"
+                                                            },
+                                                            "payment_mode": {
+                                                                "type": "string",
+                                                                "example": "banco"
+                                                            },
+                                                            "blocked": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "example": "Aprovado"
+                                                            },
+                                                            "date_created": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "example": "2024-06-15"
+                                                            },
+                                                            "date_expired": {
+                                                                "type": "string",
+                                                                "example": "16/05/2024"
+                                                            },
+                                                            "student": {
+                                                                "$ref": "#/components/schemas/Sale"
+                                                            },
+                                                            "instrutor": {
+                                                                "$ref": "#/components/schemas/User"
+                                                            },
+                                                            "course": {
+                                                                "$ref": "#/components/schemas/Course"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
                                                 },
-                                                "from": {
-                                                    "type": "integer"
+                                                "meta": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 100
+                                                        },
+                                                        "is_first_page": {
+                                                            "type": "boolean",
+                                                            "example": true
+                                                        },
+                                                        "is_last_page": {
+                                                            "type": "boolean",
+                                                            "example": false
+                                                        },
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "next_page": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "previous_page": {
+                                                            "type": "integer",
+                                                            "example": null
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 },
-                                                "last_page": {
-                                                    "type": "integer"
-                                                },
-                                                "path": {
-                                                    "type": "string"
-                                                },
-                                                "per_page": {
-                                                    "type": "integer"
-                                                },
-                                                "to": {
-                                                    "type": "integer"
-                                                },
-                                                "total": {
-                                                    "type": "integer"
+                                                "status_options": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Aprovado"
+                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -3294,59 +3376,25 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid request"
-                    },
                     "500": {
-                        "description": "Server error"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Sales"
-                ],
-                "summary": "Create a new sale",
-                "description": "Create a new sale record.",
-                "operationId": "newSale",
-                "requestBody": {
-                    "description": "Sale data",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreUpdateSaleRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Sale created successfully",
+                        "description": "Failed to retrieve the members",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/Sale"
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to retrieve sales: Database connection error"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Bad request. The request body is invalid or missing required fields."
-                    },
-                    "401": {
-                        "description": "Unauthorized. Authentication credentials are missing or invalid."
-                    },
-                    "422": {
-                        "description": "Validation error. The request body failed validation rules."
-                    },
-                    "500": {
-                        "description": "Server error. An unexpected error occurred on the server."
                     }
                 },
                 "security": [
@@ -3361,8 +3409,8 @@
                 "tags": [
                     "My Members"
                 ],
-                "summary": "Get my students",
-                "description": "Returns a paginated list of students related to the authenticated user.",
+                "summary": "Get my members",
+                "description": "Returns a paginated list of members related to the authenticated user.",
                 "operationId": "getMyMembers",
                 "parameters": [
                     {
@@ -3388,7 +3436,7 @@
                     {
                         "name": "filter",
                         "in": "query",
-                        "description": "Additional filter for searching students",
+                        "description": "Additional filter for searching members",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -3397,105 +3445,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of students",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Sale"
-                                            }
-                                        },
-                                        "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer"
-                                                },
-                                                "from": {
-                                                    "type": "integer"
-                                                },
-                                                "last_page": {
-                                                    "type": "integer"
-                                                },
-                                                "path": {
-                                                    "type": "string"
-                                                },
-                                                "per_page": {
-                                                    "type": "integer"
-                                                },
-                                                "to": {
-                                                    "type": "integer"
-                                                },
-                                                "total": {
-                                                    "type": "integer"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "500": {
-                        "description": "Server error"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/member/expired": {
-            "get": {
-                "tags": [
-                    "My Members"
-                ],
-                "summary": "Get my students with expired status",
-                "description": "Returns a paginated list of students with expired status related to the authenticated user.",
-                "operationId": "getMyMembersStatusExpired",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Current page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Number of items per page",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 15
-                        }
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "description": "Additional filter for searching students",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Paginated list of students with expired status",
+                        "description": "Paginated list of members",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3687,6 +3637,61 @@
                     },
                     "404": {
                         "description": "Not Found. The specified sale was not found."
+                    },
+                    "500": {
+                        "description": "Server error. An unexpected error occurred on the server."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/sales": {
+            "post": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Create a new sale",
+                "description": "Create a new sale record.",
+                "operationId": "newSale",
+                "requestBody": {
+                    "description": "Sale data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUpdateSaleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sale created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Sale"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request. The request body is invalid or missing required fields."
+                    },
+                    "401": {
+                        "description": "Unauthorized. Authentication credentials are missing or invalid."
+                    },
+                    "422": {
+                        "description": "Validation error. The request body failed validation rules."
                     },
                     "500": {
                         "description": "Server error. An unexpected error occurred on the server."

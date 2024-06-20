@@ -24,25 +24,6 @@ class SaleRepository implements SaleRepositoryInterface
     ) {
     }
 
-    public function paginate(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
-    {
-        $query = $this->entity
-                ->userByAuth();
-
-        // Aplicar o filtro se fornecido
-        if ($filter) {
-            $query->where(function ($query) use ($filter) {
-                $query->where('email_student', $filter)
-                  ->orWhere('name', 'like', "%{$filter}%");
-            });
-        }
-
-        // Paginar os resultados
-        $result = $query->with('student', 'instrutor', 'course')->paginate($totalPerPage, ['*'], 'page', $page);
-        // Retornar os resultados paginados usando o PaginationPresenter
-        return new PaginationPresenter($result);
-    }
-
     public function getMyStudents(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
     {
         $query = $this->entity
@@ -67,22 +48,22 @@ class SaleRepository implements SaleRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function getMyStudentsStatusExpired(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
+    public function getMembersByStatus(int $page = 1, int $totalPerPage  = 15, string $status, string $filter = null): PaginationInterface
     {
         $query = $this->entity
-                      ->newQuery()
-                      ->join('courses', 'courses.id', '=', 'sales.course_id')
-                      ->join('users', 'users.id', '=', 'sales.user_id')
-                      ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
-                      ->where('courses.user_id', auth()->user()->id)
-                      ->where('sales.status', 'E');
+                    ->newQuery()
+                    ->join('courses', 'courses.id', '=', 'sales.course_id')
+                    ->join('users', 'users.id', '=', 'sales.user_id')
+                    ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
+                    ->where('courses.user_id', auth()->user()->id);
+        // Aplicar filtro por status
+        if ($status) {
+            $query->where('status', $status);
+        }
 
-        // Aplicar o filtro se fornecido
+        // Aplicar filtro por e-mail do estudante
         if ($filter) {
-            $query->where(function ($query) use ($filter) {
-                $query->where('email_student', $filter)
-                  ->orWhere('name', 'like', "%{$filter}%");
-            });
+            $query->orWhere('email_student', 'like', "%{$filter}%");
         }
 
         // Paginar os resultados

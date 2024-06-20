@@ -112,9 +112,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Sale
     */
-    Route::get('/sales', [SaleController::class, 'getAllSales']);
+    Route::get('/members-status', [SaleController::class, 'getMembersByStatus']);
     Route::get('/members', [SaleController::class, 'getMyMember']);
-    Route::get('/members/expired', [SaleController::class, 'getMyMembersStatusExpired']);
     Route::get('/sale/{Id}', [SaleController::class, 'getSaleById']);
     Route::post('/sales', [SaleController::class, 'newSale']);
     Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);

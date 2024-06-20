@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
+use App\Adapters\SaleAdapters;
 use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
+use App\Enum\SaleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSaleRequest;
 use App\Http\Resources\SaleResource;
@@ -23,82 +25,142 @@ class SaleController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/sales",
-     *     summary="Get a paginated list of sales",
-     *     description="Returns a paginated list of sales based on the provided query parameters.",
-     *     operationId="getAllSales",
-     *     tags={"Sales"},
+     *     path="/api/members-status",
+     *     summary="Get all members",
+     *     description="Fetches a list of all members with the given status and pagination details.",
+     *     operationId="getMembersByStatus",
+     *     tags={"My Members"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=false,
+     *         description="Status of the members to filter",
+     *         @OA\Schema(
+     *             type="string",
+     *             default="",
+     *             enum={"Iniciado, Aguardar Validação", "Aprovado", "Expirado", "Pendente"}
+     *         )
+     *     ),
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
-     *         description="Current page number",
      *         required=false,
-     *         @OA\Schema(type="integer", default=1)
+     *         description="Page number for pagination",
+     *         @OA\Schema(
+     *             type="integer",
+     *             default=1
+     *         )
      *     ),
      *     @OA\Parameter(
      *         name="per_page",
      *         in="query",
+     *         required=false,
      *         description="Number of items per page",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=15)
-     *     ),
-     *     @OA\Parameter(
-     *         name="filter",
-     *         in="query",
-     *         description="Additional filter for searching sales",
-     *         required=false,
-     *         @OA\Schema(type="string")
+     *         @OA\Schema(
+     *             type="integer",
+     *             default=15
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Paginated list of sales",
+     *         description="Successfully retrieved the list of members",
      *         @OA\JsonContent(
      *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(
      *                 property="data",
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Sale")
-     *             ),
-     *             @OA\Property(
-     *                 property="meta",
      *                 type="object",
-     *                 @OA\Property(property="current_page", type="integer"),
-     *                 @OA\Property(property="from", type="integer"),
-     *                 @OA\Property(property="last_page", type="integer"),
-     *                 @OA\Property(property="path", type="string"),
-     *                 @OA\Property(property="per_page", type="integer"),
-     *                 @OA\Property(property="to", type="integer"),
-     *                 @OA\Property(property="total", type="integer")
+     *                 @OA\Property(
+     *                     property="items",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="object",
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="course_id", type="integer", example=1),
+     *                         @OA\Property(property="user_id", type="integer", example=2),
+     *                         @OA\Property(property="instrutor_id", type="integer", example=1),
+     *                         @OA\Property(property="transaction", type="string", example="234B21C"),
+     *                         @OA\Property(property="email_student", type="string", example="example@gmail.com"),
+     *                         @OA\Property(property="payment_mode", type="string", example="banco"),
+     *                         @OA\Property(property="blocked", type="integer", example=0),
+     *                         @OA\Property(property="status", type="string", example="Aprovado"),
+     *                         @OA\Property(property="date_created", type="string", format="date", example="2024-06-15"),
+     *                         @OA\Property(property="date_expired", type="string", example="16/05/2024"),
+     *                         @OA\Property(property="student", type="object", ref="#/components/schemas/Sale"),
+     *                         @OA\Property(property="instrutor", type="object", ref="#/components/schemas/User"),
+     *                         @OA\Property(property="course", type="object", ref="#/components/schemas/Course")
+     *                     )
+     *                 ),
+     *                 @OA\Property(
+     *                     property="meta",
+     *                     type="object",
+     *                     @OA\Property(property="total", type="integer", example=100),
+     *                     @OA\Property(property="is_first_page", type="boolean", example=true),
+     *                     @OA\Property(property="is_last_page", type="boolean", example=false),
+     *                     @OA\Property(property="current_page", type="integer", example=1),
+     *                     @OA\Property(property="next_page", type="integer", example=2),
+     *                     @OA\Property(property="previous_page", type="integer", example=null)
+     *                 ),
+     *                 @OA\Property(
+     *                     property="status_options",
+     *                     type="array",
+     *                     @OA\Items(type="string", example="Aprovado")
+     *                 )
      *             )
      *         )
      *     ),
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid request"
-     *     ),
-     *     @OA\Response(
      *         response=500,
-     *         description="Server error"
+     *         description="Failed to retrieve the members",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=false
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Failed to retrieve sales: Database connection error"
+     *             )
+     *         )
      *     )
      * )
      */
 
-    public function getAllSales(Request $request)
+    public function getMembersByStatus(Request $request)
     {
-        $sale = $this->saleService->paginate(
-            page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
-            filter: $request->filter,
-        );
+        try {
+            $sales = $this->saleService->getMembersByStatus(
+                page: $request->get('page', 1),
+                totalPerPage: $request->get('per_page', 15),
+                status: $request->get('status', ''),
+                filter: $request->filter,
+            );
 
-        return ApiAdapter::paginateToJson($sale);
+            $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'sales' => SaleAdapters::paginateToJson($sales, $statusOptions),
+                ],
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve sales:' . $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * @OA\Get(
      *     path="/api/members",
-     *     summary="Get my students",
-     *     description="Returns a paginated list of students related to the authenticated user.",
+     *     summary="Get my members",
+     *     description="Returns a paginated list of members related to the authenticated user.",
      *     operationId="getMyMembers",
      *     tags={"My Members"},
      *     security={{"bearerAuth":{}}},
@@ -119,13 +181,13 @@ class SaleController extends Controller
      *     @OA\Parameter(
      *         name="filter",
      *         in="query",
-     *         description="Additional filter for searching students",
+     *         description="Additional filter for searching members",
      *         required=false,
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Paginated list of students",
+     *         description="Paginated list of members",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(
@@ -166,80 +228,6 @@ class SaleController extends Controller
         );
 
         return ApiAdapter::paginateToJson($sales, '');
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/member/expired",
-     *     summary="Get my students with expired status",
-     *     description="Returns a paginated list of students with expired status related to the authenticated user.",
-     *     operationId="getMyMembersStatusExpired",
-     *     tags={"My Members"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Current page number",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Number of items per page",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=15)
-     *     ),
-     *     @OA\Parameter(
-     *         name="filter",
-     *         in="query",
-     *         description="Additional filter for searching students",
-     *         required=false,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Paginated list of students with expired status",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(
-     *                 property="data",
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/Sale")
-     *             ),
-     *             @OA\Property(
-     *                 property="meta",
-     *                 type="object",
-     *                 @OA\Property(property="current_page", type="integer"),
-     *                 @OA\Property(property="from", type="integer"),
-     *                 @OA\Property(property="last_page", type="integer"),
-     *                 @OA\Property(property="path", type="string"),
-     *                 @OA\Property(property="per_page", type="integer"),
-     *                 @OA\Property(property="to", type="integer"),
-     *                 @OA\Property(property="total", type="integer")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error"
-     *     )
-     * )
-     */
-
-    public function getMyMemberStatusExpired(Request $request)
-    {
-        $sales = $this->saleService->getMyStudentsStatusExpired(
-            page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
-            filter: $request->filter,
-        );
-
-        return ApiAdapter::paginateToJson($sales);
     }
 
     private function errorResponse($message, $statusCode)
