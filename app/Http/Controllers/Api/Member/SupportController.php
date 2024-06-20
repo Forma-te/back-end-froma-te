@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSupport;
 use App\Http\Resources\SupportResource;
 use App\Repositories\Member\SupportRepository;
+use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
@@ -79,6 +80,78 @@ class SupportController extends Controller
         $supports = $this->repository->createNewSupport($request->validated());
 
         return new SupportResource($supports);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/my-supports",
+     *     summary="Get all supports for the current user",
+     *     description="Fetches a list of all supports associated with the current user.",
+     *     operationId="mySupports",
+     *     tags={"Support"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully retrieved the list of supports",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="status", type="string", example="P"),
+     *                     @OA\Property(property="status_label", type="string", example="Pendente, Aguardar Professor"),
+     *                     @OA\Property(property="description", type="string", example="The lesson field is required. (and 2 more errors)"),
+     *                     @OA\Property(
+     *                         property="user",
+     *                         type="object",
+     *                         @OA\Property(property="id", type="integer", example=2),
+     *                         @OA\Property(property="name", type="string", example="Siara Bumba"),
+     *                         @OA\Property(property="email", type="string", example="moises.alberto.king.bumba@gmail.com"),
+     *                         @OA\Property(property="bibliography", type="string", nullable=true, example=null),
+     *                         @OA\Property(property="phone_number", type="string", nullable=true, example=null),
+     *                         @OA\Property(property="bi", type="string", nullable=true, example=null),
+     *                         @OA\Property(property="image", type="string", nullable=true, example=null)
+     *                     ),
+     *                     @OA\Property(
+     *                         property="lesson",
+     *                         type="object",
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="Lesson 1"),
+     *                         @OA\Property(property="description", type="string", example="CNN PRIME TIME"),
+     *                         @OA\Property(property="video", type="string", example="https://www.youtube.com/watch?v=a1HjPcJbB3c"),
+     *                         @OA\Property(property="file", type="string", example="https://forma-te-ebooks-bucket.s3.amazonaws.com/lessonPdf/lesson-1.pdf")
+     *                     ),
+     *                     @OA\Property(
+     *                         property="replies",
+     *                         type="array",
+     *                         @OA\Items(type="string")
+     *                     ),
+     *                     @OA\Property(property="dt_updated", type="string", example="17/06/2024 22:46:51")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Failed to retrieve the supports",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Failed to retrieve supports: Database connection error"
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
+    public function mySupports(Request $request)
+    {
+        $supports = $this->repository->getMySupports($request->all());
+
+        return SupportResource::collection($supports);
     }
 
 }

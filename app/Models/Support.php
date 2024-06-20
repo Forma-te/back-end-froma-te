@@ -66,7 +66,7 @@ class Support extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status', 'description', 'lesson_id'];
+    protected $fillable = ['user_id', 'status', 'description', 'producer_id',  'lesson_id'];
 
     public $statusOptions = [
         'P' => 'Pendente, Aguardar Professor',
@@ -74,9 +74,9 @@ class Support extends Model
         'C' => 'Finalizado',
     ];
 
-    public static function scopeUserByAuth($query)
+    public static function scopeOwnedByAuthUser($query)
     {
-        return $query->where('instrutor_id', auth()->user()->id);
+        return $query->where('producer_id', auth()->user()->id);
     }
 
     public function user()

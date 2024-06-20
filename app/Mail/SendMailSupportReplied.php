@@ -2,8 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Course;
-use App\Models\User;
+use App\Models\ReplySupport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,23 +10,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailSaleToOldMembers extends Mailable implements ShouldQueue
+class SendMailSupportReplied extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
 
-    public $member;
-    public $course;
-    public $bankUsers;
-
     /**
      * Create a new message instance.
      */
-    public function __construct(User $member, Course $course, $bankUsers)
-    {
-        $this->member = $member;
-        $this->course = $course;
-        $this->bankUsers = $bankUsers;
+    public function __construct(
+        public ReplySupport $replySupport
+    ) {
     }
 
     /**
@@ -35,8 +28,10 @@ class SendMailSaleToOldMembers extends Mailable implements ShouldQueue
      */
     public function envelope(): Envelope
     {
+        $lesson = $this->replySupport->support->lesson;
+
         return new Envelope(
-            subject: "{$this->member->name} o seu produto está agora disponível!",
+            subject: "A questão foi respondida",
         );
     }
 
@@ -46,7 +41,7 @@ class SendMailSaleToOldMembers extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'mails.sale.send_mail_sale_to_old_members',
+            markdown: 'mails.supports.support-replied',
         );
     }
 

@@ -48,7 +48,7 @@ class SendMailSaleToNewMembers extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'Sale.emails.send_mail_sale_to_new_members',
+            markdown: 'mails.sale.send_mail_sale_to_new_members',
         );
     }
 

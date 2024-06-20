@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Producer\{
     EbookController,
     LessonController,
     ModuleController,
+    ReplySupportController,
     SaleController,
     UserController
 };
@@ -123,7 +124,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route supports
     */
     Route::post('/supports', [SupportController::class, 'createSupport']);
+    Route::get('/my-supports', [SupportController::class, 'mySupports']);
 
+    /**
+    * Route Reply support
+    */
+    Route::post('/replies', [ReplySupportController::class, 'createReply']);
+    Route::get('/supports', [ReplySupportController::class, 'getAllSupports']);
+    Route::get('/support/{Id}', [ReplySupportController::class, 'message']);
+    Route::post('/api/supports/reply', [ReplySupportController::class, 'createReply']);
 
 });
 

@@ -84,6 +84,11 @@ class CourseRepository implements CourseRepositoryInterface
         }
     }
 
+    public function getCourseById(string $id): object|null
+    {
+        return $this->entity->with('modules.lessons')->findOrFail($id);
+    }
+
     public function getCoursesForModuleCreation(): array
     {
         return $this->entity
@@ -91,4 +96,22 @@ class CourseRepository implements CourseRepositoryInterface
                     ->pluck('name', 'id')
                     ->all()->toArray();
     }
+
+    public function getCoursesForAuthenticatedUser(): array
+    {
+        if (Auth::check()) {
+            $loggedInUserId = Auth::id();
+
+            return $this->entity->whereHas('users', function ($query) use ($loggedInUserId) {
+                $query->where('users.id', $loggedInUserId);
+            })->whereHas('sales', function ($query) {
+
+                $query->where('sales.status', 'approved');
+            })->with('modules.lessons.views')->get();
+
+        } else {
+            return [];
+        }
+    }
+
 }

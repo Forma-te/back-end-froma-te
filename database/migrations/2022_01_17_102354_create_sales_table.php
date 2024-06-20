@@ -27,7 +27,7 @@ class CreateSalesTable extends Migration
             $table->string('email_student');
             $table->string('payment_mode');
             $table->boolean('blocked')->default(false);
-            $table->enum('status', ['S', 'A', 'E', 'P'])->default('S');
+            $table->enum('status', ['C', 'A', 'E', 'P'])->default('C');
             $table->date('date_created');
             $table->timestamp('date_expired');
             $table->timestamps();

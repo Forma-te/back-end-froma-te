@@ -370,13 +370,4 @@ class CourseController extends Controller
         return response()->json($courses);
     }
 
-    public function getCoursesForAuthenticatedUser()
-    {
-        return CourseResource::collection($this->repository->getCoursesForAuthenticatedUser());
-    }
-
-    public function getCourseByIdForUser($id): object
-    {
-        return new CourseResource($this->repository->getCourseById($id));
-    }
 }

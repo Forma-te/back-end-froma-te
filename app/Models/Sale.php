@@ -81,7 +81,7 @@ class Sale extends Model
     ];
 
     public $statusOptions = [
-        'S' => 'Iniciado, Aguardar Validação',
+        'C' => 'Iniciado, Aguardar Validação',
         'A' => 'Aprovado',
         'E' => 'Expirado',
         'P' => 'Pendente'

@@ -12,11 +12,20 @@ return new class () extends Migration {
     {
         Schema::create('supports', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->nullable(false);
-            $table->bigInteger('lesson_id')->nullable(false);
+            $table->bigInteger('user_id')->nullable(false)->unsigned();
+            $table->bigInteger('lesson_id')->nullable(false)->unsigned();
+            $table->bigInteger('producer_id')->nullable(false)->unsigned();
             $table->enum('status', ['P', 'A', 'C'])->default('P');
             $table->text('description');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
+            $table->foreign('producer_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->index(['user_id']);
+            $table->index(['lesson_id']);
+            $table->index(['producer_id']);
         });
     }
 

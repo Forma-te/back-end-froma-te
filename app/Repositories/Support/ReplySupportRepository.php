@@ -2,11 +2,12 @@
 
 namespace App\Repositories\Support;
 
-use App\Http\Controllers\Controller;
+use App\Events\SupportReplied;
 use App\Models\ReplySupport;
+use App\Models\Support;
 use App\Repositories\Traits\RepositoryTrait;
 
-class ReplySupportRepository extends Controller
+class ReplySupportRepository implements ReplySupportRepositoryInterface
 {
     use RepositoryTrait;
 
@@ -21,12 +22,20 @@ class ReplySupportRepository extends Controller
     {
         $user = $this->getUserAuth();
 
-        return $this->entity
-                    ->create([
-                    'support_id' => $data['support'],
-                    'description' => $data['description'],
-                    'user_id' => $user->id,
-                ]);
+        $replySupport = $this->entity
+        ->create([
+        'support_id' => $data['support_id'],
+        'description' => $data['description'],
+        'producer_id' => $user->id,
+    ]);
+
+        event(new SupportReplied($replySupport));
+
+        $support = Support::findOrFail($data['support_id']);
+        $support->status = 'A';
+        $support->save();
+
+        return $replySupport;
     }
 
 }

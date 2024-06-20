@@ -10,13 +10,19 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('reply_supports', function (Blueprint $table) {
+        Schema::create('reply_support', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->nullable();
-            $table->bigInteger('producer_id')->nullable();
-            $table->bigInteger('support_id')->nullable(false);
+            $table->bigInteger('producer_id')->nullable(false)->unsigned();
+            $table->bigInteger('support_id')->nullable(false)->unsigned();
             $table->text('description');
             $table->timestamps();
+
+            $table->foreign('producer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('support_id')->references('id')->on('supports')->onDelete('cascade');
+
+            $table->index(['producer_id']);
+            $table->index(['support_id']);
         });
     }
 
@@ -25,6 +31,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('reply_supports');
+        Schema::dropIfExists('reply_support');
     }
 };

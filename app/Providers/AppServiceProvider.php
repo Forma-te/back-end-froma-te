@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\SaleCreated;
-use App\Listeners\SendSaleNotification;
+use App\Listeners\{
+    SendMailSupportReplied,
+    SendSaleNotification
+};
+
 use App\Repositories\Bank\BankRepository;
 use App\Repositories\Bank\BankRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
@@ -32,8 +35,6 @@ use App\Repositories\Support\{
     ReplySupportRepositoryInterface,
 };
 use App\Repositories\Member\{
-    MemberRepository,
-    MemberRepositoryInterface,
     SupportRepositoryInterface,
     SupportRepository
 };
@@ -112,11 +113,6 @@ class AppServiceProvider extends ServiceProvider
             SaleRepository::class,
         );
 
-        $this->app->singleton(
-            MemberRepositoryInterface::class,
-            MemberRepository::class,
-        );
-
     }
 
     /**
@@ -125,8 +121,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Event::listen(
-            SaleCreated::class,
             SendSaleNotification::class,
+            SendMailSupportReplied::class
         );
 
     }
