@@ -2,7 +2,7 @@
 export default {
     content: [
         "./resources/**/*.{js,mjs,jsx,ts,tsx,vue,blade.php}",
-        "./public/scripts/**/*.mjs"
+        "/public/scripts/**/*.mjs"
       ],
   theme: {
     extend: {

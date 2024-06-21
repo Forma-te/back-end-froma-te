@@ -1,8 +1,8 @@
-import utils from "./utils.mjs";
+import utils from "./utils.js";
 
 function ___InitializeRequests () {
     const { disableLogs } = utils.___GetSiteConfigs();
-    
+
     if (!disableLogs) console.log('---------------=====:: Firing requests');
 };
 

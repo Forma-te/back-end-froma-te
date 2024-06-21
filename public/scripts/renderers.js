@@ -1,9 +1,9 @@
-import utils from "./utils.mjs"; 
-import locale from "./locale.mjs";
+import utils from "./utils.js";
+import locale from "./locale.js";
 import { FMTFaqQuickLink, FMTFaqRow, FMTFeatureCard, FMTFooterLinkGroup, FMTHowToStartStepRow, FMTPlanCard, FMTTestimonyCard, FMTVideoCard } from "./components.mjs";
 
 export function Render$Examples (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('example-collection');
@@ -65,25 +65,25 @@ export function Render$Examples (
 };
 
 export function Render$FAQQuestions (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('faq-question-collection');
 
     [
-        { 
+        {
             question: localeStrings.faqQuestion1,
             answer: localeStrings.faqAnswer1
         },
-        { 
+        {
             question: localeStrings.faqQuestion2,
             answer: localeStrings.faqAnswer2
         },
-        { 
+        {
             question: localeStrings.faqQuestion3,
             answer: localeStrings.faqAnswer3
         },
-        { 
+        {
             question: localeStrings.faqQuestion4,
             answer: localeStrings.faqAnswer4
         }
@@ -91,20 +91,20 @@ export function Render$FAQQuestions (
 };
 
 export function Render$FAQQuickLinks (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('faq-quick-links');
 
     [
-        { 
+        {
             linkTitle: localeStrings.faqQuickLink2Title,
             linkType: localeStrings.faqQuickLink2Type,
             linkDescription: localeStrings.faqQuickLink2Description,
             gotoURL: localeStrings.faqQuickLink2PageURL,
             pageTitle: localeStrings.faqQuickLink2PageTitle
         },
-        { 
+        {
             linkTitle: localeStrings.faqQuickLink1Title,
             linkType: localeStrings.faqQuickLink1Type,
             linkDescription: localeStrings.faqQuickLink1Description,
@@ -115,41 +115,41 @@ export function Render$FAQQuickLinks (
 };
 
 export function Render$FeatureCards (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('feature-list');
 
     [
         [
-            { 
+            {
                 description: localeStrings.specialFeaturesDescription1,
                 icon: localeStrings.specialFeaturesIcon1,
                 title: localeStrings.specialFeaturesTitle1
             },
-            { 
+            {
                 description: localeStrings.specialFeaturesDescription2,
                 icon: localeStrings.specialFeaturesIcon2,
                 title: localeStrings.specialFeaturesTitle2
             },
-            { 
+            {
                 description: localeStrings.specialFeaturesDescription3,
                 icon: localeStrings.specialFeaturesIcon3,
                 title: localeStrings.specialFeaturesTitle3
             }
         ],
         [
-            { 
+            {
                 description: localeStrings.specialFeaturesDescription1,
                 icon: localeStrings.specialFeaturesIcon1,
                 title: localeStrings.specialFeaturesTitle1
             },
-            { 
+            {
                 description: localeStrings.specialFeaturesDescription2,
                 icon: localeStrings.specialFeaturesIcon2,
                 title: localeStrings.specialFeaturesTitle2
             },
-            { 
+            {
                 description: localeStrings.specialFeaturesDescription3,
                 icon: localeStrings.specialFeaturesIcon3,
                 title: localeStrings.specialFeaturesTitle3
@@ -163,14 +163,14 @@ export function Render$FeatureCards (
 };
 
 export function Render$FooterLinks (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('footer-links');
 
     [
-        { 
-            header: { 
+        {
+            header: {
                 name: localeStrings.footerLinkGroup1Name,
                 url: localeStrings.footerLinkGroup1URL
             },
@@ -181,8 +181,8 @@ export function Render$FooterLinks (
                 }
             })
         },
-        { 
-            header: { 
+        {
+            header: {
                 name: localeStrings.footerLinkGroup2Name,
                 url: localeStrings.footerLinkGroup2URL
             },
@@ -193,8 +193,8 @@ export function Render$FooterLinks (
                 }
             })
         },
-        { 
-            header: { 
+        {
+            header: {
                 name: localeStrings.footerLinkGroup3Name,
                 url: localeStrings.footerLinkGroup3URL
             },
@@ -209,33 +209,33 @@ export function Render$FooterLinks (
 };
 
 export function Render$HowToSteps (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('howto-steps');
 
     const propsArray = [
-        { 
+        {
             ctaStyleType: 'special',
             cta: localeStrings.howtoStartCTA1,
             ctaType: 'link',
             gotoURL: localeStrings.howtoStartURL1,
             description: localeStrings.howtoStartDescription1
         },
-        { 
+        {
             cta: localeStrings.howtoStartCTA2,
             ctaType: 'link',
             description: localeStrings.howtoStartDescription2,
             gotoURL: localeStrings.howtoStartURL2,
         },
-        { 
+        {
             ctaStyleType: 'secondary',
             cta: localeStrings.howtoStartCTA3,
             disabledCTA: true,
             description: localeStrings.howtoStartDescription3
         },
     ]
-    
+
     propsArray.forEach((props, idx) => containerElement.insertAdjacentHTML('beforeend', `
         ${FMTHowToStartStepRow({ stepNumber: (idx + 1), ...props })}
 
@@ -244,7 +244,7 @@ export function Render$HowToSteps (
 };
 
 export function Render$PlanCards (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const {
@@ -258,56 +258,56 @@ export function Render$PlanCards (
     const containerElement = document.getElementById('pricing-cards');
 
     [
-        { 
-            cardTitle: localeStrings.plan1Name, 
-            cardDescription: localeStrings.plan1Description, 
+        {
+            cardTitle: localeStrings.plan1Name,
+            cardDescription: localeStrings.plan1Description,
             pricePlan: 1,
-            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_1_yearly_price : plan_1_monthly_price, 
-            callToAction: localeStrings.plan1CTA, 
+            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_1_yearly_price : plan_1_monthly_price,
+            callToAction: localeStrings.plan1CTA,
             featureList: localeStrings.plan1Features
         },
-        { 
-            cardType:'call-to-action', 
-            cardTitle: localeStrings.plan2Name, 
-            cardDescription: localeStrings.plan2Description, 
+        {
+            cardType:'call-to-action',
+            cardTitle: localeStrings.plan2Name,
+            cardDescription: localeStrings.plan2Description,
             pricePlan: 2,
-            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_2_yearly_price : plan_2_monthly_price, 
-            callToAction: localeStrings.plan2CTA, 
+            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_2_yearly_price : plan_2_monthly_price,
+            callToAction: localeStrings.plan2CTA,
             featureList: localeStrings.plan2Features
         },
-        { 
+        {
             cardType:'priceless',
-            cardTitle: localeStrings.plan3Name, 
-            cardDescription: localeStrings.plan3Description, 
+            cardTitle: localeStrings.plan3Name,
+            cardDescription: localeStrings.plan3Description,
             pricePlan: 3,
-            priceValue: 0, 
-            callToAction: localeStrings.plan3CTA, 
+            priceValue: 0,
+            callToAction: localeStrings.plan3CTA,
             featureList: localeStrings.plan3Features
         },
     ].forEach(props => containerElement.insertAdjacentHTML('beforeend', FMTPlanCard(props)));
 };
 
 export function Render$TestimonyCards (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('testimony-collection');
 
     [
         [
-            { 
+            {
                 profileSrc: './img/jpeg/profile-2.jpg',
                 userName: localeStrings.testimony1UserName,
                 userOccupation: localeStrings.testimony1UserOccupation,
                 testimony: localeStrings.testimony1
             },
-            { 
+            {
                 profileSrc: './img/jpeg/profile-1.jpg',
                 userName: localeStrings.testimony2UserName,
                 userOccupation: localeStrings.testimony2UserOccupation,
                 testimony: localeStrings.testimony2
             },
-            { 
+            {
                 profileSrc: './img/jpeg/profile-5.jpg',
                 userName: localeStrings.testimony3UserName,
                 userOccupation: localeStrings.testimony3UserOccupation,
@@ -315,25 +315,25 @@ export function Render$TestimonyCards (
             }
         ],
         [
-            { 
+            {
                 profileSrc: './img/jpeg/profile-7.jpg',
                 userName: localeStrings.testimony1UserName,
                 userOccupation: localeStrings.testimony1UserOccupation,
                 testimony: localeStrings.testimony1
             },
-            { 
+            {
                 profileSrc: './img/jpeg/profile-3.jpg',
                 userName: localeStrings.testimony1UserName,
                 userOccupation: localeStrings.testimony1UserOccupation,
                 testimony: localeStrings.testimony1
             },
-            { 
+            {
                 profileSrc: './img/jpeg/profile-4.jpg',
                 userName: localeStrings.testimony2UserName,
                 userOccupation: localeStrings.testimony2UserOccupation,
                 testimony: localeStrings.testimony2
             },
-            { 
+            {
                 profileSrc: './img/jpeg/profile-6.jpg',
                 userName: localeStrings.testimony3UserName,
                 userOccupation: localeStrings.testimony3UserOccupation,

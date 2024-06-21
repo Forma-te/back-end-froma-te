@@ -1,9 +1,9 @@
-import locale from "./locale.mjs";
-import utils from "./utils.mjs";
+import locale from "./locale.js";
+import utils from "./utils.js";
 
 function ___InitializeComponents () {
     const { disableLogs } = utils.___GetSiteConfigs();
-    
+
     if (!disableLogs) console.log('---------------=====:: Components are ready');
 };
 
@@ -31,7 +31,7 @@ export function FMTHowToStartStepRow ({ styleType='primary', theme='light', ...p
                 ${cta}
             </a>
             `
-        
+
             default: return '';
         };
     };
@@ -58,7 +58,7 @@ export function FMTFaqQuickLink ({ styleType='primary', theme='dark', linkType='
     const getIcon = (type) => {
         switch (type) {
             case "something": return '';
-        
+
             default: return '<i class="icon fa fa-link"></i>'
         };
     };
@@ -72,11 +72,11 @@ export function FMTFaqQuickLink ({ styleType='primary', theme='dark', linkType='
         <p>${linkDescription}</p>
 
         <a href="${gotoURL}" class="mt-2">
-            <i class="fa fa-link"></i> 
-            
+            <i class="fa fa-link"></i>
+
             <span>Ver página - ${pageTitle}</span>
         </a>
-    </div>  
+    </div>
     `
 };
 
@@ -133,7 +133,7 @@ export function FMTFooterLinkGroup ({ styleType='primary', theme='dark', ...prop
 
     return`
     <div class="fmt-footer-link-group" data-styletype="${styleType}" data-theme="${theme}">
-        ${(header.url === '#') 
+        ${(header.url === '#')
             ?   `<p class="title">${header.name}</p>`
             :   `<a href="${header.url}" class="title">${header.name}</a>`
         }
@@ -154,10 +154,10 @@ export function FMTPlanCard ({ styleType='primary', theme='dark', cardType='defa
         featureList
     } = props;
 
-    const _ctaStyleType = (cardType === 'priceless') 
+    const _ctaStyleType = (cardType === 'priceless')
         ?   'primary'
-        :   (cardType === 'call-to-action') 
-            ? 'special' 
+        :   (cardType === 'call-to-action')
+            ? 'special'
             : 'secondary'
     ;
 
@@ -168,7 +168,7 @@ export function FMTPlanCard ({ styleType='primary', theme='dark', cardType='defa
     <div class="fmt-plan-card" data-cardtype="${cardType}" data-styletype="${styleType}" data-theme="${theme}">
         <h5 class="mb-6">${cardTitle}</h5>
         <p>${cardDescription}</p>
-        
+
         <p class="price my-4">
             <span class="currency">${priceCurrency}</span>
             <span id="plan-${pricePlan}-price" class="value">${priceValue}</span>
@@ -231,7 +231,7 @@ export function FMTVideoCard ({ styleType='primary', theme='light', ...props }) 
     const getCardProperties = (type) => {
         switch (type) {
             case 'call-to-action': return '';
-        
+
             default: return `style="background-image: url('${videoThumbnailSrc}');"`;
         };
     };
@@ -240,9 +240,9 @@ export function FMTVideoCard ({ styleType='primary', theme='light', ...props }) 
         switch (type) {
             case 'call-to-action': return`
             <h4 id="examples:video-message" class="mt-auto mb-5"></h4>
-            
+
             <a id="examples:cta" href="#" class="fmt-button mb-auto" data-styletype="special" data-theme="light">
-            </a>    
+            </a>
             `
 
             default: return`

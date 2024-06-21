@@ -1,4 +1,4 @@
-import utils from "./utils.mjs";
+import utils from "./utils.js";
 
 export function Inject$HREFURLs () {
     const {
@@ -83,7 +83,7 @@ function togglePlanPrices (pricingType) {
                 plan1Text.innerText = plan_1_yearly_price;
                 plan2Text.innerText = plan_2_yearly_price;
             break;
-        
+
             default: break;
         }
     };

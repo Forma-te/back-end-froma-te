@@ -1,9 +1,9 @@
-import utils from "./utils.mjs";
-import requests from "./requests.mjs";
-import locale from "./locale.mjs";
-import { Inject$HREFURLs, Inject$LocaleStrings, QueueEvents } from "./events.mjs";
-import components from "./components.mjs";
-import { Render$Examples, Render$FAQQuestions, Render$FAQQuickLinks, Render$FeatureCards, Render$FooterLinks, Render$HowToSteps, Render$PlanCards, Render$TestimonyCards } from "./scripts/renderers.mjs";
+import utils from "./utils.js";
+import requests from "./requests.js";
+import locale from "./locale.js";
+import { Inject$HREFURLs, Inject$LocaleStrings, QueueEvents } from "./events.js";
+import components from "./components.js";
+import { Render$Examples, Render$FAQQuestions, Render$FAQQuickLinks, Render$FeatureCards, Render$FooterLinks, Render$HowToSteps, Render$PlanCards, Render$TestimonyCards } from "./renderers.js";
 
 
 function ___InitializePage () {

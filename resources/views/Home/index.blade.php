@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FORMA-TE</title>
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="{{ '/assets/css/global.css' }}">
+    <link rel="stylesheet" type="text/css" href="{{ '/assets/css/global_.css' }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -187,17 +187,17 @@
         <section id="footer-social-media">
             <a id="goto:fmt-instagram" target="_blank" rel="noreferrer" class="fmt-social-link-button"
                 data-styletype="primary" data-theme="dark">
-                <img src="./img/png/ic_instagram.png" alt="instagram's logo" />
+                <img src="{{'/assets/img/png/ic_instagram.png'}}" alt="instagram's logo" />
             </a>
 
             <a id="goto:fmt-facebook" target="_blank" rel="noreferrer" class="fmt-social-link-button mx-2"
                 data-styletype="primary" data-theme="dark">
-                <img src="./img/png/ic_facebook.png" alt="facebook's logo" />
+                <img src="{{'/assets/img/png/ic_facebook.png'}}" alt="facebook's logo" />
             </a>
 
             <a id="goto:fmt-twitterx" target="_blank" rel="noreferrer" class="fmt-social-link-button"
                 data-styletype="primary" data-theme="dark">
-                <img src="./img/png/ic_x_twitter.png" alt="twitter-x's logo" />
+                <img src="{{'/assets/img/png/ic_x_twitter.png'}}" alt="twitter-x's logo" />
             </a>
         </section>
 
@@ -207,7 +207,7 @@
         </p>
     </footer>
 
-    <script type="module"  src="{{'/scripts/main.mjs'}}"></script>
+    <script type="module" src="{{'/scripts/main.js'}}"></script>
 </body>
 
 </html>
