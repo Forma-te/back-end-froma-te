@@ -1,6 +1,6 @@
 import utils from "./utils.js";
 import locale from "./locale.js";
-import { FMTFaqQuickLink, FMTFaqRow, FMTFeatureCard, FMTFooterLinkGroup, FMTHowToStartStepRow, FMTPlanCard, FMTTestimonyCard, FMTVideoCard } from "./components.mjs";
+import { FMTFaqQuickLink, FMTFaqRow, FMTFeatureCard, FMTFooterLinkGroup, FMTHowToStartStepRow, FMTPlanCard, FMTTestimonyCard, FMTVideoCard } from "./components.js";
 
 export function Render$Examples (
     localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
@@ -11,43 +11,43 @@ export function Render$Examples (
     [
         [
             {
-                profileSrc: './img/jpeg/model-7.jpg',
-                videoThumbnailSrc: './img/jpeg/model-7.jpg',
+                profileSrc: './assets/img/jpeg/model-7.jpg',
+                videoThumbnailSrc: './assets/img/jpeg/model-7.jpg',
                 videoTitle: 'Video title',
                 userName: 'Name name',
                 userOccupation: 'Occupation',
             },
             {
-                profileSrc: './img/jpeg/model-1.jpg',
-                videoThumbnailSrc: './img/jpeg/model-1.jpg',
+                profileSrc: './assets/img/jpeg/model-1.jpg',
+                videoThumbnailSrc: './assets/img/jpeg/model-1.jpg',
                 videoTitle: 'Video title',
                 userName: 'Name name',
                 userOccupation: 'Occupation',
             },
             {
-                profileSrc: './img/jpeg/model-3.jpg',
-                videoThumbnailSrc: './img/jpeg/model-3.jpg',
+                profileSrc: './assets/img/jpeg/model-3.jpg',
+                videoThumbnailSrc: './assets/img/jpeg/model-3.jpg',
                 videoTitle: 'Video title',
                 userName: 'Name name',
                 userOccupation: 'Occupation',
             },
             {
-                profileSrc: './img/jpeg/model-4.jpg',
+                profileSrc: './assets/img/jpeg/model-4.jpg',
                 videoThumbnailSrc: './img/jpeg/model-4.jpg',
                 videoTitle: 'Video title',
                 userName: 'Name name',
                 userOccupation: 'Occupation',
             },
             {
-                profileSrc: './img/jpeg/model-5.jpg',
-                videoThumbnailSrc: './img/jpeg/model-5.jpg',
+                profileSrc: './assets/img/jpeg/model-5.jpg',
+                videoThumbnailSrc: './assets/img/jpeg/model-5.jpg',
                 videoTitle: 'Video title',
                 userName: 'Name name',
                 userOccupation: 'Occupation',
             },
             {
-                profileSrc: './img/jpeg/model-6.jpg',
-                videoThumbnailSrc: './img/jpeg/model-6.jpg',
+                profileSrc: './assets/img/jpeg/model-6.jpg',
+                videoThumbnailSrc: './assets/img/jpeg/model-6.jpg',
                 videoTitle: 'Video title',
                 userName: 'Name name',
                 userOccupation: 'Occupation',
