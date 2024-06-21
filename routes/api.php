@@ -129,7 +129,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Reply support
     */
     Route::post('/replies', [ReplySupportController::class, 'createReply']);
-    Route::get('/supports', [ReplySupportController::class, 'getAllSupports']);
+    Route::get('/supports', [ReplySupportController::class, 'getSupportProducerByStatus']);
     Route::get('/support/{Id}', [ReplySupportController::class, 'message']);
     Route::post('/api/supports/reply', [ReplySupportController::class, 'createReply']);
 

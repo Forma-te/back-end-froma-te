@@ -5,6 +5,8 @@ namespace App\Repositories\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
 use App\Models\Support;
+use App\Repositories\PaginationInterface;
+use App\Repositories\PaginationPresenter;
 use App\Repositories\Traits\RepositoryTrait;
 
 class SupportRepository implements SupportRepositoryInterface
@@ -18,15 +20,21 @@ class SupportRepository implements SupportRepositoryInterface
         $this->entity = $model;
     }
 
-    public function getByStatus(string $status): array
+    public function getSupportProducerByStatus(int $page = 1, int $totalPerPage  = 15, string $status): PaginationInterface
     {
-        $supports = $this->entity
+        $query = $this->entity
                         ->ownedByAuthUser()
-                        ->where('status', $status)
-                        ->with(['user', 'lesson'])
-                        ->get();
+                        ->with(['user', 'lesson']);
 
-        return $supports->toArray();
+        // Aplicar filtro por status
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
     }
 
     public function findById(string $id): object|null

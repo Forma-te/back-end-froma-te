@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\RepliesSupportResource;
 use App\Http\Resources\SupportResource;
 use App\Repositories\Member\SupportRepositoryInterface;
+use App\Repositories\PaginationInterface;
 
 class SupportService
 {
@@ -15,10 +16,16 @@ class SupportService
         $this->repository = $repository;
     }
 
-    public function getSupports(string $status = 'P')
-    {
-        return $this->repository->getByStatus($status);
-        //return RepliesSupportResource::collection($supports);
+    public function getSupportProducerByStatus(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $status = null
+    ): PaginationInterface {
+        return $this->repository->getSupportProducerByStatus(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            status: $status
+        );
     }
 
     public function getSupport(string $id)

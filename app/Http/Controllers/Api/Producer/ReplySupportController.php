@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Producer;
 
+use App\Adapters\ReplySupportAdapters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReplySupport;
 use App\Http\Resources\ReplySupportResource;
@@ -27,14 +28,14 @@ class ReplySupportController extends Controller
      * @OA\Get(
      *     path="/api/supports",
      *     summary="Get all supports",
-     *     description="Fetches a list of all supports with the given status.",
-     *     operationId="getAllSupports",
+     *     description="Fetches a list of all supports Producer with the given status.",
+     *     operationId="getSupportProducerByStatus",
      *     tags={"Supports Producer"},
      *     @OA\Parameter(
      *         name="status",
      *         in="query",
      *         required=false,
-     *         description="Status of the supports to filter",
+     *         description="Status of the supports Producer to filter",
      *         @OA\Schema(
      *             type="string",
      *             default="P",
@@ -43,7 +44,7 @@ class ReplySupportController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Successfully retrieved the list of supports",
+     *         description="Successfully retrieved the list of supports Producer",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="success", type="boolean", example=true),
@@ -110,7 +111,7 @@ class ReplySupportController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Failed to retrieve the supports",
+     *         description="Failed to retrieve the supports Producer",
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(
@@ -128,20 +129,21 @@ class ReplySupportController extends Controller
      * )
      */
 
-    public function getAllSupports(Request $request)
+    public function getSupportProducerByStatus(Request $request)
     {
         try {
-            $supports = $this->supportService->getSupports(
-                status: $request->get('status', 'P')
+            $supports = $this->supportService->getSupportProducerByStatus(
+                page: $request->get('page', 1),
+                totalPerPage: $request->get('per_page', 15),
+                status: $request->get('status', '')
             );
 
-            $statusOptions = SupportEnum::cases();
+            $statusOptions = array_map(fn ($enum) => $enum->value, SupportEnum::cases());
 
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'supports' => $supports,
-                    'status_options' => $statusOptions,
+                    'supports' => ReplySupportAdapters::paginateToJson($supports, $statusOptions),
                 ],
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
