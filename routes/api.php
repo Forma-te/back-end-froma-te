@@ -73,6 +73,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/lesson', [LessonController::class, 'createLesson']);
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
     Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
+    // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 
     /**
     * Route Ebook
@@ -94,7 +95,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
     Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
-    // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
+
 
     /**
     * Route Bank
@@ -128,11 +129,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Reply support
     */
-    Route::post('/replies', [ReplySupportController::class, 'createReply']);
+    //Route::post('/replies', [ReplySupportController::class, 'createReply']);
+    Route::post('/support/reply', [ReplySupportController::class, 'createReply']);
     Route::get('/supports', [ReplySupportController::class, 'getSupportProducerByStatus']);
     Route::get('/support/{Id}', [ReplySupportController::class, 'message']);
-    Route::post('/api/supports/reply', [ReplySupportController::class, 'createReply']);
-
 });
 
 Route::get('/', function () {

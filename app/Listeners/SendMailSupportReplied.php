@@ -28,6 +28,6 @@ class SendMailSupportReplied implements ShouldQueue
         $user = $support->user;
 
         Mail::to($user->email)
-                    ->send(new MailSendMailSupportReplied($replySupport));
+                    ->send(new MailSendMailSupportReplied($replySupport, $user));
     }
 }

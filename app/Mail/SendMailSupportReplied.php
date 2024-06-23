@@ -28,10 +28,10 @@ class SendMailSupportReplied extends Mailable implements ShouldQueue
      */
     public function envelope(): Envelope
     {
-        $lesson = $this->replySupport->support->lesson;
+        $user = $this->replySupport->support->user->name;
 
         return new Envelope(
-            subject: "A questão foi respondida",
+            subject: "$user a questão foi respondida",
         );
     }
 

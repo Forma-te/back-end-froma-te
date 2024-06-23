@@ -247,56 +247,76 @@ class ReplySupportController extends Controller
     }
 
     /**
-    * @OA\Post(
-    *     path="/api/supports/reply",
-    *     summary="Create a reply to a support message",
-    *     description="Creates a new reply to a specified support message.",
-    *     operationId="createReply",
-    *     tags={"Supports Producer"},
-    *     @OA\RequestBody(
-    *         required=true,
-    *         @OA\JsonContent(
-    *             type="object",
-    *             @OA\Property(property="description", type="string", example="This is a reply to the support message."),
-    *             @OA\Property(property="support_id", type="integer", example=1)
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=201,
-    *         description="Reply created successfully",
-    *         @OA\JsonContent(
-    *             type="object",
-    *             @OA\Property(property="success", type="boolean", example=true),
-    *             @OA\Property(property="data", type="object",
-    *                 @OA\Property(property="id", type="integer", example=1),
-    *                 @OA\Property(property="description", type="string", example="This is a reply to the support message."),
-    *                 @OA\Property(property="support_id", type="integer", example=1),
-    *                 @OA\Property(property="created_at", type="string", format="date-time", example="2024-06-18T14:17:09.000000Z"),
-    *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2024-06-18T14:17:09.000000Z")
-    *             )
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=400,
-    *         description="Invalid input",
-    *         @OA\JsonContent(
-    *             type="object",
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Invalid input")
-    *         )
-    *     ),
-    *     @OA\Response(
-    *         response=500,
-    *         description="Failed to create the reply",
-    *         @OA\JsonContent(
-    *             type="object",
-    *             @OA\Property(property="success", type="boolean", example=false),
-    *             @OA\Property(property="message", type="string", example="Failed to create reply: Internal Server Error")
-    *         )
-    *     )
-    * )
-    */
-
+     * @OA\Post(
+     *     path="/api/support/reply",
+     *     summary="Create a reply to a support message",
+     *     description="Creates a reply to an existing support message using the provided description and support ID.",
+     *     operationId="createReply",
+     *     tags={"Supports Producer"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"description", "support_id"},
+     *             @OA\Property(property="description", type="string", example="The lesson Aguardar Professor"),
+     *             @OA\Property(property="support_id", type="integer", example=3)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful reply creation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="description", type="string", example="The lesson Aguardar Professor"),
+     *                 @OA\Property(property="support", type="object",
+     *                     @OA\Property(property="id", type="integer", example=3),
+     *                     @OA\Property(property="status", type="string", example="P"),
+     *                     @OA\Property(property="status_label", type="string", example="Pendente, Aguardar Professor"),
+     *                     @OA\Property(property="description", type="string", example="The lesson field"),
+     *                     @OA\Property(property="user", type="object",
+     *                         @OA\Property(property="id", type="integer", example=2),
+     *                         @OA\Property(property="name", type="string", example="Siara Bumba"),
+     *                         @OA\Property(property="email", type="string", example="moises.alberto.king.bumba@gmail.com"),
+     *                         @OA\Property(property="bibliography", type="string", nullable=true),
+     *                         @OA\Property(property="phone_number", type="string", nullable=true),
+     *                         @OA\Property(property="bi", type="string", nullable=true),
+     *                         @OA\Property(property="image", type="string", nullable=true)
+     *                     ),
+     *                     @OA\Property(property="lesson", type="object",
+     *                         @OA\Property(property="id", type="integer", example=3),
+     *                         @OA\Property(property="name", type="string", example="Lesson 1"),
+     *                         @OA\Property(property="description", type="string", example="CNN PRIME TIME"),
+     *                         @OA\Property(property="video", type="string", example="https://www.youtube.com/watch?v=a1HjPcJbB3c"),
+     *                         @OA\Property(property="file", type="string", example="https://forma-te-ebooks-bucket.s3.amazonaws.com/lessonPdf/lesson-1.pdf")
+     *                     ),
+     *                     @OA\Property(property="dt_updated", type="string", example="23/06/2024 11:23:07")
+     *                 ),
+     *                 @OA\Property(property="producer", type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Moises Bumba"),
+     *                     @OA\Property(property="email", type="string", example="moises-alberto@hotmail.com"),
+     *                     @OA\Property(property="bibliography", type="string", nullable=true),
+     *                     @OA\Property(property="phone_number", type="string", nullable=true),
+     *                     @OA\Property(property="bi", type="string", nullable=true),
+     *                     @OA\Property(property="image", type="string", nullable=true)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function createReply(StoreReplySupport $request)
     {
         $data = $request->only('description', 'support_id');

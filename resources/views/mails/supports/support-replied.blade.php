@@ -1,5 +1,5 @@
 <x-mail::message>
-# Olá!
+# Olá {{ $replySupport->support->user->name }}!
 
 A sua questão relativa à aula {{ $replySupport->support->lesson->name }} foi respondida.
 
@@ -8,5 +8,5 @@ Ver resposta
 </x-mail::button>
 
 Cumprimentos,<br>
-{{ config('app.name') }} 
+{{ config('app.name') }}
 </x-mail::message>

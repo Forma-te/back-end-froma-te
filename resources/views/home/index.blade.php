@@ -124,11 +124,6 @@
             </div>
         </section>
 
-        <section id="mid" data-componenttype="container" data-theme="light">
-            <button id="mid:cta" type="button" class="fmt-button w-full" data-styletype="special" data-theme="light">
-            </button>
-        </section>
-
         <section id="special-features" data-componenttype="container" data-theme="dark">
             <h3 id="special-features:title"></h3>
 
@@ -136,10 +131,6 @@
 
             <div id="feature-list" class="w-full">
             </div>
-
-            <button id="special-features:cta" type="button" class="fmt-button w-full max-w-[970px] mt-9"
-                data-styletype="special" data-theme="dark">
-            </button>
         </section>
 
         <section id="pricing" data-componenttype="container" data-theme="dark">
@@ -174,10 +165,6 @@
             </div>
         </section>
 
-        <section id="last" data-componenttype="container" data-theme="dark">
-            <button id="last:cta" type="button" class="fmt-button w-full" data-styletype="special" data-theme="dark">
-            </button>
-        </section>
     </main>
 
     <footer class="w-full flex flex-col justify-center items-center py-3" data-componenttype="container"
