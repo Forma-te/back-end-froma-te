@@ -9,4 +9,5 @@ interface CartPlanRepositoryInterface
     public function getAllPlans();
     public function createSessionPlan(Request $request, string $urlPlan);
     public function checkoutPlan();
+    public function planPay();
 }

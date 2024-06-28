@@ -6,7 +6,7 @@ use App\Listeners\{
     SendMailSupportReplied,
     SendSaleNotification
 };
-
+use App\Mail\SendMailOrderPlanInstructor;
 use App\Repositories\Bank\BankRepository;
 use App\Repositories\Bank\BankRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
@@ -129,7 +129,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(
             SendSaleNotification::class,
-            SendMailSupportReplied::class
+            SendMailSupportReplied::class,
+            SendMailOrderPlanInstructor::class
         );
 
     }

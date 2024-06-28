@@ -26,4 +26,9 @@ class CartPlanService
     {
         return $this->repository->checkoutPlan();
     }
+
+    public function planPay()
+    {
+        return $this->repository->planPay();
+    }
 }

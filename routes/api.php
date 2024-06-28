@@ -140,6 +140,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/plans', [CartPlanController::class, 'getAllPlans']);
     Route::get('/cart/plans/{url}', [CartPlanController::class, 'createSessionPlan']);
     Route::get('/cart/checkout', [CartPlanController::class, 'checkoutPlan']);
+    Route::get('/cart/plan-pay', [CartPlanController::class, 'planPay']);
 });
 
 Route::get('/', function () {

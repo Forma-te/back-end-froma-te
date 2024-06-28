@@ -18,15 +18,22 @@ class CartPlanController extends Controller
 
     public function getAllPlans()
     {
-        $cartPlans = $this->cartPlanService->getAllPlans();
+        try {
+            $cartPlans = $this->cartPlanService->getAllPlans();
 
-        if (empty($cartPlans)) {
+            if ($cartPlans->isEmpty()) {
+                return response()->json([
+                    'error' => 'Resource not found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return CartPlanResource::collection($cartPlans);
+        } catch (\Exception $e) {
+            Log::error('Error fetching plans: ' . $e->getMessage());
             return response()->json([
-                'error' => 'Resource not found'
-            ], Response::HTTP_NOT_FOUND);
+                'error' => 'An error occurred while fetching plans'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return CartPlanResource::collection($cartPlans);
     }
 
     public function createSessionPlan(Request $request, string $urlPlan)
@@ -44,15 +51,37 @@ class CartPlanController extends Controller
 
     public function checkoutPlan()
     {
-        $plan = $this->cartPlanService->checkoutPlan();
+        try {
+            $plan = $this->cartPlanService->checkoutPlan();
 
-        if (empty($plan)) {
-            Log::info('Session plan not found');
+            if (empty($plan)) {
+                Log::info('Session plan not found');
+                return response()->json([
+                    'error' => 'Session plan not found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json($plan);
+        } catch (\Exception $e) {
+            Log::error('Error during checkout: ' . $e->getMessage());
             return response()->json([
-                'error' => 'Session plan not found'
-            ], Response::HTTP_NOT_FOUND);
+                'error' => 'An error occurred during checkout'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        return response()->json($plan);
     }
+
+    public function planPay()
+    {
+        try {
+            $plan = $this->cartPlanService->planPay();
+
+            return response()->json($plan);
+        } catch (\Exception $e) {
+            Log::error('Error processing payment: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'An error occurred while processing payment'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

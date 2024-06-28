@@ -331,11 +331,11 @@ class SaleController extends Controller
 
     public function newSale(StoreUpdateSaleRequest $request)
     {
-        $bank = $this->saleService->createNewSale(
+        $sale = $this->saleService->createNewSale(
             CreateNewSaleDTO::makeFromRequest($request)
         );
 
-        return new SaleResource($bank);
+        return new SaleResource($sale);
     }
 
     /**
