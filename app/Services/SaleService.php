@@ -46,7 +46,6 @@ class SaleService
         return $this->repository->findById($id);
     }
 
-
     public function createNewSale(CreateNewSaleDTO $dto)
     {
         return $this->repository->createNewSale($dto);

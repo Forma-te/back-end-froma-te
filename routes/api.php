@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Auth\{
     AuthController,
     ResetPasswordController
 };
+use App\Http\Controllers\Api\Cart\CartPlanController;
 use App\Http\Controllers\Api\Member\{
     MemberController,
     SupportController
@@ -96,7 +97,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/get-courses', [CourseController::class, 'getCoursesForAuthenticatedUser']);
     Route::get('/courses/{id}', [CourseController::class, 'getCourseById']);
 
-
     /**
     * Route Bank
     */
@@ -133,6 +133,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/support/reply', [ReplySupportController::class, 'createReply']);
     Route::get('/supports', [ReplySupportController::class, 'getSupportProducerByStatus']);
     Route::get('/support/{Id}', [ReplySupportController::class, 'message']);
+
+    /**
+    * Route CartPlan
+    */
+    Route::get('/plans', [CartPlanController::class, 'getAllPlans']);
+    Route::get('/cart/plans/{url}', [CartPlanController::class, 'createSessionPlan']);
+    Route::get('/cart/checkout', [CartPlanController::class, 'checkoutPlan']);
 });
 
 Route::get('/', function () {

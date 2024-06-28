@@ -367,6 +367,7 @@ class CourseController extends Controller
                 'error' => 'Resource not found'
             ], Response::HTTP_NOT_FOUND);
         }
+
         return response()->json($courses);
     }
 

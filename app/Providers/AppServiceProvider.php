@@ -38,6 +38,8 @@ use App\Repositories\Member\{
     SupportRepositoryInterface,
     SupportRepository
 };
+use App\Repositories\Plan\CartPlanRepository;
+use App\Repositories\Plan\CartPlanRepositoryInterface;
 use App\Repositories\User\{
     UserRepository,
     UserRepositoryInterface};
@@ -111,6 +113,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             SaleRepositoryInterface::class,
             SaleRepository::class,
+        );
+
+        $this->app->singleton(
+            CartPlanRepositoryInterface::class,
+            CartPlanRepository::class,
         );
 
     }

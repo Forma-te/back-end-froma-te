@@ -15,4 +15,5 @@ class Plan extends Model
     {
         return $this->hasMany(DetailPlan::class);
     }
+
 }
