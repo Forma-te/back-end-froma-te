@@ -210,6 +210,382 @@
                 ]
             }
         },
+        "/api/plans": {
+            "get": {
+                "tags": [
+                    "Producer Plan"
+                ],
+                "summary": "Get all published plans",
+                "description": "Returns a list of all published plans",
+                "operationId": "getAllPlans",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CartPlanResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Resource not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while fetching plans",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "An error occurred while fetching plans"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cart/plans/{urlPlan}": {
+            "get": {
+                "tags": [
+                    "Producer Plan"
+                ],
+                "summary": "Create a session plan",
+                "description": "Creates a session plan based on the given URL plan and returns the plan details",
+                "operationId": "createSessionPlan",
+                "parameters": [
+                    {
+                        "name": "urlPlan",
+                        "in": "path",
+                        "description": "URL of the plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "basic-plan"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "cartPlan": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Básico Mensal"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "basico-mensal"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Básico Mensal"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "example": 15000
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "published": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2022-12-23T23:42:36.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2022-12-23T23:46:10.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Resource not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cart/checkout": {
+            "get": {
+                "tags": [
+                    "Producer Plan"
+                ],
+                "summary": "Checkout the current session plan",
+                "description": "Returns the current session plan if it exists, or an error message if the plan is not found or an error occurs",
+                "operationId": "checkoutPlan",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "cartPlan": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Básico Mensal"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "basico-mensal"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Básico Mensal"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "example": 15000
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "published": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2022-12-23T23:42:36.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2022-12-23T23:46:10.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Session plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Session plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred during checkout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "An error occurred during checkout"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cart/plan-pay": {
+            "post": {
+                "tags": [
+                    "Producer Plan"
+                ],
+                "summary": "Process plan payment",
+                "description": "Processes the payment for the current session plan and returns the result",
+                "operationId": "planPay",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "producer_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "plan_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "moises-alberto@hotmail.com"
+                                        },
+                                        "quantity": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 15000
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 15000
+                                        },
+                                        "transaction": {
+                                            "type": "string",
+                                            "example": "0346E5EF"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "started"
+                                        },
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-06-28"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-06-28T20:04:31.000000Z"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-06-28T20:04:31.000000Z"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 21
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "No plan in cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No plan in cart"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Producer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Producer not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred while processing payment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "An error occurred while processing payment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/courses-member": {
             "get": {
                 "tags": [
@@ -4343,6 +4719,33 @@
                     "published": {
                         "description": "The published status of the module",
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "CartPlanResource": {
+                "title": "Cart Plan Resource",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Basic Plan"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 19.99
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "This is a basic plan."
+                    },
+                    "published": {
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
