@@ -7,6 +7,8 @@ use App\Listeners\{
     SendSaleNotification
 };
 use App\Mail\SendMailOrderPlanInstructor;
+use App\Repositories\Admin\Plan\PlanRepository;
+use App\Repositories\Admin\Plan\PlanRepositoryInterface;
 use App\Repositories\Bank\BankRepository;
 use App\Repositories\Bank\BankRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
@@ -118,6 +120,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CartPlanRepositoryInterface::class,
             CartPlanRepository::class,
+        );
+
+        $this->app->singleton(
+            PlanRepositoryInterface::class,
+            PlanRepository::class,
         );
 
     }
