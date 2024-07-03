@@ -35,7 +35,6 @@ class CourseRepository implements CourseRepositoryInterface
                       ->orWhere('name', 'like', "%{$filter}%");
             });
         }
-
         // Paginar os resultados
         $result = $query->with('users')->paginate($totalPerPage, ['*'], 'page', $page);
 

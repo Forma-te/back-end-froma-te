@@ -19,10 +19,7 @@ class UpdatePlanDTO
 
     public static function makeFromRequest(StoreUpdatePlanRequest $request, string $id = null): self
     {
-
-        $data = $request->all();
-
-        $data['published'] = isset($data['published']);
+        $data = $request->validated();
 
         return new self(
             $id ?? $request->id,
@@ -31,7 +28,19 @@ class UpdatePlanDTO
             $data['price'],
             $data['description'],
             $data['quantity'],
-            $data['published']
+            isset($data['published']) ? '1' : '0'
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'url' => $this->url,
+            'price' => $this->price,
+            'description' => $this->description,
+            'quantity' => $this->quantity,
+            'published' => $this->published
+        ];
     }
 }

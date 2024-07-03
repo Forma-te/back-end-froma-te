@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Plan;
 
-use App\Adapters\ApiAdapter;
 use App\DTO\Admin\Plan\CreatePlanDTO;
 use App\DTO\Admin\Plan\UpdatePlanDTO;
 use App\Http\Controllers\Controller;
@@ -22,14 +21,17 @@ class PlanController extends Controller
      */
     public function index(Request $request)
     {
-        $plan = $this->planService->paginate(
+        $title = 'Forma-te Gestão de produtos digitais';
+
+        $plans = $this->planService->paginate(
             page: $request->get('page', 1),
             totalPerPage: $request->get('per_page', 15),
             filter: $request->get('filter'),
         );
 
-        dd(['plan' => $plan]);
-        //return ApiAdapter::paginateToJson($plan);
+        return view('', [
+            'plans' => $plans, 'title' => $title,
+        ]);
     }
 
     /**
@@ -57,10 +59,12 @@ class PlanController extends Controller
      */
     public function show(string $url)
     {
+        $title = 'Forma-te Gestão de produtos digitais';
         $plan = $this->planService->show($url);
-        $title = 'Forma-te Plataforma de ensino a distância';
 
-        dd($plan);
+        if (!$plan) {
+            abort(404, 'Plano não encontrado');
+        }
 
         return view('', [
             'plan' => $plan, 'title' => $title,
@@ -72,10 +76,13 @@ class PlanController extends Controller
      */
     public function edit(string $url)
     {
-        $title = 'Forma-te Plataforma de ensino a distância';
+        $title = 'Forma-te Gestão de produtos digitais';
         $plan = $this->planService->edit($url);
 
-        dd($plan);
+        if (!$plan) {
+            abort(404, 'Plano não encontrado');
+        }
+
         return view('', [
             'plan' => $plan, 'title' => $title,
         ]);
@@ -84,7 +91,7 @@ class PlanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $url)
+    public function update(StoreUpdatePlanRequest  $request, string $url)
     {
         $this->planService->update(
             UpdatePlanDTO::makeFromRequest($request, $url)
@@ -103,7 +110,6 @@ class PlanController extends Controller
         }
 
         $this->planService->delete($url);
-
         return redirect()->route('plans.index');
     }
 }

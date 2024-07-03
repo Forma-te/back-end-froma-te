@@ -31,49 +31,38 @@ class PlanRepository implements PlanRepositoryInterface
 
     public function store(CreatePlanDTO $dto)
     {
-        $this->model->create($dto);
+        $this->model->create($dto->toArray());
     }
 
     public function show(string $url)
     {
         $plan = $this->model->where('url', $url)->first();
-        if (!$plan) {
-            return null;
-        }
 
-        return (object) $plan->toArray();
+        return $plan ? (object) $plan->toArray() : null;
     }
 
     public function edit(string $url)
     {
         $plan = $this->model->where('url', $url)->first();
 
-        if (!$plan) {
-            return redirect()->back();
-        }
-
-        return (object) $plan->toArray();
+        return $plan ? (object) $plan->toArray() : null;
     }
 
     public function update(UpdatePlanDTO $dto)
     {
         $plan = $this->model->where('url', $dto->url)->first();
 
-        if (!$plan) {
-            return redirect()->back();
+        if ($plan) {
+            $plan->update($dto->toArray());
         }
-
-        $plan->update($dto);
     }
 
     public function delete(string $url)
     {
         $plan = $this->model->where('url', $url)->first();
 
-        if (!$plan) {
-            return redirect()->back();
+        if ($plan) {
+            $plan->delete();
         }
-
-        $plan->delete();
     }
 }

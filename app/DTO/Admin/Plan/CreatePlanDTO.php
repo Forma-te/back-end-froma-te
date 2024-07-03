@@ -12,15 +12,15 @@ class CreatePlanDTO
         public string $price,
         public string $description,
         public string $quantity,
-        public string $published
+        public bool $published
     ) {
     }
 
     public static function makeFromRequest(StoreUpdatePlanRequest $request): self
     {
-        $data = $request->json()->all();
-
-        $data['published'] = isset($data['published']);
+        $data = $request->validated();
+        $data['url'] = createUrl($data['name']);
+        $data['published'] = isset($data['published']) ? true : false;
 
         return new self(
             $data['name'],

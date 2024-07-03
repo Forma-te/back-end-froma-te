@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Permission extends Model
 {
     use HasFactory;
 
@@ -18,12 +18,12 @@ class Profile extends Model
         return [
             'name' => 'required|min:3|max:60',
             'description' => 'required|min:3|max:200',
+
         ];
     }
 
-
-    public function users()
+    public function profiles()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Profile::class);
     }
 }

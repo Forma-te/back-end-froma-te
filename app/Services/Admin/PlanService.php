@@ -47,7 +47,7 @@ class PlanService
         return $this->repository->update($dto);
     }
 
-    public function delete(string $url): void
+    public function delete(string $url)
     {
         $this->repository->delete($url);
     }
