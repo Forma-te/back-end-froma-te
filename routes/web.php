@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Plan\ActivateUserPlanController;
 use App\Http\Controllers\Admin\Plan\PlanController;
 use App\Http\Controllers\Home\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +15,9 @@ Route::middleware([])->group(function () {
     Route::get('/plans/{url}', [PlanController::class, 'show'])->name('plans.show');
     Route::post('/plans', [PlanController::class, 'store'])->name('plans.store');
     Route::delete('/plans/{url}', [PlanController::class, 'destroy'])->name('plans.destroy');
+
+    //Routes ActivateUserPlan
+    Route::get('/user-requests', [ActivateUserPlanController::class, 'getAllUserRequests'])->name('user.requests.all');
+    Route::post('user-request/{id}/activate', [ActivateUserPlanController::class, 'activatePlan'])->name('plans.activate');
+
 });

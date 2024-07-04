@@ -15,6 +15,7 @@ class CartPlanRepository implements CartPlanRepositoryInterface
     public function __construct(
         protected Plan $entity,
         protected SaleInstructor $saleInstructor,
+        protected
         public Company $company
     ) {
     }

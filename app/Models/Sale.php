@@ -115,26 +115,6 @@ class Sale extends Model
         return $query->where('instrutor_id', auth()->user()->id);
     }
 
-    public function myCourses()
-    {
-        return $this->join('courses', 'courses.id', '=', 'sales.course_id')
-            ->join('users', 'users.id', '=', 'sales.user_id')
-            ->leftJoin('modules', 'modules.course_id', '=', 'courses.id')
-            ->leftJoin('lessons', 'lessons.module_id', '=', 'modules.id')
-            ->select('sales.id', 'courses.name', 'courses.image as course_image', 'courses.url', 'courses.description', 'users.image as student_image')
-            ->selectSub(function ($query) {
-                $query->selectRaw('COUNT(lessons.id)')
-                    ->from('lessons')
-                    ->join('modules', 'lessons.module_id', '=', 'modules.id')
-                    ->join('courses', 'modules.course_id', '=', 'courses.id')
-                    ->whereColumn('courses.id', 'sales.course_id');
-            }, 'lesson_count')
-            ->where('sales.instrutor_id', auth()->user()->id)
-            ->where('sales.status', 'approved')
-            ->where('courses.type', 'CURSO')
-            ->distinct()
-            ->get();
-    }
 
     public function getCourseForLoggedInStudent()
     {
@@ -145,26 +125,6 @@ class Sale extends Model
             ->with('course')
             ->first()
             ->course;
-    }
-
-    public function myEbook()
-    {
-        return $this->join('courses', 'courses.id', '=', 'sales.course_id')
-            ->select('sales.id', 'courses.name', 'courses.image', 'courses.url', 'courses.description')
-            ->where('sales.user_id', auth()->user()->id)
-            ->where('sales.status', 'approved')
-            ->where('courses.type', 'E-BOOK')
-            ->get();
-    }
-
-    public function mySales()
-    {
-        return $this->join('courses', 'courses.id', '=', 'sales.course_id')
-            ->join('users', 'users.id', '=', 'sales.user_id')
-            ->select('sales.transaction', 'sales.status', 'sales.date', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
-            ->where('courses.user_id', auth()->user()->id)
-            ->where('sales.status', 'approved')
-            ->paginate(10);
     }
 
     public function course()

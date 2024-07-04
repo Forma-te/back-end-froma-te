@@ -142,7 +142,7 @@ class User extends Authenticatable
         'url',
         'image',
         'bibliography',
-        'phone_number',
+        'phone',
         'bi'
     ];
 
@@ -152,7 +152,7 @@ class User extends Authenticatable
             'name' => 'required',
             'email' => "required|unique:users,email,{$id},id",
             'bibliography' => 'nullable',
-            'phone_number' => 'nullable',
+            'phone' => 'nullable',
             'image' => 'nullable',
             'addresses' => 'nullable',
         ];
@@ -218,6 +218,11 @@ class User extends Authenticatable
     public function supports()
     {
         return $this->hasMany(Support::class);
+    }
+
+    public function profiles()
+    {
+        return $this->belongsToMany(Profile::class)->withPivot('plan_id')->withTimestamps();
     }
 
     public function hasProfile($profile)
