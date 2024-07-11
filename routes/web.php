@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Plan\ActivateUserPlanController;
 use App\Http\Controllers\Admin\Plan\PlanController;
 use App\Http\Controllers\Home\HomeController;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware([])->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('home');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
     //Routes plans
     Route::get('plans/{url}/edit', [PlanController::class, 'edit'])->name('plans.edit');
@@ -18,6 +20,7 @@ Route::middleware([])->group(function () {
 
     //Routes ActivateUserPlan
     Route::get('/user-requests', [ActivateUserPlanController::class, 'getAllUserRequests'])->name('user.requests.all');
+    Route::get('/user-requests/{id}', [ActivateUserPlanController::class, 'getUserRequestsById'])->name('user.request');
     Route::post('user-request/{id}/activate', [ActivateUserPlanController::class, 'activatePlan'])->name('plans.activate');
 
 });

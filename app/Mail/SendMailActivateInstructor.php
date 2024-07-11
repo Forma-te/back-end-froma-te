@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\SalePlan;
+use App\Models\SaleSubscription;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,7 +19,7 @@ class SendMailActivateInstructor extends Mailable implements ShouldQueue
      * Create a new message instance.
      */
     public function __construct(
-        public SalePlan $salePlan
+        public SaleSubscription $saleSubscription
     ) {
     }
 
@@ -39,7 +39,7 @@ class SendMailActivateInstructor extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'admin.mails.activate-instructor',
+            markdown: 'mails.sale.activate-instructor',
         );
     }
 

@@ -5,7 +5,7 @@ namespace App\Repositories\Plan;
 use App\Events\ActivateInstructor;
 use App\Models\Sale;
 use App\Models\SaleInstructor;
-use App\Models\SalePlan;
+use App\Models\SaleSubscription;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
 {
     public function __construct(
         protected SaleInstructor $entity,
-        protected SalePlan $salePlan,
+        protected SaleSubscription $saleSubscription,
         protected Sale $sale
     ) {
     }
@@ -34,6 +34,11 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
         // Retornar os resultados paginados
         return new PaginationPresenter($result);
+    }
+
+    public function getUserRequestsById($id)
+    {
+        return $this->entity->with('plan')->find($id);
     }
 
     public function activatePlan(Request $request, $id)
@@ -55,7 +60,7 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
             $userRequest->save();
 
             // Crie uma nova venda de plano
-            $newProducerSale = $this->salePlan::create([
+            $newProducerSale = $this->saleSubscription::create([
                 'producer_id' => $userRequest->producer_id,
                 'quantity' => $userRequest->quantity,
                 'plan_id' => $userRequest->plan_id,

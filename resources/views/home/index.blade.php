@@ -194,7 +194,7 @@
         </p>
     </footer>
 
-    <script type="module" src="{{'/scripts/main.js'}}"></script>
+    <script type="module" src="{{ asset('/scripts/main.js') }}"></script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@ import utils from "./utils.js";
 
 function ___InitializeComponents () {
     const { disableLogs } = utils.___GetSiteConfigs();
-
+    
     if (!disableLogs) console.log('---------------=====:: Components are ready');
 };
 
@@ -31,7 +31,7 @@ export function FMTHowToStartStepRow ({ styleType='primary', theme='light', ...p
                 ${cta}
             </a>
             `
-
+        
             default: return '';
         };
     };
@@ -58,7 +58,7 @@ export function FMTFaqQuickLink ({ styleType='primary', theme='dark', linkType='
     const getIcon = (type) => {
         switch (type) {
             case "something": return '';
-
+        
             default: return '<i class="icon fa fa-link"></i>'
         };
     };
@@ -72,11 +72,11 @@ export function FMTFaqQuickLink ({ styleType='primary', theme='dark', linkType='
         <p>${linkDescription}</p>
 
         <a href="${gotoURL}" class="mt-2">
-            <i class="fa fa-link"></i>
-
+            <i class="fa fa-link"></i> 
+            
             <span>Ver página - ${pageTitle}</span>
         </a>
-    </div>
+    </div>  
     `
 };
 
@@ -133,7 +133,7 @@ export function FMTFooterLinkGroup ({ styleType='primary', theme='dark', ...prop
 
     return`
     <div class="fmt-footer-link-group" data-styletype="${styleType}" data-theme="${theme}">
-        ${(header.url === '#')
+        ${(header.url === '#') 
             ?   `<p class="title">${header.name}</p>`
             :   `<a href="${header.url}" class="title">${header.name}</a>`
         }
@@ -154,10 +154,10 @@ export function FMTPlanCard ({ styleType='primary', theme='dark', cardType='defa
         featureList
     } = props;
 
-    const _ctaStyleType = (cardType === 'priceless')
+    const _ctaStyleType = (cardType === 'priceless') 
         ?   'primary'
-        :   (cardType === 'call-to-action')
-            ? 'special'
+        :   (cardType === 'call-to-action') 
+            ? 'special' 
             : 'secondary'
     ;
 
@@ -168,7 +168,7 @@ export function FMTPlanCard ({ styleType='primary', theme='dark', cardType='defa
     <div class="fmt-plan-card" data-cardtype="${cardType}" data-styletype="${styleType}" data-theme="${theme}">
         <h5 class="mb-6">${cardTitle}</h5>
         <p>${cardDescription}</p>
-
+        
         <p class="price my-4">
             <span class="currency">${priceCurrency}</span>
             <span id="plan-${pricePlan}-price" class="value">${priceValue}</span>
@@ -183,6 +183,50 @@ export function FMTPlanCard ({ styleType='primary', theme='dark', cardType='defa
         </ul>
     </div>
     `
+};
+
+export function FMTPlanForm ({ styleType='primary', theme='light', id, name, price }) {
+    return`
+    <form id="${id}-form" class="plan-form" data-styletype="${styleType}" data-theme="${theme}">
+        <label class="name" for="plan-${id}">
+            <span>Nome</span>
+
+            <input type="text" name="name" id="plan-${id}" value="${name}" />
+        </label>
+
+        <label class="price" for="plan-${id}-price">
+            <span>Preço</span>
+
+            <input type="number" name="price" id="plan-${id}-price" value="${price}" min="0" />
+        </label>
+
+        <div class="actions">
+            <button 
+                type="button" 
+                title="Salvar alterações do plano '${name}'" 
+                data-action="save-changes" 
+                data-entity="plan" 
+                data-event="api" 
+                class="fmt-button-circle" 
+                data-styletype="approved"
+            >
+                <i class="fa fa-save"></i>
+            </button>
+
+            <button 
+                type="button" 
+                title="Eliminar plano '${name}'" 
+                data-action="delete" 
+                data-entity="plan" 
+                data-event="api" 
+                class="fmt-button-circle" 
+                data-styletype="dangerous"
+            >
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+    </form>
+    `;
 };
 
 export function FMTTestimonyCard ({ styleType='primary', theme='light', ...props }) {
@@ -231,7 +275,7 @@ export function FMTVideoCard ({ styleType='primary', theme='light', ...props }) 
     const getCardProperties = (type) => {
         switch (type) {
             case 'call-to-action': return '';
-
+        
             default: return `style="background-image: url('${videoThumbnailSrc}');"`;
         };
     };
@@ -240,9 +284,9 @@ export function FMTVideoCard ({ styleType='primary', theme='light', ...props }) 
         switch (type) {
             case 'call-to-action': return`
             <h4 id="examples:video-message" class="mt-auto mb-5"></h4>
-
+            
             <a id="examples:cta" href="#" class="fmt-button mb-auto" data-styletype="special" data-theme="light">
-            </a>
+            </a>    
             `
 
             default: return`
@@ -272,6 +316,50 @@ export function FMTVideoCard ({ styleType='primary', theme='light', ...props }) 
         ${getCardBody(cardType)}
     </div>
     `
+};
+
+export function Table ({ styleType='primary', theme='light', ...props }) {
+    let {
+        headers,
+        rows,
+        withView=false,
+        ...tableProps
+    } = props;
+
+    tableProps = {
+        class: (!tableProps?.class) ? 'fmt-table' : tableProps.class,
+        ...tableProps
+    };
+    
+    const {
+        id=undefined
+    } = tableProps;
+
+    tableProps = Object.keys(tableProps) === 0 ? '' : Object.keys(tableProps).map(key => { return `${key}="${tableProps[key]}"` }).join(' ');
+
+    return`
+    <table ${tableProps === '' ? '' : `${tableProps} `}data-styletype="${styleType}" data-theme="${theme}" data-hasview="${withView}">
+        <thead><tr>
+            ${headers.map(({ id, value:th }) => { return `<th id="${id}">${th}</th>` }).join(' ')}
+        </tr></thead>
+
+        <tbody>${rows.map((row, idx) => { return `
+            <tr ${(!id) ? '' : `id="${id}-row-${idx + 1}" data-tableid="${id}" data-id="${idx + 1}"${(withView) ? ' data-event="load-view"' : ''}`}>
+                ${row.map(({ id: _id, value:td }) => { 
+                    const hasActions = _id === 'actions';
+
+                    const propStrings = (hasActions) ? '' : `data-tableid="${id}" data-id="${idx + 1}" `;
+
+                    return `<td ${propStrings}class="${_id}-col">${td}</th>` 
+                }).join(' ')}
+            </tr>
+
+            ${(!withView || !id) ? '' : `<tr class="row-view">
+                <td id="${id}-view-${idx + 1}" data-viewname="${id}-view" data-component="row-view" data-toggled="false" colspan="${row.length}"></td>
+            </tr>`}
+        ` }).join(' ')}</tbody>
+    </table>
+    `;
 };
 
 const components = {

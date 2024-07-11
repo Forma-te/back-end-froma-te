@@ -25,6 +25,11 @@ class ActivateUserPlanService
         );
     }
 
+    public function getUserRequestsById($id)
+    {
+        return $this->repository->getUserRequestsById($id);
+    }
+
     public function activatePlan(Request $request, $id): array
     {
         try {
@@ -35,4 +40,6 @@ class ActivateUserPlanService
             return ['status' => 'error', 'message' => 'Failed to activate plan: ' . $e->getMessage()];
         }
     }
+
+
 }

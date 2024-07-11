@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SalePlan extends Model
+class SaleSubscription extends Model
 {
     use HasFactory;
 

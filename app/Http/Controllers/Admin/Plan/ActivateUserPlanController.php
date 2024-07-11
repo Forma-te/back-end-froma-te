@@ -15,23 +15,37 @@ class ActivateUserPlanController extends Controller
 
     public function getAllUserRequests(Request $request)
     {
-        $requests  = $this->activateUserPlanService->getAllUserRequests(
+        $requests = $this->activateUserPlanService->getAllUserRequests(
             page: $request->get('page', 1),
             totalPerPage: $request->get('per_page', 15),
             filter: $request->get('filter'),
         );
 
-        dd($requests);
+        return view('admin.pages.plan.subscriptions-index', [
+            'requests' => $requests,
+            'items' => $requests->items()
+        ]);
+    }
+
+    public function getUserRequestsById($id)
+    {
+        $data = $this->activateUserPlanService->getUserRequestsById($id);
+
+        return view('admin.pages.plan.activate-user-plan', compact('data'));
     }
 
     public function activatePlan(Request $request, $id)
     {
         $response  = $this->activateUserPlanService->activatePlan($request, $id);
 
-        if ($response ['status'] === 'success') {
-            return redirect()->route('')->with('success', $response ['message']);
+        if ($response) {
+            return redirect()
+                ->back()
+                ->with(['success' => 'Confirmação do pagamento realizado com sucesso!']);
+        } else {
+            return response()
+                ->back()
+                ->json(['error' => 'Fail Insert', 500]);
         }
-
-        return redirect()->route('')->with('error', $response['message']);
     }
 }

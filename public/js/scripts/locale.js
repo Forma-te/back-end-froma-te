@@ -1,5 +1,6 @@
 function ___GetLocaleStrings (localeLang='') {
     const _pt = {
+        //INDEX ------------------------------------------------------------------------------------------------------------------------
         'hero:title': 'Hero about the site <span>special stuff</span> in a special place',
         'hero:description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
         'hero:cta-1': 'CTA',
@@ -133,6 +134,46 @@ function ___GetLocaleStrings (localeLang='') {
         'faqAnswer5': 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
 
         'last:cta': 'Lorem ipsum dolor',
+        //INDEX ------------------------------------------------------------------------------------------------------------------------
+
+        //ADMIN ------------------------------------------------------------------------------------------------------------------------
+        'member:create-member': 'Cadastrar',
+
+        'plan:create-plan': 'Cadastrar Plano',
+        'plan:create-plan-submit': 'Cadastrar',
+
+        'producers:producers-tab': 'Instrutores',
+        'producers:requests-tab': 'Pedidos',
+
+        'quick-link:plans': 'Ver planos activos',
+        'quick-link:signatures': 'Rever assinaturas',
+        'quick-link:producers': 'Lista de produtores',
+        'quick-link:members': 'Lista de membros',
+        'quick-link:platform': 'Sobre a plataforma',
+
+        'side-menu:title1': 'Painel de administrador',
+
+        'side-menu-item:main': '<i class="fa fa-home"></i> <span class="text">Página Inicial</span>',
+        'side-menu-item:plans': '<i class="fa fa-square"></i> <span class="text">Planos</span>',
+        'side-menu-item:signatures': '<i class="fa fa-pencil"></i> <span class="text">Assinaturas</span>',
+        'side-menu-item:producers': '<i class="fa fa-user"></i> <span class="text">Produtores</span>',
+        'side-menu-item:members': '<i class="fa fa-group"></i> <span class="text">Membros</span>',
+        'side-menu-item:platform': '<i class="fa fa-desktop"></i> <span class="text">Plataforma</span>',
+
+        'side-menu:copyright-1': 'Forma-te © 2024',
+        'side-menu:copyright-2': 'Duis aute irure dolor in reprehenderit',
+
+        'signatures:signature-tab': 'Assinaturas',
+        'signatures:requests-tab': 'Pedidos',
+        //ADMIN ------------------------------------------------------------------------------------------------------------------------
+
+        //NOTIFICATIONS ----------------------------------------------------------------------------------------------------------------
+        'get-producer-error': '',
+        'get-signature-error': '',
+        'payment-confirmation-error': '',
+        'successful-payment-confirmation': 'Confirmação do pagamento realizado com sucesso',
+        //NOTIFICATIONS ----------------------------------------------------------------------------------------------------------------
+
         
         'footerLinkGroup1Name': 'Lorem ipsum dolor',
         'footerLinkGroup1URL': '#',
@@ -174,7 +215,12 @@ function ___GetLocaleStrings (localeLang='') {
     }
 };
 
+function ___GetLocaleString (localeLang, key) {
+    return ___GetLocaleStrings(localeLang)[key]
+};
+
 const locale = {
+    ___GetLocaleString,
     ___GetLocaleStrings
 };
 

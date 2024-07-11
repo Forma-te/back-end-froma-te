@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\SalePlan;
+use App\Models\SaleSubscription;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -21,13 +21,13 @@ class ActivateInstructor
      * Create a new event instance.
      */
     public function __construct(
-        protected SalePlan $salePlan
+        protected SaleSubscription $saleSubscription
     ) {
     }
 
-    public function getSalePlan(): SalePlan
+    public function getSalePlan(): SaleSubscription
     {
-        return $this->salePlan;
+        return $this->saleSubscription;
     }
 
     /**
