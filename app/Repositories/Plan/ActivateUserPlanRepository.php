@@ -85,4 +85,25 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
             throw $e;
         }
     }
+
+    public function getActivePlans(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface
+    {
+
+
+        $query = $this->saleSubscription
+                      ->with('producer')
+                      ->where('status', 'approved')
+                      ->orderBy('updated_at', 'desc');
+
+        if ($filter) {
+            $query->where(function ($query) use ($filter) {
+                $query->where('email', $filter)
+                      ->orWhere('email', 'like', "%{$filter}%");
+            });
+        }
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        // Retornar os resultados paginados
+        return new PaginationPresenter($result);
+    }
 }

@@ -48,4 +48,20 @@ class ActivateUserPlanController extends Controller
                 ->json(['error' => 'Fail Insert', 500]);
         }
     }
+
+    public function getActivePlans(Request $request)
+    {
+        $activePlans = $this->activateUserPlanService->getActivePlans(
+            page: $request->get('page', 1),
+            totalPerPage: $request->get('per_page', 15),
+            filter: $request->get('filter'),
+        );
+
+        dd($activePlans);
+
+        return view('', [
+            'activePlans' => $activePlans,
+            'items' => $activePlans->items()
+        ]);
+    }
 }

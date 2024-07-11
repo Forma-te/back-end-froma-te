@@ -41,5 +41,16 @@ class ActivateUserPlanService
         }
     }
 
+    public function getActivePlans(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getActivePlans(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
+    }
 
 }

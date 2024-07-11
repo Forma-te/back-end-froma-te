@@ -21,6 +21,7 @@ Route::middleware([])->group(function () {
     //Routes ActivateUserPlan
     Route::get('/user-requests', [ActivateUserPlanController::class, 'getAllUserRequests'])->name('user.requests.all');
     Route::get('/user-requests/{id}', [ActivateUserPlanController::class, 'getUserRequestsById'])->name('user.request');
-    Route::post('user-request/{id}/activate', [ActivateUserPlanController::class, 'activatePlan'])->name('plans.activate');
+    Route::post('/user-request/{id}/activate', [ActivateUserPlanController::class, 'activatePlan'])->name('plans.activate');
+    Route::get('/active-plans', [ActivateUserPlanController::class, 'getActivePlans'])->name('active.plans');
 
 });
