@@ -192,7 +192,7 @@ class User extends Authenticatable
 
     public function sales()
     {
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Sale::class, 'instrutor_id');
     }
 
     public function courses()
@@ -232,6 +232,17 @@ class User extends Authenticatable
         }
 
         return (bool) $profile->intersect($this->profiles)->count();
+    }
+
+    public function coursesProducer()
+    {
+        return $this->hasMany(Course::class, 'user_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsToMany(User::class, 'sales', 'instrutor_id')
+                ->where('sales.status', 'A');
     }
 
 }

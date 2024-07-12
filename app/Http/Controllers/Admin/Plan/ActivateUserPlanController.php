@@ -57,8 +57,6 @@ class ActivateUserPlanController extends Controller
             filter: $request->get('filter'),
         );
 
-        dd($activePlans);
-
         return view('', [
             'activePlans' => $activePlans,
             'items' => $activePlans->items()

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([])->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('home');
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/producers', [AdminController::class, 'getAllProducers'])->name('get.producers');
 
     //Routes plans
     Route::get('plans/{url}/edit', [PlanController::class, 'edit'])->name('plans.edit');

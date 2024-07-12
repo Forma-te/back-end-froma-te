@@ -88,8 +88,6 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
 
     public function getActivePlans(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface
     {
-
-
         $query = $this->saleSubscription
                       ->with('producer')
                       ->where('status', 'approved')

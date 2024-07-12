@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
+use App\Repositories\PaginationInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -76,5 +77,17 @@ class UserService
     public function delete(string $id): bool
     {
         return $this->repository->delete($id);
+    }
+
+    public function getAllProducers(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getAllProducers(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
     }
 }
