@@ -21,9 +21,8 @@ class ActivateUserPlanController extends Controller
             filter: $request->get('filter'),
         );
 
-        return view('admin.pages.plan.subscriptions-index', [
-            'requests' => $requests,
-            'items' => $requests->items()
+        return view('admin.pages.plan.plan-requests', [
+            'requests' => $requests
         ]);
     }
 

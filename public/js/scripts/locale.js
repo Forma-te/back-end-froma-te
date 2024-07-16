@@ -142,8 +142,10 @@ function ___GetLocaleStrings (localeLang='') {
         'plan:create-plan': 'Cadastrar Plano',
         'plan:create-plan-submit': 'Cadastrar',
 
-        'producers:producers-tab': 'Instrutores',
-        'producers:requests-tab': 'Pedidos',
+        'producers:producers-tab1': 'Instrutores',
+        'producers:producers-tab2': 'Instrutores',
+        'producers:requests-tab1': 'Pedidos',
+        'producers:requests-tab2': 'Pedidos',
 
         'quick-link:plans': 'Ver planos activos',
         'quick-link:signatures': 'Rever assinaturas',
@@ -163,8 +165,10 @@ function ___GetLocaleStrings (localeLang='') {
         'side-menu:copyright-1': 'Forma-te © 2024',
         'side-menu:copyright-2': 'Duis aute irure dolor in reprehenderit',
 
-        'signatures:signature-tab': 'Assinaturas',
-        'signatures:requests-tab': 'Pedidos',
+        'signatures:signature-tab1': 'Assinaturas',
+        'signatures:signature-tab2': 'Assinaturas',
+        'signatures:requests-tab1': 'Pedidos',
+        'signatures:requests-tab2': 'Pedidos',
         //ADMIN ------------------------------------------------------------------------------------------------------------------------
 
         //NOTIFICATIONS ----------------------------------------------------------------------------------------------------------------

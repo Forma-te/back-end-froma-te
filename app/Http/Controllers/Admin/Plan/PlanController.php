@@ -29,7 +29,7 @@ class PlanController extends Controller
             filter: $request->get('filter'),
         );
 
-        return view('', [
+        return view('admin.pages.plan.plans', [
             'plans' => $plans, 'title' => $title,
         ]);
     }

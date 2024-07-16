@@ -1,4 +1,4 @@
-import utils from "./utils.js";
+import utils from "./utils.js"; 
 import locale from "./locale.js";
 import { FMTFaqQuickLink, FMTFaqRow, FMTFeatureCard, FMTFooterLinkGroup, FMTHowToStartStepRow, FMTPlanCard, FMTPlanForm, FMTTestimonyCard, FMTVideoCard, Table } from "./components.js";
 import { getMembersTableConfig, getMenuForms, getProducersTableConfig, getSignaturesTableConfig } from "./getters.js";
@@ -11,7 +11,7 @@ const {
 } =  requests;
 
 export function Render$Examples (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('example-collection');
@@ -73,25 +73,25 @@ export function Render$Examples (
 };
 
 export function Render$FAQQuestions (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('faq-question-collection');
 
     [
-        {
+        { 
             question: localeStrings.faqQuestion1,
             answer: localeStrings.faqAnswer1
         },
-        {
+        { 
             question: localeStrings.faqQuestion2,
             answer: localeStrings.faqAnswer2
         },
-        {
+        { 
             question: localeStrings.faqQuestion3,
             answer: localeStrings.faqAnswer3
         },
-        {
+        { 
             question: localeStrings.faqQuestion4,
             answer: localeStrings.faqAnswer4
         }
@@ -99,20 +99,20 @@ export function Render$FAQQuestions (
 };
 
 export function Render$FAQQuickLinks (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('faq-quick-links');
 
     [
-        {
+        { 
             linkTitle: localeStrings.faqQuickLink2Title,
             linkType: localeStrings.faqQuickLink2Type,
             linkDescription: localeStrings.faqQuickLink2Description,
             gotoURL: localeStrings.faqQuickLink2PageURL,
             pageTitle: localeStrings.faqQuickLink2PageTitle
         },
-        {
+        { 
             linkTitle: localeStrings.faqQuickLink1Title,
             linkType: localeStrings.faqQuickLink1Type,
             linkDescription: localeStrings.faqQuickLink1Description,
@@ -123,41 +123,41 @@ export function Render$FAQQuickLinks (
 };
 
 export function Render$FeatureCards (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('feature-list');
 
     [
         [
-            {
+            { 
                 description: localeStrings.specialFeaturesDescription1,
                 icon: localeStrings.specialFeaturesIcon1,
                 title: localeStrings.specialFeaturesTitle1
             },
-            {
+            { 
                 description: localeStrings.specialFeaturesDescription2,
                 icon: localeStrings.specialFeaturesIcon2,
                 title: localeStrings.specialFeaturesTitle2
             },
-            {
+            { 
                 description: localeStrings.specialFeaturesDescription3,
                 icon: localeStrings.specialFeaturesIcon3,
                 title: localeStrings.specialFeaturesTitle3
             }
         ],
         [
-            {
+            { 
                 description: localeStrings.specialFeaturesDescription1,
                 icon: localeStrings.specialFeaturesIcon1,
                 title: localeStrings.specialFeaturesTitle1
             },
-            {
+            { 
                 description: localeStrings.specialFeaturesDescription2,
                 icon: localeStrings.specialFeaturesIcon2,
                 title: localeStrings.specialFeaturesTitle2
             },
-            {
+            { 
                 description: localeStrings.specialFeaturesDescription3,
                 icon: localeStrings.specialFeaturesIcon3,
                 title: localeStrings.specialFeaturesTitle3
@@ -171,14 +171,14 @@ export function Render$FeatureCards (
 };
 
 export function Render$FooterLinks (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('footer-links');
 
     [
-        {
-            header: {
+        { 
+            header: { 
                 name: localeStrings.footerLinkGroup1Name,
                 url: localeStrings.footerLinkGroup1URL
             },
@@ -189,8 +189,8 @@ export function Render$FooterLinks (
                 }
             })
         },
-        {
-            header: {
+        { 
+            header: { 
                 name: localeStrings.footerLinkGroup2Name,
                 url: localeStrings.footerLinkGroup2URL
             },
@@ -201,8 +201,8 @@ export function Render$FooterLinks (
                 }
             })
         },
-        {
-            header: {
+        { 
+            header: { 
                 name: localeStrings.footerLinkGroup3Name,
                 url: localeStrings.footerLinkGroup3URL
             },
@@ -217,33 +217,33 @@ export function Render$FooterLinks (
 };
 
 export function Render$HowToSteps (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('howto-steps');
 
     const propsArray = [
-        {
+        { 
             ctaStyleType: 'special',
             cta: localeStrings.howtoStartCTA1,
             ctaType: 'link',
             gotoURL: localeStrings.howtoStartURL1,
             description: localeStrings.howtoStartDescription1
         },
-        {
+        { 
             cta: localeStrings.howtoStartCTA2,
             ctaType: 'link',
             description: localeStrings.howtoStartDescription2,
             gotoURL: localeStrings.howtoStartURL2,
         },
-        {
+        { 
             ctaStyleType: 'secondary',
             cta: localeStrings.howtoStartCTA3,
             disabledCTA: true,
             description: localeStrings.howtoStartDescription3
         },
     ]
-
+    
     propsArray.forEach((props, idx) => containerElement.insertAdjacentHTML('beforeend', `
         ${FMTHowToStartStepRow({ stepNumber: (idx + 1), ...props })}
 
@@ -252,7 +252,7 @@ export function Render$HowToSteps (
 };
 
 export function Render$PlanCards (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const {
@@ -266,56 +266,56 @@ export function Render$PlanCards (
     const containerElement = document.getElementById('pricing-cards');
 
     [
-        {
-            cardTitle: localeStrings.plan1Name,
-            cardDescription: localeStrings.plan1Description,
+        { 
+            cardTitle: localeStrings.plan1Name, 
+            cardDescription: localeStrings.plan1Description, 
             pricePlan: 1,
-            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_1_yearly_price : plan_1_monthly_price,
-            callToAction: localeStrings.plan1CTA,
+            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_1_yearly_price : plan_1_monthly_price, 
+            callToAction: localeStrings.plan1CTA, 
             featureList: localeStrings.plan1Features
         },
-        {
-            cardType:'call-to-action',
-            cardTitle: localeStrings.plan2Name,
-            cardDescription: localeStrings.plan2Description,
+        { 
+            cardType:'call-to-action', 
+            cardTitle: localeStrings.plan2Name, 
+            cardDescription: localeStrings.plan2Description, 
             pricePlan: 2,
-            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_2_yearly_price : plan_2_monthly_price,
-            callToAction: localeStrings.plan2CTA,
+            priceValue: (DEFAULT_PRICING === 'yearly') ? plan_2_yearly_price : plan_2_monthly_price, 
+            callToAction: localeStrings.plan2CTA, 
             featureList: localeStrings.plan2Features
         },
-        {
+        { 
             cardType:'priceless',
-            cardTitle: localeStrings.plan3Name,
-            cardDescription: localeStrings.plan3Description,
+            cardTitle: localeStrings.plan3Name, 
+            cardDescription: localeStrings.plan3Description, 
             pricePlan: 3,
-            priceValue: 0,
-            callToAction: localeStrings.plan3CTA,
+            priceValue: 0, 
+            callToAction: localeStrings.plan3CTA, 
             featureList: localeStrings.plan3Features
         },
     ].forEach(props => containerElement.insertAdjacentHTML('beforeend', FMTPlanCard(props)));
 };
 
 export function Render$TestimonyCards (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE
 ) {
     const containerElement = document.getElementById('testimony-collection');
 
     [
         [
-            {
+            { 
                 profileSrc: './img/jpeg/profile-2.jpg',
                 userName: localeStrings.testimony1UserName,
                 userOccupation: localeStrings.testimony1UserOccupation,
                 testimony: localeStrings.testimony1
             },
-            {
+            { 
                 profileSrc: './img/jpeg/profile-1.jpg',
                 userName: localeStrings.testimony2UserName,
                 userOccupation: localeStrings.testimony2UserOccupation,
                 testimony: localeStrings.testimony2
             },
-            {
+            { 
                 profileSrc: './img/jpeg/profile-5.jpg',
                 userName: localeStrings.testimony3UserName,
                 userOccupation: localeStrings.testimony3UserOccupation,
@@ -323,25 +323,25 @@ export function Render$TestimonyCards (
             }
         ],
         [
-            {
+            { 
                 profileSrc: './img/jpeg/profile-7.jpg',
                 userName: localeStrings.testimony1UserName,
                 userOccupation: localeStrings.testimony1UserOccupation,
                 testimony: localeStrings.testimony1
             },
-            {
+            { 
                 profileSrc: './img/jpeg/profile-3.jpg',
                 userName: localeStrings.testimony1UserName,
                 userOccupation: localeStrings.testimony1UserOccupation,
                 testimony: localeStrings.testimony1
             },
-            {
+            { 
                 profileSrc: './img/jpeg/profile-4.jpg',
                 userName: localeStrings.testimony2UserName,
                 userOccupation: localeStrings.testimony2UserOccupation,
                 testimony: localeStrings.testimony2
             },
-            {
+            { 
                 profileSrc: './img/jpeg/profile-6.jpg',
                 userName: localeStrings.testimony3UserName,
                 userOccupation: localeStrings.testimony3UserOccupation,
@@ -356,46 +356,48 @@ export function Render$TestimonyCards (
 };
 
 export async function Render$MenuContent (
-    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE),
+    localeStrings=locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
     localeLang=utils.___GetConstants().DEFAULT_LOCALE,
-    menu,
+    menu, 
 ) {
     let headers, rows;
-
+    
     const viewContainer = document.getElementById('menu-view');
 
     viewContainer.dataset.view = menu;
 
     switch (menu) {
-        case 'main': {
+        case 'main': { 
             viewContainer.innerHTML=`
-            <h3>Links rápidos</h3>
+            <section id="main-menu" class="menu-container" data-active="true">
+                <h3>Links rápidos</h3>
 
-            <section id="quick-links" class="menu-area">
-                <button type="button" data-event="goto-link" data-goto="/plans">
-                    <i class="fa fa-link"></i>
-                    <span id="quick-link:plans"></span>
-                </button>
+                <section id="quick-links" class="menu-area">
+                    <button type="button" data-event="goto-link" data-goto="/plans">
+                        <i class="fa fa-link"></i>
+                        <span id="quick-link:plans"></span>
+                    </button>
+                    
+                    <button type="button" data-event="goto-link" data-goto="/signatures">
+                        <i class="fa fa-link"></i>
+                        <span id="quick-link:signatures"></span>
+                    </button>
 
-                <button type="button" data-event="goto-link" data-goto="/signatures">
-                    <i class="fa fa-link"></i>
-                    <span id="quick-link:signatures"></span>
-                </button>
+                    <button type="button" data-event="goto-link" data-goto="/producers">
+                        <i class="fa fa-link"></i>
+                        <span id="quick-link:producers"></span>
+                    </button>
 
-                <button type="button" data-event="goto-link" data-goto="/producers">
-                    <i class="fa fa-link"></i>
-                    <span id="quick-link:producers"></span>
-                </button>
+                    <button type="button" data-event="goto-link" data-goto="/members">
+                        <i class="fa fa-link"></i>
+                        <span id="quick-link:members"></span>
+                    </button>
 
-                <button type="button" data-event="goto-link" data-goto="/members">
-                    <i class="fa fa-link"></i>
-                    <span id="quick-link:members"></span>
-                </button>
-
-                <button type="button" data-event="goto-link" data-goto="/platform">
-                    <i class="fa fa-link"></i>
-                    <span id="quick-link:platform"></span>
-                </button>
+                    <button type="button" data-event="goto-link" data-goto="/platform">
+                        <i class="fa fa-link"></i>
+                        <span id="quick-link:platform"></span>
+                    </button>
+                </section>
             </section>
             `;
 
@@ -409,22 +411,24 @@ export async function Render$MenuContent (
                 { id: 'basic-semestral', name: 'Básico Semestral', price: 90000 },
                 { id: 'professional-monthly', name: 'Professional Mensal', price: 45000 }
             ];
-
+    
             viewContainer.innerHTML=`
-            <section id="plan-creation" class="menu-area gap-y-2">
-                <button id="plan:create-plan" data-event="toggle-form" data-targetid="create-plan-form" type="button" class="w-full fmt-button" data-styletype="primary" data-theme="light">
-                </button>
+            <section id="plans-menu" class="menu-container" data-active="false">
+                <section id="plan-creation" class="menu-area gap-y-2">
+                    <button id="plan:create-plan" data-event="toggle-form" data-targetid="create-plan-form" type="button" class="w-full fmt-button" data-styletype="primary" data-theme="light">
+                    </button>
 
-                ${getMenuForms(menu).createPlanForm}
-            </section>
-
-            <h3>Planos</h3>
-
-            <section id="plan-list" class="menu-area gap-y-2">
-                ${plansArray.map(plan => { return FMTPlanForm(plan) }).join(' ')}
+                    ${getMenuForms(menu).createPlanForm}
+                </section>
+        
+                <h3>Planos</h3>
+        
+                <section id="plan-list" class="menu-area gap-y-2">
+                    ${plansArray.map(plan => { return FMTPlanForm(plan) }).join(' ')}
+                </section>
             </section>
             `;
-
+            
             break;
         };
 
@@ -433,46 +437,48 @@ export async function Render$MenuContent (
                 headers,
                 rows
             } = await (getSignaturesTableConfig()));
-
+            
             viewContainer.innerHTML=`
-            <h3>Gestão de assinaturas solicitadas</h3>
+            <section id="signatures-list-menu" class="menu-container" data-active="false">
+                <h3>Gestão de assinaturas solicitadas</h3>
+        
+                <section id="signatures-list" class="menu-area">
+                    <div class="w-full flex flex-row justify-start items-center mb-3 gap-x-2">
+                        <button type="button" id="signatures:signature-tab" class="tab" data-currenttable="signature-requests-table" data-eventid="signatures" data-active="true" data-event="switch-tables"></button>
+                        <button type="button" id="signatures:requests-tab" class="tab" data-currenttable="signatures-table" data-eventid="signatures" data-active="false" data-event="switch-tables"></button>
+                    </div>
 
-            <section id="signatures-list" class="menu-area">
-                <div class="w-full flex flex-row justify-start items-center mb-3 gap-x-2">
-                    <button type="button" id="signatures:signature-tab" class="tab" data-currenttable="signature-requests-table" data-eventid="signatures" data-active="true" data-event="switch-tables"></button>
-                    <button type="button" id="signatures:requests-tab" class="tab" data-currenttable="signatures-table" data-eventid="signatures" data-active="false" data-event="switch-tables"></button>
-                </div>
+                    <div class="table-search">
+                        <i class="fa fa-search"></i>
+                        <input id="search-signature-table" type="text" />
+                    </div>
 
-                <div class="table-search">
-                    <i class="fa fa-search"></i>
-                    <input id="search-signature-table" type="text" />
-                </div>
+                    ${Table({ 
+                        id: 'signatures-table',
+                        headers,
+                        rows,
+                        withView: true,
+                    })}
 
-                ${Table({
-                    id: 'signatures-table',
-                    headers,
-                    rows,
-                    withView: true,
-                })}
+                    <div class="table-pagination">
+                        <span>A mostrar ${rows.length}</span>
 
-                <div class="table-pagination">
-                    <span>A mostrar ${rows.length}</span>
+                        <button type="button" class="ml-auto">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
 
-                    <button type="button" class="ml-auto">
-                        <i class="fa fa-arrow-left"></i>
-                    </button>
+                        ${Array.from(Array(4)).map((_, idx) => { return`
+                            <button type="button">${idx + 1}</button>
+                        `}).join(' ')}
 
-                    ${Array.from(Array(4)).map((_, idx) => { return`
-                        <button type="button">${idx + 1}</button>
-                    `}).join(' ')}
-
-                    <button type="button">
-                        <i class="fa fa-arrow-right"></i>
-                    </button>
-                </div>
+                        <button type="button">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
             </section>
             `;
-
+            
             break;
         }
 
@@ -483,44 +489,46 @@ export async function Render$MenuContent (
             } = await (getProducersTableConfig()));
 
             viewContainer.innerHTML=`
-            <h3>Listagem</h3>
+            <section id="producers-list-menu" class="menu-container">
+                <h3>Listagem</h3>
 
-            <section id="producers-list" class="menu-area">
-                <div class="w-full flex flex-row justify-start items-center mb-3 gap-x-2">
-                    <button type="button" id="producers:producers-tab" class="tab" data-currenttable="producers-requests-table" data-eventid="producers" data-active="true" data-event="switch-tables"></button>
-                    <button type="button" id="producers:requests-tab" class="tab" data-currenttable="producers-table" data-eventid="producers" data-active="false" data-event="switch-tables"></button>
-                </div>
+                <section id="producers-list" class="menu-area">
+                    <div class="w-full flex flex-row justify-start items-center mb-3 gap-x-2">
+                        <button type="button" id="producers:producers-tab" class="tab" data-currenttable="producers-requests-table" data-eventid="producers" data-active="true" data-event="switch-tables"></button>
+                        <button type="button" id="producers:requests-tab" class="tab" data-currenttable="producers-table" data-eventid="producers" data-active="false" data-event="switch-tables"></button>
+                    </div>
 
-                <div class="table-search">
-                    <i class="fa fa-search"></i>
-                    <input id="search-producers-table" type="text" />
-                </div>
+                    <div class="table-search">
+                        <i class="fa fa-search"></i>
+                        <input id="search-producers-table" type="text" />
+                    </div>
 
-                ${Table({
-                    id: 'producers-table',
-                    headers,
-                    rows,
-                    withView: true,
-                })}
+                    ${Table({ 
+                        id: 'producers-table',
+                        headers,
+                        rows,
+                        withView: true,
+                    })}
 
-                <div class="table-pagination">
-                    <span>A mostrar ${rows.length}</span>
+                    <div class="table-pagination">
+                        <span>A mostrar ${rows.length}</span>
 
-                    <button type="button" class="ml-auto">
-                        <i class="fa fa-arrow-left"></i>
-                    </button>
+                        <button type="button" class="ml-auto">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
 
-                    ${Array.from(Array(4)).map((_, idx) => { return`
-                        <button type="button">${idx + 1}</button>
-                    `}).join(' ')}
+                        ${Array.from(Array(4)).map((_, idx) => { return`
+                            <button type="button">${idx + 1}</button>
+                        `}).join(' ')}
 
-                    <button type="button">
-                        <i class="fa fa-arrow-right"></i>
-                    </button>
-                </div>
+                        <button type="button">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
             </section>
             `;
-
+            
             break;
         }
 
@@ -531,99 +539,103 @@ export async function Render$MenuContent (
             } = await (getMembersTableConfig()));
 
             viewContainer.innerHTML=`
-            <section id="member-registration" class="menu-area gap-y-2">
-                <button id="member:create-member" data-event="toggle-form" data-targetid="create-member-form" type="button" class="w-full fmt-button" data-styletype="primary" data-theme="light">
-                </button>
-
-                ${getMenuForms(menu)}
-            </section>
-
-            <h3>Listagem</h3>
-
-            <section id="members-list" class="menu-area">
-                <div class="table-search">
-                    <i class="fa fa-search"></i>
-                    <input id="search-members-table" type="text" />
-                </div>
-
-                ${Table({
-                    id: 'members-table',
-                    headers,
-                    rows
-                })}
-
-                <div class="table-pagination">
-                    <span>A mostrar ${rows.length}</span>
-
-                    <button type="button" class="ml-auto">
-                        <i class="fa fa-arrow-left"></i>
+            <section id="members-menu" class="menu-container" data-active="false">            
+                <section id="member-registration" class="menu-area gap-y-2">
+                    <button id="member:create-member" data-event="toggle-form" data-targetid="create-member-form" type="button" class="w-full fmt-button" data-styletype="primary" data-theme="light">
                     </button>
 
-                    ${Array.from(Array(4)).map((_, idx) => { return`
-                        <button type="button">${idx + 1}</button>
-                    `}).join(' ')}
+                    ${getMenuForms(menu)}
+                </section>
 
-                    <button type="button">
-                        <i class="fa fa-arrow-right"></i>
-                    </button>
-                </div>
+                <h3>Listagem</h3>
+
+                <section id="members-list" class="menu-area">
+                    <div class="table-search">
+                        <i class="fa fa-search"></i>
+                        <input id="search-members-table" type="text" />
+                    </div>
+
+                    ${Table({ 
+                        id: 'members-table',
+                        headers,
+                        rows
+                    })}
+
+                    <div class="table-pagination">
+                        <span>A mostrar ${rows.length}</span>
+
+                        <button type="button" class="ml-auto">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
+
+                        ${Array.from(Array(4)).map((_, idx) => { return`
+                            <button type="button">${idx + 1}</button>
+                        `}).join(' ')}
+
+                        <button type="button">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
             </section>
             `;
-
+            
             break;
         }
 
         case 'platform': {
             viewContainer.innerHTML=`
-            <h3>Quem somos</h3>
+            <section id="platform-menu" class="menu-container" data-active="false">
+                <h3>Quem somos</h3>
 
-            <section id="who-are-we" class="menu-area gap-y-2">
-            </section>
+                <section id="who-are-we" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Benefícios</h3>
+                <h3>Benefícios</h3>
 
-            <section id="benefits" class="menu-area gap-y-2">
-            </section>
+                <section id="benefits" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Quem usa</h3>
+                <h3>Quem usa</h3>
 
-            <section id="who-uses-it" class="menu-area gap-y-2">
-            </section>
+                <section id="who-uses-it" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Contactos</h3>
+                <h3>Contactos</h3>
 
-            <section id="contacts" class="menu-area gap-y-2">
-            </section>
+                <section id="contacts" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Central de ajuda</h3>
+                <h3>Central de ajuda</h3>
 
-            <section id="help-center" class="menu-area gap-y-2">
-            </section>
+                <section id="help-center" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Funcionalidades</h3>
+                <h3>Funcionalidades</h3>
 
-            <section id="functionalities" class="menu-area gap-y-2">
-            </section>
+                <section id="functionalities" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Termos de uso</h3>
+                <h3>Termos de uso</h3>
 
-            <section id="terms" class="menu-area gap-y-2">
-            </section>
+                <section id="terms" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Políticas de privacidade</h3>
+                <h3>Políticas de privacidade</h3>
 
-            <section id="policy" class="menu-area gap-y-2">
-            </section>
+                <section id="policy" class="menu-area gap-y-2">
+                </section>
 
-            <h3>Categoria</h3>
+                <h3>Categoria</h3>
 
-            <section id="categories" class="menu-area gap-y-2">
+                <section id="categories" class="menu-area gap-y-2">
+                </section>
             </section>
             `;
-
+            
             break;
         }
-
+    
         default: viewContainer.innerHTML=''; break;
     };
 };
@@ -697,7 +709,7 @@ export async function Render$SignatureTableDataView (rowId, tableId) {
                 <span class="data">${date}</span>
             </p>
         </div>
-
+        
         <div class="form flex flex-row justify-between items-end w-full">
             <label for="expiry-date">
                 <span>Data de vencimento</span>

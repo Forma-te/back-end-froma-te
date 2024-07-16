@@ -6,9 +6,10 @@ use App\Http\Controllers\Admin\Plan\PlanController;
 use App\Http\Controllers\Home\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([])->group(function () {
-    Route::get('/', [HomeController::class, 'home'])->name('home');
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('/', [HomeController::class, 'home'])->name('home');
+
+Route::middleware(['auth:sanctum', 'auth', 'verified'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/producers', [AdminController::class, 'getAllProducers'])->name('get.producers');
 
     //Routes plans
@@ -25,4 +26,10 @@ Route::middleware([])->group(function () {
     Route::post('/user-request/{id}/activate', [ActivateUserPlanController::class, 'activatePlan'])->name('plans.activate');
     Route::get('/active-plans', [ActivateUserPlanController::class, 'getActivePlans'])->name('active.plans');
 
+});
+
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'),'verified',])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });

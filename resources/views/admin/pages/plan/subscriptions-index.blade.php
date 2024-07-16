@@ -1,9 +1,9 @@
-<!-- Page main content START -->
+
 <div class="page-content-wrapper border">
     <!-- Title -->
     <div class="row mb-3">
         <div class="col-12">
-            <h1 class="h3 mb-2 mb-sm-0">Solicitações de assinaturas</h1>
+            <h1 class="h3 mb-2 mb-sm-0">Solicitações de planos</h1>
         </div>
     </div>
     <!-- Main card START -->
@@ -124,4 +124,4 @@
     <!-- Main card END -->
 
 </div>
-<!-- Page main content END -->
+

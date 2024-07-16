@@ -15,7 +15,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin.pages.admin');
+        return view('admin.pages.home.admin');
     }
 
     public function getAllProducers(Request $request)

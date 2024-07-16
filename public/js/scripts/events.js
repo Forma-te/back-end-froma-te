@@ -1,15 +1,6 @@
-import { Table } from "./components.js";
-import { getMenuLink, getProducerRequestsTableConfig, getProducersTableConfig, getSignatureRequestsTableConfig, getSignaturesTableConfig } from "./getters.js";
+import { getMenuLink } from "./getters.js";
 import locale from "./locale.js";
-import { Render$MenuContent, Render$ProducerTableDataView, Render$SignatureTableDataView } from "./renderers.js";
 import utils from "./utils.js";
-import requests from "./requests.js";
-
-const {
-    PlansAPI,
-    SignaturesAPI,
-    UsersAPI
-} = requests;
 
 export function Inject$HREFURLs () {
     const {
@@ -51,38 +42,24 @@ export function InjectData$Admin ({ localeStrings }) {
 };
 
 export function QueueEvents$Admin ({ setDefault=true }={}) {
+    const viewName = document.getElementById("menu-view").dataset.view;
+
     SetAsideMenuEvent();
-    SetAPIRequestEvent();
-    SetMenuLinkEvent({ setDefault });
     SetGotoLinkEvent();
     SetTableLoadRowViewEvent();
-    SetTableSwitchEvent();
     SetToggleFormEvent();
+    RunCrumbTrail(viewName);
 };
 
 export function RemoveEvents$Admin () {
     RemoveAsideMenuEvent();
-    RemoveAPIRequestEvent();
-    RemoveMenuLinkEvent();
     RemoveGotoLinkEvent();
     RemoveTableLoadRowViewEvent();
-    RemoveTableSwitchEvent();
+    RemoveMenuSwitchEvent();
     RemoveToggleFormEvent();
 };
 
-export function ViewLoader$Admin (defaultView=utils.___GetConstants().DEFAULT_VIEW) {
-    LoadViewMenu(defaultView, defaultView);
-};
-
-async function LoadViewMenu (menu, targetId=undefined) {
-    RemoveEvents$Admin();
-    
-    await Render$MenuContent(
-        locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE), 
-        utils.___GetConstants().DEFAULT_LOCALE,
-        menu
-    );
-
+function RunCrumbTrail(menu, targetId=undefined) {
     const crumbTrail = utils.___GetCrumbTrail(getMenuLink(menu), targetId);
     
     document.getElementById('breadcrumbs').innerHTML = crumbTrail
@@ -93,23 +70,7 @@ async function LoadViewMenu (menu, targetId=undefined) {
         })
         .join('<i class="arrow fa fa-angle-right"></i>')
     ;
-
-    QueueEvents$Admin({ setDefault: false });
-
-    Inject$LocaleStrings(locale.___GetLocaleStrings(utils.___GetConstants().DEFAULT_LOCALE));
-};
-
-function SetAPIRequestEvent () {
-    Array.from(document.querySelectorAll("*[data-event='api']")).forEach(element => {
-        element.addEventListener('click', APIRequest);
-    });
-};
-
-function RemoveAPIRequestEvent () {
-    Array.from(document.querySelectorAll("*[data-event='api']")).forEach(element => {
-        element.removeEventListener('click', APIRequest);
-    });
-};
+}
 
 function SetAsideMenuEvent() {
     document.getElementById('side-menu-close-btn').addEventListener('click', toggleAsideMenu);
@@ -157,25 +118,6 @@ function SetSideBarEvent () {
     document.getElementById('side-bar-close-btn').addEventListener('click', toggleSideBar(false));
 };
 
-function SetMenuLinkEvent ({ setDefault=false }={}) {
-    if (setDefault) Array.from(document.querySelectorAll('button[data-componenttype="sidemenu-link"]')).forEach(button => {
-        const isCurrentActiveLink = button.id.split(':')[1] === utils.___GetConstants().DEFAULT_VIEW;
-
-        button.dataset.active = `${isCurrentActiveLink}`;
-    });
-
-    Array.from(document.querySelectorAll('button[data-componenttype="sidemenu-link"]')).forEach(button => {
-        button.addEventListener('click', EVENT_CLUSTER_menuLink);
-    });
-};
-
-function RemoveMenuLinkEvent () {
-    Array.from(document.querySelectorAll('button[data-componenttype="sidemenu-link"]')).forEach(button => {
-        button.removeEventListener('click', EVENT_CLUSTER_menuLink);
-    });
-};
-
-
 function SetTableLoadRowViewEvent () {
     Array.from(document.querySelectorAll('tr[data-event="load-view"]')).forEach(row => {
         row.addEventListener('click', loadRowView);
@@ -185,17 +127,6 @@ function SetTableLoadRowViewEvent () {
 function RemoveTableLoadRowViewEvent () {
     Array.from(document.querySelectorAll('tr[data-event="load-view"]')).forEach(row => {
         row.removeEventListener('click', loadRowView);
-    });
-};
-function SetTableSwitchEvent () {
-    Array.from(document.querySelectorAll('button[data-event="switch-tables"]')).forEach(button => {
-        button.addEventListener('click', switchTable);
-    });
-};
-
-function RemoveTableSwitchEvent () {
-    Array.from(document.querySelectorAll('button[data-event="switch-tables"]')).forEach(button => {
-        button.removeEventListener('click', switchTable);
     });
 };
 
@@ -211,100 +142,6 @@ function RemoveToggleFormEvent() {
     });
 };
 
-async function APIRequest ({ target }) {
-    let id, payload, isForm;
-
-    const action = target.dataset.action;
-    const entity = target.dataset.entity;
-
-    switch (entity) {
-        case 'members':
-            id=target.dataset.id ?? null;
-
-            switch (action) {
-                case 'delete':
-                    new UsersAPI().DeleteMember(id, ({ data=null, error=null }) => {
-
-                    });
-                break;
-            
-                default:break;
-            }
-        break;
-
-        case 'plans':
-            isForm = target.dataset?.isform ? (target.dataset.isform === 'true') : false;
-
-            if (!isForm) (id=target.dataset.id ?? null);
-
-            else {
-                console.log('Get form data')
-            };
-
-            switch (action) {
-                case 'create':
-                    new PlansAPI().CreatePlan((isForm) ? payload : id, ({ data=null, error=null }) => {
-
-                    });
-                break;
-            
-                default:break;
-            }
-        break;
-
-        case 'producer':
-            id=target.dataset.id ?? null;
-
-            switch (action) {
-                case 'accept':
-                    new UsersAPI().AcceptProducerRequest(id, ({ data=null, error=null }) => {
-
-                    });
-                break;
-
-                case 'delete':
-                    new UsersAPI().DeleteProducer(id, ({ data=null, error=null }) => {
-
-                    });
-                break;
-
-                case 'deny':
-                    new UsersAPI().DenyProducerRequest(id, ({ data=null, error=null }) => {
-
-                    });
-                break;
-            
-                default:break;
-            }
-        break;
-
-        case 'signature':
-            switch (action) {
-                case 'confirm-payment':
-                    const expiryDateElement = document.getElementById('expiry-date');
-
-                    const expiryDate = expiryDateElement.value;
-
-                    const signatureId = expiryDateElement.dataset.signatureid;
-
-                    new SignaturesAPI().ConfirmPayment({ id: signatureId, expiryDate }, ({ data=null, error=null }) => {
-                        if (error) ScheduleNotification('payment-confirmation-error');
-
-                        else {
-                            ScheduleNotification('successful-payment-confirmation');
-                        }
-                    });
-                break;
-            
-                default: break;
-            }
-        break;
-    
-        default:
-        break;
-    }
-};
-
 function gotoLink ({ target }) {
     const [link, targetId=undefined] = (target.dataset?.goto ?? '/').split(':');
 
@@ -315,97 +152,19 @@ function gotoLink ({ target }) {
     document.getElementById(`side-menu-item:${id}`).click();
 };
 
-async function loadRowView ({ target }) {
-    const tableId = target.dataset.tableid;
+function loadRowView ({ target }) {
     const rowId = target.dataset.id;
-    
-    if ([tableId, rowId].some(value => [undefined, null].includes(value))) return;
 
-    RemoveAPIRequestEvent();
+    const tableView = document.querySelector(`td[data-viewid="${rowId}"]`);
 
-    const closeView = document.getElementById(`${tableId}-view-${rowId}`).dataset.toggled === 'true';
+    tableView.dataset.toggled = (tableView.dataset.toggled) === 'false';
 
-    Array.from(document.querySelectorAll(`td[data-viewname="${tableId}-view"][data-component="row-view"]`)).forEach(viewCell => {
-        viewCell.dataset.toggled = 'false';
-        viewCell.innerHTML='';
-    });
-
-    if (closeView) return;
-
-    switch (tableId) {
-        case 'producers-table':
-            await Render$ProducerTableDataView(rowId, tableId);
-        break;
-
-        case 'signatures-table':
-            await Render$SignatureTableDataView(rowId, tableId);
-        break;
-    
-        default: break;
-    }
-
-    SetAPIRequestEvent();
-};
-
-function renderMenuLinkView ({ target }) {
-    const menu = target.dataset.rendermenu;
-    const targetId = target.dataset?.targetid ?? undefined;
-
-    LoadViewMenu(menu, targetId ?? menu);
-};
-
-async function switchTable ({ target }) {
-    if (target.dataset.active === 'true') return;
-
-    RemoveTableLoadRowViewEvent();
-    RemoveAPIRequestEvent();
-
-    const eventId = target.dataset.eventid;
-    const tableName = target.dataset.currenttable;
-
-    Array.from(document.querySelectorAll(`button[data-event="switch-tables"][data-eventid="${eventId}"]`))
-        .forEach(button => button.dataset.active = false);
-
-    target.dataset.active = true;
-
-    let headers, rows, _Table;
-
-    switch (tableName) {
-        case 'producers-table':
-            ({ headers, rows } = await getProducerRequestsTableConfig());
-
-            _Table = Table({ id: 'producers-requests-table', headers, rows });
-        break;
-            
-        case 'producers-requests-table':
-            ({ headers, rows } = await getProducersTableConfig());
-
-            _Table = Table({ id: 'producers-table', headers, rows, withView: true });
-        break;
-
-        case 'signatures-table':
-            ({ headers, rows } = await getSignatureRequestsTableConfig());
-
-            _Table = Table({ id: 'signature-requests-table', headers, rows });
-        break;
-
-        case 'signature-requests-table':
-            ({ headers, rows } = await getSignaturesTableConfig());   
-
-            _Table = Table({ id: 'signatures-table', headers, rows, withView: true });
-        break;
-    
-        default: break;
-    };
-
-    const currentTableElement = document.getElementById(tableName);
-
-    currentTableElement.insertAdjacentHTML('afterend', _Table);
-
-    currentTableElement.remove();
-
-    SetTableLoadRowViewEvent();
-    SetAPIRequestEvent();
+    Array.from(document.querySelectorAll(`td[data-component="row-view"]`))
+        .filter(viewCell => viewCell.dataset.viewid !== rowId)
+        .forEach(viewCell => {
+            console.log(viewCell);
+            viewCell.dataset.toggled = 'false';
+        });
 };
 
 function toggleForm ({ target }) {
@@ -466,35 +225,6 @@ function toggleSideBar (state) {
 
         overlayElement.dataset.toggled = state;
         sideBarElement.dataset.toggled = state;
-    };
-};
-
-function EVENT_CLUSTER_menuLink (e) {
-    const sideMenuElement = document.getElementById('side-menu');
-
-    const state = sideMenuElement.dataset.toggled === 'true';
-
-    if (state) toggleAsideMenu({ target: document.getElementById('side-menu-close-btn') });
-    
-    toggleMenuLinkStyle(e);
-    renderMenuLinkView(e);
-};
-
-function toggleMenuLinkStyle ({ target }) {
-    Array.from(document.querySelectorAll('button[data-componenttype="sidemenu-link"]')).forEach(button => {
-        button.dataset.active = 'false';
-    });
-
-    target.dataset.active = 'true';
-};
-
-function toggleSideMenu (state) {
-    return ({ target }) => {
-        const sideMenuElement = document.getElementById('side-menu');
-        const overlayElement = document.querySelector('.overlay[data-parent="body"]');
-
-        overlayElement.dataset.toggled = state;
-        sideMenuElement.dataset.toggled = state;
     };
 };
 
