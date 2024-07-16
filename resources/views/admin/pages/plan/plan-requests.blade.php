@@ -7,9 +7,9 @@
 
         <section id="signatures-list" class="menu-area">
             <div class="w-full flex flex-row justify-start items-center mb-3 gap-x-2">
-                <a id="signatures:signature-tab1" class="tab" data-active="true" href="./admin-signatures.html"></a>
+                <a id="signatures:signature-tab1" class="tab" data-active="true" href="{{ route('user.requests.all')}}"></a>
 
-                <a id="signatures:requests-tab1" class="tab" data-active="false" href="./admin-signature-requests.html"></a>
+                <a id="signatures:requests-tab1" class="tab" data-active="false" href="{{ route('active.plans')}}"></a>
             </div>
 
             <div class="table-search">
@@ -40,53 +40,6 @@
                     </tr>
                     @empty
                     @endforelse
-                    <tr class="row-view">
-                        <form id="basic-monthly-form" action="" class="plan-form" data-styletype="primary" data-theme="light">
-                            @csrf
-                        <td id="signatures-table-view-1" data-viewid="1" data-component="row-view" data-toggled="false" colspan="4">
-                            <div class="signature-data">
-                                <div class="flex flex-row justify-start items-start w-full gap-x-3">
-                                    <p>
-                                        <span class="title">Transação Nº</span>
-                                        <span class="data">{{ $request->transaction }}</span>
-                                    </p>
-
-                                    <p>
-                                        <span class="title">Plano</span>
-                                        <span class="data"></span>
-                                    </p>
-
-                                    <p>
-                                        <span class="title">Mensalidade</span>
-                                        <span class="data">{{ $request->quantity }}</span>
-                                    </p>
-
-                                    <p>
-                                        <span class="title">Preço Total</span>
-                                        <span class="data">{{ number_format($request->total, 2, ',', '.') }} AOA</span>
-                                    </p>
-
-                                    <p>
-                                        <span class="title">Data</span>
-                                        <span class="data">{{ date('d/m/Y', strtotime($request->date)) }}</span>
-                                    </p>
-                                </div>
-
-                                <div class="form flex flex-row justify-between items-end w-full">
-                                    <label for="expiry-date-1">
-                                        <span>Data de vencimento</span>
-                                        <input name="date_the_end" type="date" id="expiry-date-1" required/>
-                                    </label>
-
-                                    <button type="submit" class="fmt-button" data-styletype="primary" data-theme="light">
-                                        Confirmar pagamento
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                    </form>
-                    </tr>
-
                 </tbody>
             </table>
 

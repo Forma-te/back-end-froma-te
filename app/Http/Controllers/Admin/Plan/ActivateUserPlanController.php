@@ -56,9 +56,8 @@ class ActivateUserPlanController extends Controller
             filter: $request->get('filter'),
         );
 
-        return view('', [
+        return view('admin.pages.plan.activated-plans', [
             'activePlans' => $activePlans,
-            'items' => $activePlans->items()
         ]);
     }
 }

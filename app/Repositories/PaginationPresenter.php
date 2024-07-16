@@ -25,7 +25,6 @@ class PaginationPresenter implements PaginationInterface
     public function items(): array
     {
         return $this->items;
-        // return $this->paginator->items();
     }
 
     public function total(): int
@@ -56,6 +55,36 @@ class PaginationPresenter implements PaginationInterface
     public function getNumberPreviousPage(): int
     {
         return $this->paginator->currentPage() - 1;
+    }
+
+    public function count(): int
+    {
+        return $this->paginator->count();
+    }
+
+    public function onFirstPage(): bool
+    {
+        return $this->paginator->onFirstPage();
+    }
+
+    public function hasMorePages(): bool
+    {
+        return $this->paginator->hasMorePages();
+    }
+
+    public function previousPageUrl(): ?string
+    {
+        return $this->paginator->previousPageUrl();
+    }
+
+    public function nextPageUrl(): ?string
+    {
+        return $this->paginator->nextPageUrl();
+    }
+
+    public function url($page): string
+    {
+        return $this->paginator->url($page);
     }
 
     private function resolveItems(array $items): array

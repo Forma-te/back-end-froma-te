@@ -8,49 +8,44 @@
                 class="fmt-button" data-styletype="primary" data-theme="light">
             </button>
 
-            <form id="create-plan-form" action="{{ route('plans.store') }}" method="POST" class="section-form" data-isform="true" data-toggled="false"
-                data-action="create" data-entity="plans" data-event="api">
-                @csrf
-                <h3>Cadastrar plano</h3>
+            <form id="create-plan-form" action="{{ route('plans.store') }}" method="POST" class="section-form"
+            data-isform="true" data-toggled="false" data-action="create" data-entity="plans" data-event="api">
+            @csrf
+            <h3>Cadastrar plano</h3>
 
-                <label for="new-plan-name" class="w-full">
-                    <span>Nome</span>
+            <label for="new-plan-name" class="w-full">
+                <span>Nome</span>
+                <input type="text" id="new-plan-name" class="w-full" name="name" value="{{ old('name') }}" placeholder="Nome do plano" />
+            </label>
 
-                    <input type="text" id="new-plan-name" class="w-full" name="name"  value="{{$plan->name ?? '' }}" placeholder="Nome do plano" />
+            <label for="new-plan-description" class="w-full">
+                <span>Descrição</span>
+                <textarea id="new-plan-description" class="w-full" name="description" placeholder="Descrição">{{ old('description') }}</textarea>
+            </label>
+
+            <div class="flex flex-row justify-start items-center gap-x-2">
+                <label for="new-plan-price">
+                    <span>Preço</span>
+                    <input type="text" id="new-plan-price" name="price" value="{{ old('price') }}" min="0" placeholder="Preço" />
                 </label>
 
-                <label for="new-plan-description" class="w-full">
-                    <span>Descrição</span>
-
-                    <textarea id="new-plan-description" class="w-full" value="{{$plan->description ?? '' }} name="description" placeholder="Descrição">
-                    </textarea>
+                <label for="new-plan-qty">
+                    <span>Quantidade</span>
+                    <input type="text" id="new-plan-qty" name="quantity" value="{{ old('quantity') }}" min="1" placeholder="Quantidade" />
                 </label>
+            </div>
 
-                <div class="flex flex-row justify-start items-center gap-x-2">
-                    <label for="new-plan-price">
-                        <span>Preço</span>
+            <div class="publish-row">
+                <input type="checkbox" id="new-plan-publish" name="published" {{ old('published') ? 'checked' : '' }}>
+                <label for="new-plan-publish">
+                    Publicar?
+                </label>
+            </div>
 
-                        <input type="text" id="new-plan-price" name="price" value="{{$plan->price ?? '' }}" min="0" placeholder="Preço" />
-                    </label>
-
-                    <label for="new-plan-qty">
-                        <span>Quantidade</span>
-
-                        <input type="text" id="new-plan-qty" name="quantity" value="{{$plan->quantity ?? '' }}" min="1" placeholder="Quantidade" />
-                    </label>
-                </div>
-
-                <div class="publish-row">
-                    <input type="checkbox" id="new-plan-publish"  value="{{$plan->published ?? '1' }}" name="published" />
-
-                    <label for="new-plan-publish">
-                        Publicar?
-                    </label>
-                </div>
-
-                <button id="plan:create-plan-submit" type="submit" class="fmt-button" data-styletype="primary" data-theme="light">
-                </button>
-            </form>
+            <button id="plan:create-plan-submit" type="submit" class="fmt-button" data-styletype="primary" data-theme="light">
+                Criar Plano
+            </button>
+        </form>
         </section>
 
         <h3>Planos</h3>
@@ -93,24 +88,35 @@
             </table>
 
             <div class="table-pagination w-full">
-                <span>A mostrar 2</span>
+                <span>A mostrar {{ $plans->count() }} de {{ $plans->total() }}</span>
 
-                <button type="button" class="ml-auto">
-                    <i class="fa fa-arrow-left"></i>
-                </button>
+                @if ($plans->onFirstPage())
+                    <button type="button" class="ml-auto" disabled>
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                @else
+                    <a href="{{ $plans->previousPageUrl() }}" class="ml-auto">
+                        <button type="button">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
+                    </a>
+                @endif
 
-                <button type="button">1</button>
 
-                <button type="button">2</button>
 
-                <button type="button">3</button>
-
-                <button type="button">4</button>
-
-                <button type="button">
-                    <i class="fa fa-arrow-right"></i>
-                </button>
+                @if ($plans->hasMorePages())
+                    <a href="{{ $plans->nextPageUrl() }}">
+                        <button type="button">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </a>
+                @else
+                    <button type="button" disabled>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                @endif
             </div>
+        </div>
         </section>
     </section>
 </main>

@@ -26,12 +26,13 @@ class PlanRepository implements PlanRepositoryInterface
                 }
             })
             ->paginate($totalPerPage, ['*'], 'page', $page);
+
         return new PaginationPresenter($result);
     }
 
     public function store(CreatePlanDTO $dto)
     {
-        $this->model->create($dto->toArray());
+        $this->model->create($dto);
     }
 
     public function show(string $url)

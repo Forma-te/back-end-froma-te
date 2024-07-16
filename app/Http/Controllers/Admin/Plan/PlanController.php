@@ -47,6 +47,7 @@ class PlanController extends Controller
      */
     public function store(StoreUpdatePlanRequest $request)
     {
+
         $this->planService->store(
             CreatePlanDTO::makeFromRequest($request)
         );
