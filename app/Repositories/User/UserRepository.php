@@ -6,11 +6,7 @@ use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User as Model;
 use App\Models\User;
-use App\Repositories\PaginationInterface;
-use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Gate;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -34,25 +30,22 @@ class UserRepository implements UserRepositoryInterface
         return $users;
     }
 
-    public function getAllProducers(int $page = 1, int $totalPerPage = 15, ?string $filter = null): PaginationInterface
+    public function getAllProducers(string $filter = null, int $page = 1, int $totalPerPage = 15)
     {
-        $cacheKey = "producers_page_{$page}_perPage_{$totalPerPage}_filter_" . ($filter ?: 'none');
 
-        $result = Cache::remember($cacheKey, 5 * 60, function () use ($page, $totalPerPage, $filter) {
-            return $this->model
-                ->with('coursesProducer', 'student')
-                ->whereHas('sales', function ($query) {
-                    $query->where('status', 'A');
-                })
-                ->where(function ($query) use ($filter) {
-                    if ($filter) {
-                        $query->where('name', 'like', "%{$filter}%");
-                    }
-                })
-                ->paginate($totalPerPage, ['*'], 'page', $page);
-        });
+        $producers = $this->model
+                        ->with('coursesProducer', 'student')
+                        ->whereHas('sales', function ($query) {
+                            $query->where('status', 'A');
+                        })
+                        ->where(function ($query) use ($filter) {
+                            if ($filter) {
+                                $query->where('name', 'like', "%{$filter}%");
+                            }
+                        })
+                        ->paginate($totalPerPage, ['*'], 'page', $page);
 
-        return new PaginationPresenter($result);
+        return $producers;
     }
 
     public function findById(string $id): object|null

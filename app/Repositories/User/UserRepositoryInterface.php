@@ -15,5 +15,5 @@ interface UserRepositoryInterface
     public function create(CreateUserDTO $dto): object;
     public function update(UpdateUserDTO $dto): ?User;
     public function delete(string $id): bool;
-    public function getAllProducers(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface;
+    public function getAllProducers(string $filter = null, int $page = 1, int $totalPerPage = 15);
 }

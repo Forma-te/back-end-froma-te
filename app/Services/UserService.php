@@ -24,6 +24,18 @@ class UserService
 
     }
 
+    public function getAllProducers(
+        string $filter = null,
+        int $page = 1,
+        int $totalPerPage  = 15
+    ) {
+        return $this->repository->getAllProducers(
+            filter: $filter,
+            page: $page,
+            totalPerPage: $totalPerPage,
+        );
+    }
+
     public function getAll(string $filter = '')
     {
         return $this->repository->getAll($filter);
@@ -79,15 +91,5 @@ class UserService
         return $this->repository->delete($id);
     }
 
-    public function getAllProducers(
-        int $page = 1,
-        int $totalPerPage  = 15,
-        string $filter = null
-    ): PaginationInterface {
-        return $this->repository->getAllProducers(
-            page: $page,
-            totalPerPage: $totalPerPage,
-            filter: $filter,
-        );
-    }
+
 }

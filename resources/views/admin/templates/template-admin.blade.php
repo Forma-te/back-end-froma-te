@@ -1,85 +1,123 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FORMA-TE | Admin</title>
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="{{ '/assets/css/global_.css' }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>FORMA-TE |</title>
+
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Webestica.com">
+	<meta name="description" content="Eduport- LMS, Education and Course Theme">
+
+	<!-- Dark mode -->
+	<script>
+		const storedTheme = localStorage.getItem('theme')
+
+		const getPreferredTheme = () => {
+			if (storedTheme) {
+				return storedTheme
+			}
+			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+		}
+
+		const setTheme = function (theme) {
+			if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				document.documentElement.setAttribute('data-bs-theme', 'dark')
+			} else {
+				document.documentElement.setAttribute('data-bs-theme', theme)
+			}
+		}
+
+		setTheme(getPreferredTheme())
+
+		window.addEventListener('DOMContentLoaded', () => {
+		    var el = document.querySelector('.theme-icon-active');
+			if(el != 'undefined' && el != null) {
+				const showActiveTheme = theme => {
+				const activeThemeIcon = document.querySelector('.theme-icon-active use')
+				const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+				const svgOfActiveBtn = btnToActive.querySelector('.mode-switch use').getAttribute('href')
+
+				document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
+					element.classList.remove('active')
+				})
+
+				btnToActive.classList.add('active')
+				activeThemeIcon.setAttribute('href', svgOfActiveBtn)
+			}
+
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+				if (storedTheme !== 'light' || storedTheme !== 'dark') {
+					setTheme(getPreferredTheme())
+				}
+			})
+
+			showActiveTheme(getPreferredTheme())
+
+			document.querySelectorAll('[data-bs-theme-value]')
+				.forEach(toggle => {
+					toggle.addEventListener('click', () => {
+						const theme = toggle.getAttribute('data-bs-theme-value')
+						localStorage.setItem('theme', theme)
+						setTheme(theme)
+						showActiveTheme(theme)
+					})
+				})
+
+			}
+		})
+
+	</script>
+
+	<!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url('/assets/images/favicon.ico') }}">
+
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap">
+
+	<!-- Plugins CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/vendor/font-awesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap-icons/bootstrap-icons.css">
+	<link rel="stylesheet" type="text/css" href="assets/vendor/apexcharts/css/apexcharts.css">
+	<link rel="stylesheet" type="text/css" href="assets/vendor/overlay-scrollbar/css/overlayscrollbars.min.css">
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
 </head>
 
-<body data-page="admin">
-    <div class="overlay" data-parent="body" data-toggled="false"></div>
+<body>
 
-    <div id="notification" data-active="false" data-styletype="primary" data-theme="light"></div>
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    @include('admin.pages._partials._sideBar')
+    <!-- Page content START -->
+    <div class="page-content">
+        @include('admin.pages._partials._topBar')
 
-    <aside id="side-menu" data-toggled="false">
-        <button id="side-menu-close-btn" type="button">
-            <i class="fa fa-angle-right"></i>
-        </button>
+        @yield('contect')
 
-        <p id="logo" class="text-3xl">FORMA-TE</p>
+    </div>
 
-        <hr class="my-3" />
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
 
-        <p id="side-menu:title1" class="title"></p>
+<!-- Back to top -->
+<div class="back-top"><i class="bi bi-arrow-up-short position-absolute top-50 start-50 translate-middle"></i></div>
 
-        <a id="side-menu-item:main" href="{{ route('admin.index') }}" data-rendermenu="main" data-active="true" data-componenttype="sidemenu-link"></a>
-        <a id="side-menu-item:plans" href="{{ route('plans.index') }}" data-rendermenu="plans" data-active="false" data-componenttype="sidemenu-link"></a>
-        <a id="side-menu-item:signatures" href="{{ route('user.requests.all')}}" data-rendermenu="signatures" data-active="false" data-componenttype="sidemenu-link"></a>
-        <a id="side-menu-item:producers" href="./admin-producers.html" data-rendermenu="producers" data-active="false" data-componenttype="sidemenu-link"></a>
-        <a id="side-menu-item:members" href="./admin-members.html" data-rendermenu="members" data-active="false" data-componenttype="sidemenu-link"></a>
-        <a id="side-menu-item:platform" href="./admin-platform.html" data-rendermenu="platform" data-active="false" data-componenttype="sidemenu-link"></a>
+<!-- Bootstrap JS -->
+<script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-        <hr class="my-3" />
+<!-- Vendors -->
+<script src="assets/vendor/purecounterjs/dist/purecounter_vanilla.js"></script>
+<script src="assets/vendor/apexcharts/js/apexcharts.min.js"></script>
+<script src="assets/vendor/overlay-scrollbar/js/overlayscrollbars.min.js"></script>
 
-        <p class="w-full text-center opacity-50 mt-auto">
-            <span id="side-menu:copyright-1"></span> <br />
-            <span id="side-menu:copyright-2"></span>
-        </p>
-    </aside>
+<!-- Template Functions -->
+<script src="assets/js/functions.js"></script>
 
-    <nav id="nav-bar">
-        <button id="side-menu-open-btn" type="button">
-            <i class="fa fa-bars"></i>
-        </button>
 
-        <p id="breadcrumbs">
-        </p>
-    </nav>
-
-     @yield('contect')
-
-    <footer data-componenttype="container" data-theme="dark">
-        <section id="footer-links"></section>
-
-        <section id="footer-social-media">
-            <a id="goto:fmt-instagram" target="_blank" rel="noreferrer" class="fmt-social-link-button"
-                data-styletype="primary" data-theme="dark">
-                <img src="{{'/assets/img/png/ic_instagram.png'}}" alt="instagram's logo" />
-            </a>
-
-            <a id="goto:fmt-facebook" target="_blank" rel="noreferrer" class="fmt-social-link-button mx-2"
-                data-styletype="primary" data-theme="dark">
-                <img src="{{'/assets/img/png/ic_facebook.png'}}" alt="facebook's logo" />
-            </a>
-
-            <a id="goto:fmt-twitterx" target="_blank" rel="noreferrer" class="fmt-social-link-button"
-                data-styletype="primary" data-theme="dark">
-                <img src="{{'/assets/img/png/ic_x_twitter.png'}}" alt="twitter-x's logo" />
-            </a>
-        </section>
-
-        <p id="footer-meta" class="w-full text-center opacity-50">
-            <span id="footer:copyright-1"></span> <br />
-            <span id="footer:copyright-2"></span>
-        </p>
-    </footer>
-
-    <script type="module" src="{{ asset('js/admin.js') }}"></script>
 </body>
-
 </html>

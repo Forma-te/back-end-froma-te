@@ -9,6 +9,19 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
+
+/**
+ * Class User.
+ *
+ * @author  Moises Bumba <moises@gmail.com>
+ *
+ * @OA\Schema(
+ *     title="User model",
+ *     description="User model",
+ * )
+ */
 
 class User extends Authenticatable
 {
@@ -19,14 +32,125 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     /**
-     * The attributes that are mass assignable.
+     * @OA\Property(
+     *     format="int32",
+     *     title="User status",
+     * )
      *
-     * @var array<int, string>
+     * @var int
      */
+
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+
+    /**
+     * @OA\Property(
+     *     title="name",
+     * )
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @OA\Property(
+     *     format="email",
+     *     title="Email",
+     * )
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     title="Password",
+     *     maximum=255
+     * )
+     *
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @OA\Property(
+     *     format="msisdn",
+     *     title="Phone",
+     * )
+     *
+     * @var string
+     */
+    private $phone;
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     title="url",
+     *     maximum=255
+     * )
+     *
+     * @var string
+     */
+    private $url;
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     title="image",
+     *     maximum=255
+     * )
+     *
+     * @var string
+     */
+    private $image;
+
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     title="Bibliografia",
+     *     maximum=255
+     * )
+     *
+     * @var string
+     */
+    private $bibliography;
+
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     title="addresses",
+     *     maximum=255
+     * )
+     *
+     * @var string
+     */
+    private $addresses;
+
+    /**
+         * @OA\Property(
+         *     format="int64",
+         *     description="type",
+         *     title="type",
+         *     maximum=255
+         * )
+         *
+         * @var string
+         */
+    private $type;
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'url',
+        'image',
+        'bibliography',
+        'phone_number',
+        'bi'
     ];
 
     /**
@@ -61,5 +185,70 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? Storage::url($value) : null,
+        );
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'instrutor_id');
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'sales');
+    }
+
+    public static function scopeUserByAuth($query)
+    {
+        return $query->where('id', auth()->user()->id);
+    }
+
+    public function banks()
+    {
+        return $this->hasMany(Bank::class);
+    }
+
+    public function coursesProducer()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsToMany(User::class, 'sales', 'instrutor_id')
+                ->where('sales.status', 'A');
+    }
+
+    public function checkAccess($idCourse)
+    {
+        if (! auth()->check()) {
+            return false;
+        }
+
+        $permission = $this->join('sales', 'sales.user_id', '=', 'users.id')
+            ->where('sales.user_id', auth()->user()->id)
+            ->where('sales.course_id', $idCourse)
+            ->where('sales.status', 'A')
+            ->count();
+        if ($permission > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function hasProfile($profile)
+    {
+        if (is_string($profile)) {
+            return $this->profiles->contains('name', $profile);
+        }
+
+        return (bool) $profile->intersect($this->profiles)->count();
     }
 }

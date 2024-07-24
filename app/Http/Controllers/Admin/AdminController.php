@@ -15,22 +15,18 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin.pages.home.admin');
+        return view('admin.pages.home.dashboard');
     }
 
     public function getAllProducers(Request $request)
     {
-        $producer = $this->userService->getAllProducers(
+        $producers = $this->userService->getAllProducers(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
-            filter: $request->get('filter'),
+            totalPerPage: $request->get('totalPerPage', 10),
+            filter: $request->get('filter')
         );
-        dd($producer);
-        return view('', [
-            'producer' => $producer,
-            'items' => $producer->items()
-        ]);
-    }
 
+        return view('admin.pages.producer.producers', compact('producers'));
+    }
 
 }
