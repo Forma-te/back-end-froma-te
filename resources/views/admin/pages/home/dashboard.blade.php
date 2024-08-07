@@ -102,56 +102,32 @@
         <!-- Ticket START -->
         <div class="col-xxl-4">
             <div class="card shadow h-100">
+
                 <!-- Card header -->
                 <div class="card-header border-bottom d-flex justify-content-between align-items-center p-4">
-                    <h5 class="card-header-title">Plans Requests</h5>
+                    <h5 class="card-header-title">Traffic Sources</h5>
                     <a href="#" class="btn btn-link p-0 mb-0">View all</a>
                 </div>
 
                 <!-- Card body START -->
                 <div class="card-body p-4">
-
-                    <!-- Ticket item START -->
-                    <div class="d-flex justify-content-between position-relative">
-                        <div class="d-sm-flex">
-                            <!-- Avatar -->
-                            <div class="avatar avatar-md flex-shrink-0">
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt="avatar">
-                            </div>
-                            <!-- Info -->
-                            <div class="ms-0 ms-sm-2 mt-2 mt-sm-0">
-                                <h6 class="mb-0"><a href="#" class="stretched-link">Lori Stevens</a></h6>
-                                <p class="mb-0">moises-alberto@hotmail.com</p>
-                                <span class="small">8 hour ago</span>
-                            </div>
-                        </div>
+                    <!-- Chart -->
+                    <div class="col-sm-6 mx-auto">
+                        <div id="ChartTrafficViews"></div>
                     </div>
-                    <!-- Ticket item END -->
 
-                    <hr><!-- Divider -->
-
-                    <!-- Ticket item START -->
-                    <div class="d-flex justify-content-between position-relative">
-                        <div class="d-sm-flex">
-                            <!-- Avatar -->
-                            <div class="avatar avatar-md flex-shrink-0">
-                                <div class="avatar-img rounded-circle bg-purple bg-opacity-10">
-                                    <span class="text-purple position-absolute top-50 start-50 translate-middle fw-bold">DB</span>
-                                </div>
-                            </div>
-                            <!-- Info -->
-                            <div class="ms-0 ms-sm-2 mt-2 mt-sm-0">
-                                <h6 class="mb-0"><a href="#" class="stretched-link">Dennis Barrett</a></h6>
-                                <p class="mb-0">moises.alberto.bumba@gmail.com</p>
-                                <span class="small">8 hour ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Ticket item END -->
-
+                    <!-- Content -->
+                    <ul class="list-group list-group-borderless mt-3">
+                        <li class="list-group-item"><i class="text-primary fas fa-circle me-2"></i>Create a Design System in Figma</li>
+                        <li class="list-group-item"><i class="text-success fas fa-circle me-2"></i>The Complete Digital Marketing Course - 12 Courses in 1</li>
+                        <li class="list-group-item"><i class="text-warning fas fa-circle me-2"></i>Google Ads Training: Become a PPC Expert</li>
+                        <li class="list-group-item"><i class="text-danger fas fa-circle me-2"></i>Microsoft Excel - Excel from Beginner to Advanced</li>
+                    </ul>
                 </div>
-                <!-- Card body END -->
             </div>
+            <!-- Card body END -->
+
+
         </div>
         <!-- Ticket END -->
     </div>

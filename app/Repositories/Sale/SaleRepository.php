@@ -30,7 +30,7 @@ class SaleRepository implements SaleRepositoryInterface
                       ->newQuery()
                       ->join('courses', 'courses.id', '=', 'sales.course_id')
                       ->join('users', 'users.id', '=', 'sales.user_id')
-                      ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
+                      ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.date_expired', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
                       ->where('courses.user_id', auth()->user()->id)
                       ->where('sales.status', 'A');
 

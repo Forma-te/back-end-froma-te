@@ -114,7 +114,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Sale
     */
     Route::get('/members-status', [SaleController::class, 'getMembersByStatus']);
-    Route::get('/members', [SaleController::class, 'getMyMember']);
+    Route::get('/members', [SaleController::class, 'getMyMembers']);
     Route::get('/sale/{Id}', [SaleController::class, 'getSaleById']);
     Route::post('/sales', [SaleController::class, 'newSale']);
     Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);
