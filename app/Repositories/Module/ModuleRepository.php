@@ -53,21 +53,16 @@ class ModuleRepository implements ModuleRepositoryInterface
         return $courses->toArray();
     }
 
-    public function getModulesByCourseId(string $courseId): ?array
+    public function getModulesByCourseId(string $courseId): object|null
     {
         $course = $this->course->find($courseId);
+
         if (!$course) {
-            return ['message' => 'Curso não encontrado'];
+            return null;
         }
 
         if (Gate::authorize('owner-course', $course)) {
-            $modules = $course->modules()->get();
-
-            if ($modules->isEmpty()) {
-                return [];
-            }
-
-            return $modules->toArray();
+            return $course->modules()->with('lessons')->get();
         }
 
         return null; // Autorização falhou

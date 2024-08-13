@@ -8,8 +8,7 @@ class CreateModuleDTO
 {
     public function __construct(
         public string $course_id,
-        public string $name,
-        public bool $published
+        public string $name
     ) {
     }
 
@@ -19,8 +18,7 @@ class CreateModuleDTO
 
         return new self(
             $data['course_id'],
-            $data['name'],
-            $data['published']
+            $data['name']
         );
     }
 }

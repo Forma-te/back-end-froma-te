@@ -21,7 +21,6 @@ class LessonResource extends JsonResource
             'video' => $this->video,
             'file' => $this->file,
             'views' => ViewResource::collection($this->whenLoaded('views')),
-
         ];
     }
 }

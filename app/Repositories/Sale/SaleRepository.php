@@ -13,6 +13,7 @@ use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class SaleRepository implements SaleRepositoryInterface
 {
@@ -30,15 +31,28 @@ class SaleRepository implements SaleRepositoryInterface
                       ->newQuery()
                       ->join('courses', 'courses.id', '=', 'sales.course_id')
                       ->join('users', 'users.id', '=', 'sales.user_id')
-                      ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.date_expired', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
+                      ->select(
+                          'sales.transaction',
+                          'sales.status',
+                          'sales.date_created',
+                          'sales.date_expired',
+                          'sales.id',
+                          'courses.name as course_name',
+                          'courses.price',
+                          'courses.url',
+                          DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', courses.image) as image_url"),
+                          'users.name as user_name',
+                          'users.email as student_email',
+                          DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', users.image) as student_image_url")
+                      )
                       ->where('courses.user_id', auth()->user()->id)
                       ->where('sales.status', 'A');
 
         // Aplicar o filtro se fornecido
         if ($filter) {
             $query->where(function ($query) use ($filter) {
-                $query->where('email_student', $filter)
-                  ->orWhere('name', 'like', "%{$filter}%");
+                $query->where('users.email', $filter)
+                  ->orWhere('users.name', 'like', "%{$filter}%");
             });
         }
 

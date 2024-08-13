@@ -222,7 +222,7 @@ class ModuleController extends Controller
 
         if(!$module) {
             return response()->json([
-                'error' => 'Not Found'
+                'error' => 'Module not found or failed to update.'
             ], Response::HTTP_FOUND);
         }
 

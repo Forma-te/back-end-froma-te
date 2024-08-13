@@ -25,6 +25,7 @@ class CreateCourseDTO
     public static function makeFromRequest(StoreUpdateCourseRequest $request): self
     {
         $data = $request->all();
+
         $url = sprintf('%08X', mt_rand(0, 0xFFFFFFF));
         $codigo = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
 

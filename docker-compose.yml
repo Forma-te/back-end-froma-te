@@ -50,8 +50,8 @@ services:
             - dev-api
 
     # queue
-    queue:
-        image: 010107/laravel-community:dev
+    queue: 
+        image: 010107/docker-image-supervisor:php-8-3
         container_name: queue-api
         restart: unless-stopped
         command: "php artisan queue:work"

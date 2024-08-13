@@ -14,12 +14,22 @@ class CourseResource extends JsonResource
      */
     public function toArray($request)
     {
+        $this->loadMissing('modules.lessons');
+
         return [
-            'id' => $this->id,
+            'course_id' => $this->id,
+            'category_id' => $this->category_id,
+            'user_id' => $this->user_id,
             'name' => ucwords(strtolower($this->name)),
+            'url' => $this->url,
             'description' => $this->description,
-            'image' => $this->image,
-            'modules' => ModuleResource::collection($this->whenLoaded('modules')),
+            'code' => $this->code,
+            'total_hours' => $this->total_hours,
+            'published' => $this->published,
+            'free' => $this->free,
+            'price' => $this->price,
+            'imagem' => $this->image,
+            'modules' => ModuleResource::collection($this->whenLoaded('modules'))
         ];
     }
 }

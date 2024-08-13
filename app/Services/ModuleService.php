@@ -38,7 +38,7 @@ class ModuleService
         return $this->repository->createModule();
     }
 
-    public function getModulesByCourseId(string $courseId): ?array
+    public function getModulesByCourseId(string $courseId): object|null
     {
         return $this->repository->getModulesByCourseId($courseId);
     }

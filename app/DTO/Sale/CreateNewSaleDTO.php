@@ -25,6 +25,8 @@ class CreateNewSaleDTO
 
         $transaction = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
         $date_created = now();
+        $blocked = 0;
+        $status = 'A';
 
         return new self(
             $data['course_id'],
@@ -33,8 +35,8 @@ class CreateNewSaleDTO
             $data['instrutor_id'] ?? null,
             $transaction,
             $data['email_student'],
-            $data['status'],
-            $data['blocked'],
+            $status,
+            $blocked,
             $date_created,
             $data['date_expired']
         );

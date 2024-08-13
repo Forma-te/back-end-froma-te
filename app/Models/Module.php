@@ -51,7 +51,7 @@ class Module extends Model
     private $published;
 
     protected $fillable = [
-        'course_id', 'name', 'published'
+        'course_id', 'name'
     ];
 
     // Verifica se o usuário atual é o proprietário do curso
@@ -60,16 +60,6 @@ class Module extends Model
         $course = course::find($this->get('course_id'));
 
         return Gate::allows('owner-course', $course);
-    }
-
-    public function rules()
-    {
-        return [
-
-            'course_id' => 'required',
-            'name' => 'required|min:2|max:150',
-
-        ];
     }
 
     // Definição da relação com o modelo Course
