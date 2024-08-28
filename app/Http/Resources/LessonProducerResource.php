@@ -33,6 +33,7 @@ class LessonProducerResource extends JsonResource
             'description' => $resource->description ?? null,
             'video' => $resource->video ?? null,
             'file' => $resource->file ?? null,
+            'published' => $resource->published ?? null
         ];
     }
 }

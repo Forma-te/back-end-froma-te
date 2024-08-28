@@ -67,7 +67,7 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
                 'total' => $userRequest->total,
                 'date_the_end' => $dataForm['date_the_end'],
                 'date_start' => date('Y-m-d'),
-                'status' => 'approved',
+                'status' => 'Aprovado',
             ]);
 
             // Atualize o status das vendas suspensas
@@ -102,6 +102,26 @@ class ActivateUserPlanRepository implements ActivateUserPlanRepositoryInterface
         // Paginar os resultados
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
         // Retornar os resultados paginados
+        return new PaginationPresenter($result);
+    }
+
+    public function getProducerWithApprovedStatus()
+    {
+        return $this->saleSubscription->userByAuth()
+                                      ->orderBy('updated_at', 'desc')
+                                      ->with('plan')
+                                      ->first();
+
+    }
+
+    public function getProducerHistorical(int $page = 1, int $totalPerPage = 10): PaginationInterface
+    {
+        $query = $this->saleSubscription->userByAuth()
+                                       ->orderBy('updated_at', 'desc')
+                                       ->with('plan');
+
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
         return new PaginationPresenter($result);
     }
 }

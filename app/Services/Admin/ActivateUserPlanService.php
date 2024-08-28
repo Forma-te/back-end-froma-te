@@ -53,4 +53,19 @@ class ActivateUserPlanService
         );
     }
 
+    public function getProducerWithApprovedStatus()
+    {
+        return $this->repository->getProducerWithApprovedStatus();
+    }
+
+    public function getProducerHistorical(
+        int $page = 1,
+        int $totalPerPage  = 15
+    ): PaginationInterface {
+        return $this->repository->getProducerHistorical(
+            page: $page,
+            totalPerPage: $totalPerPage,
+        );
+    }
+
 }

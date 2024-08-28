@@ -3,6 +3,7 @@
 namespace App\Repositories\Lesson;
 
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
 use App\Models\Module;
@@ -65,6 +66,18 @@ class LessonRepository implements LessonRepositoryInterface
     }
 
     public function update(UpdateLessonDTO $dto): ?Lesson
+    {
+        $lesson = $this->entity->find($dto->id);
+
+        if($lesson) {
+            $lesson->update((array) $dto);
+            return $lesson;
+        }
+
+        return null;
+    }
+
+    public function editNameLesson(UpdateEditNameLessonDTO $dto): ?Lesson
     {
         $lesson = $this->entity->find($dto->id);
 

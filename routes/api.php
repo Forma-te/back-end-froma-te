@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Producer\{
     ModuleController,
     ReplySupportController,
     SaleController,
+    SubscriptionController,
     UserController
 };
 use App\Http\Controllers\Api\Auth\{
@@ -62,6 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Modules
     */
     Route::get('/course/{courseId}/modules', [ModuleController::class, 'getModulesByCourse']);
+    Route::get('/module/{Id}', [ModuleController::class, 'getModuleById']);
     Route::post('/module', [ModuleController::class, 'createModule']);
     Route::put('/module/{Id}', [ModuleController::class, 'updateModule']);
     Route::delete('/module/{Id}', [ModuleController::class, 'destroyModule']);
@@ -73,6 +75,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/module/{moduleId}/lessons', [LessonController::class, 'getLessonByModuleId']);
     Route::post('/lesson', [LessonController::class, 'createLesson']);
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
+    Route::put('/lesson/edit/name/{Id}', [LessonController::class, 'editNameLesson']);
     Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
     // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 
@@ -129,7 +132,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Reply support
     */
-    //Route::post('/replies', [ReplySupportController::class, 'createReply']);
+    // Route::post('/replies', [ReplySupportController::class, 'createReply']);
     Route::post('/support/reply', [ReplySupportController::class, 'createReply']);
     Route::get('/supports', [ReplySupportController::class, 'getSupportProducerByStatus']);
     Route::get('/support/{Id}', [ReplySupportController::class, 'message']);
@@ -141,6 +144,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/cart/plans/{url}', [CartPlanController::class, 'createSessionPlan']);
     Route::get('/cart/checkout', [CartPlanController::class, 'checkoutPlan']);
     Route::get('/cart/plan-pay', [CartPlanController::class, 'planPay']);
+
+    /**
+    * Route Subscription
+    */
+    Route::get('/subscription', [SubscriptionController::class, 'getSubscription']);
 });
 
 Route::get('/', function () {

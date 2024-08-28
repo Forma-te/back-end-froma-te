@@ -87,7 +87,7 @@ class Sale extends Model
         'P' => 'Pendente'
     ];
 
-    public function getDateAttribute($value)
+    public function getDateCreatedAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');
     }

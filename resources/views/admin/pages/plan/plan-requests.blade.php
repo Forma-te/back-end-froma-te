@@ -1,69 +1,131 @@
 @extends('admin.templates.template-admin')
 
 @section('contect')
-<main id="menu-view" data-page="admin" data-view="signatures">
-    <section id="signatures-menu" class="menu-container" data-active="true">
-        <h3>Gestão de assinaturas solicitadas</h3>
-
-        <section id="signatures-list" class="menu-area">
-            <div class="w-full flex flex-row justify-start items-center mb-3 gap-x-2">
-                <a id="signatures:signature-tab1" class="tab" data-active="true" href="{{ route('user.requests.all')}}"></a>
-
-                <a id="signatures:requests-tab1" class="tab" data-active="false" href="{{ route('active.plans')}}"></a>
+<!-- Page main content START -->
+<div class="page-content-wrapper border">
+    <!-- Title -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="h3 mb-2 mb-sm-0">Solicitações Produtores</h1>
+        </div>
+    </div>
+    <!-- Main card START -->
+    <div class="card bg-transparent border">
+        <!-- Card header START -->
+        <div class="card-header bg-light border-bottom">
+            <!-- Search and select START -->
+            <div class="row g-3 align-items-center justify-content-between">
+                <!-- Search bar -->
+                <div class="col-md-8">
+                    <form class="rounded position-relative">
+                        <input class="form-control bg-body" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn bg-transparent px-2 py-0 position-absolute top-50 end-0 translate-middle-y"
+                            type="submit"><i class="fas fa-search fs-6"></i></button>
+                    </form>
+                </div>
+                <!-- Select option -->
+                <div class="col-md-3">
+                    <!-- Short by filter -->
+                    <form>
+                        <select class="form-select js-choice border-0 z-index-9 bg-transparent"
+                            aria-label=".form-select-sm">
+                            <option value="">Sort by</option>
+                            <option>Newest</option>
+                            <option>Oldest</option>
+                            <option>Accepted</option>
+                            <option>Rejected</option>
+                        </select>
+                    </form>
+                </div>
             </div>
+            <!-- Search and select END -->
+        </div>
+        <!-- Card header END -->
 
-            <div class="table-search">
-                <i class="fa fa-search"></i>
-                <input id="search-signature-table" name="search-key" type="text" />
+        <!-- Card body START -->
+        <div class="card-body">
+            <!-- Instructor request table START -->
+            <div class="table-responsive border-0">
+                <table class="table table-dark-gray align-middle p-4 mb-0 table-hover">
+                    <!-- Table head -->
+                    <thead>
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start">E-mail produtor</th>
+                            <th scope="col" class="border-0">Transação Nº</th>
+                            <th scope="col" class="border-0">Mensalidade</th>
+                            <th scope="col" class="border-0 rounded-end">Data</th>
+                        </tr>
+                    </thead>
+                    <!-- Table body START -->
+                    <tbody>
+                        <!-- Table row -->
+                        @forelse($requests->items() as $key => $request)
+                            <tr>
+                                <!-- Table data -->
+                                <td>
+                                    <div class="d-flex align-items-center position-relative">
+                                        <!-- Image -->
+                                        <div class="avatar avatar-md">
+                                            <img src="assets/images/avatar/09.jpg" class="rounded-circle"
+                                                alt="">
+                                        </div>
+                                        <div class="mb-0 ms-2">
+                                            <!-- Title -->
+                                            <h6 class="mb-0"><a
+                                                    href="{{ route('user.request', $request->id)}}"
+                                                    class="stretched-link">{{ $request->email }}</a></h6>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Table data -->
+                                <td class="text-center text-sm-start">
+                                    <h6 class="mb-0">{{ $request->transaction }}</h6>
+                                </td>
+
+                                <!-- Table data -->
+                                <td>{{ $request->quantity }}</td>
+
+                                <!-- Table data -->
+                                <td>{{ $request->date }}</td>
+
+                            </tr>
+                        @empty
+                        @endforelse
+                    </tbody>
+                    <!-- Table body END -->
+                </table>
             </div>
+            <!-- Instructor request table END -->
+        </div>
+        <!-- Card body END -->
 
-            <table class="fmt-table" id="signatures-table" data-styletype="primary" data-theme="light"
-                data-hasview="true">
-                <thead>
-                    <tr>
-                        <th id="email">E-mail produtor</th>
-                        <th id="transaction">Transação Nº</th>
-                        <th id="months">Mensalidade</th>
-                        <th id="date">Data</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @forelse($requests->items() as $key => $request)
-                    <tr id="signatures-table-row-1" data-tableid="signatures-table" data-id="1"
-                        data-event="load-view">
-                        <td data-tableid="signatures-table" data-id="1" class="email-col">{{ $request->email }}</td>
-                        <td data-tableid="signatures-table" data-id="1" class="transaction-col">{{ $request->transaction }}</td>
-                        <td data-tableid="signatures-table" data-id="1" class="months-col">{{ $request->quantity }}</td>
-                        <td data-tableid="signatures-table" data-id="1" class="date-col">{{ $request->date }}
-                        </td>
-                    </tr>
-                    @empty
-                    @endforelse
-                </tbody>
-            </table>
-
-            <div class="table-pagination">
-                <span>A mostrar 2</span>
-
-                <button type="button" class="ml-auto">
-                    <i class="fa fa-arrow-left"></i>
-                </button>
-
-                <button type="button">1</button>
-
-                <button type="button">2</button>
-
-                <button type="button">3</button>
-
-                <button type="button">4</button>
-
-                <button type="button">
-                    <i class="fa fa-arrow-right"></i>
-                </button>
+        <!-- Card footer START -->
+        <div class="card-footer bg-transparent pt-0">
+            <!-- Pagination START -->
+            <div class="d-sm-flex justify-content-sm-between align-items-sm-center">
+                <!-- Content -->
+                <p class="mb-0 text-center text-sm-start">Showing 1 to 8 of 20 entries</p>
+                <!-- Pagination -->
+                <nav class="d-flex justify-content-center mb-0" aria-label="navigation">
+                    <ul class="pagination pagination-sm pagination-primary-soft d-inline-block d-md-flex rounded mb-0">
+                        <li class="page-item mb-0"><a class="page-link" href="#" tabindex="-1"><i
+                                    class="fas fa-angle-left"></i></a></li>
+                        <li class="page-item mb-0"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item mb-0 active"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item mb-0"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item mb-0"><a class="page-link" href="#"><i
+                                    class="fas fa-angle-right"></i></a></li>
+                    </ul>
+                </nav>
             </div>
-        </section>
-    </section>
-</main>
+            <!-- Pagination END -->
+        </div>
+        <!-- Card footer END -->
+    </div>
+    <!-- Main card END -->
+
+</div>
+<!-- Page main content END -->
 
 @endsection

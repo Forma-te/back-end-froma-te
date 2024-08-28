@@ -33,6 +33,7 @@ class SaleRepository implements SaleRepositoryInterface
                       ->join('users', 'users.id', '=', 'sales.user_id')
                       ->select(
                           'sales.transaction',
+                          'sales.payment_mode',
                           'sales.status',
                           'sales.date_created',
                           'sales.date_expired',

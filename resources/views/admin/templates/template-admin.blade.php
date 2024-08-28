@@ -78,13 +78,13 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap">
 
 	<!-- Plugins CSS -->
-	<link rel="stylesheet" type="text/css" href="assets/vendor/font-awesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap-icons/bootstrap-icons.css">
-	<link rel="stylesheet" type="text/css" href="assets/vendor/apexcharts/css/apexcharts.css">
-	<link rel="stylesheet" type="text/css" href="assets/vendor/overlay-scrollbar/css/overlayscrollbars.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/vendor/font-awesome/css/all.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/vendor/apexcharts/css/apexcharts.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/vendor/overlay-scrollbar/css/overlayscrollbars.min.css')}}">
 
 	<!-- Theme CSS -->
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/css/style.css')}}">
 
 </head>
 
@@ -108,16 +108,15 @@
 <div class="back-top"><i class="bi bi-arrow-up-short position-absolute top-50 start-50 translate-middle"></i></div>
 
 <!-- Bootstrap JS -->
-<script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 
 <!-- Vendors -->
-<script src="assets/vendor/purecounterjs/dist/purecounter_vanilla.js"></script>
-<script src="assets/vendor/apexcharts/js/apexcharts.min.js"></script>
-<script src="assets/vendor/overlay-scrollbar/js/overlayscrollbars.min.js"></script>
+<script src="{{ url('assets/vendor/purecounterjs/dist/purecounter_vanilla.js')}}"></script>
+<script src="{{ url('assets/vendor/apexcharts/js/apexcharts.min.js')}}"></script>
+<script src="{{ url('assets/vendor/overlay-scrollbar/js/overlayscrollbars.min.js')}}"></script>
 
 <!-- Template Functions -->
-<script src="assets/js/functions.js"></script>
-
+<script src="{{ url('assets/js/functions.js')}}"></script>
 
 </body>
 </html>

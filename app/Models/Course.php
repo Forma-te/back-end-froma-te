@@ -176,9 +176,13 @@ class Course extends Model
         return $this->belongsTo(Category::class);
     }
 
-
     protected function getImageAttribute($value)
     {
         return $value ? Storage::url($value) : null;
+    }
+
+    protected function getCreatedAtAttribute($value)
+    {
+        return $value ? \Carbon\Carbon::parse($value)->format('d/m/Y') : null;
     }
 }

@@ -24,12 +24,17 @@ class SaleSubscription extends Model
         return Carbon::parse($value)->format('d/m/Y');
     }
 
+    public static function scopeUserByAuth($query)
+    {
+        return $query->where('producer_id', auth()->user()->id);
+    }
+
     public function producer()
     {
         return $this->belongsTo(User::class, 'producer_id');
     }
 
-    public function my_plan()
+    public function plan()
     {
         return $this->belongsTo(Plan::class, 'plan_id');
     }

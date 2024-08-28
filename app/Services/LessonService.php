@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
 use App\Repositories\Lesson\LessonRepositoryInterface;
@@ -29,7 +30,7 @@ class LessonService
         );
     }
 
-    public function findById(string $id): object|Null
+    public function findById(string $id): object|null
     {
         return $this->repository->findById($id);
     }
@@ -53,7 +54,7 @@ class LessonService
         return $this->repository->new($dto);
     }
 
-    public function update(UpdateLessonDTO $dto): Lesson
+    public function update(UpdateLessonDTO $dto)
     {
         // Buscar a lição existente
         $lesson = $this->repository->findById($dto->id);
@@ -78,6 +79,11 @@ class LessonService
         }
         // Atualizar a lição no repositório com os dados do DTO
         return $this->repository->update($dto);
+    }
+
+    public function editNameLesson(UpdateEditNameLessonDTO $dto)
+    {
+        return $this->repository->editNameLesson($dto);
     }
 
     public function delete(string $id): void

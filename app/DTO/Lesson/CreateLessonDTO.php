@@ -11,10 +11,9 @@ class CreateLessonDTO
         public string $name,
         public string $url,
         public string $description,
-        public string $free,
         public string $video,
         public string $published,
-        public $file,
+        public $file
     ) {
     }
 
@@ -31,7 +30,6 @@ class CreateLessonDTO
             $data['name'],
             $url,
             $data['description'],
-            $data['free'],
             $data['video'],
             $data['published'],
             $file

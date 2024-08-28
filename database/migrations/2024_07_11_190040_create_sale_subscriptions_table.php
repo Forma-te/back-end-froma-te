@@ -23,7 +23,7 @@ return new class () extends Migration {
             $table->double('total', 10, 2);
             $table->date('date_start');
             $table->timestamp('date_the_end');
-            $table->enum('status', ['approved', 'expired']);
+            $table->enum('status', ['Aprovado', 'Expirado']);
             $table->timestamps();
         });
     }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateEditNameLessonRequest;
 use App\Http\Requests\StoreUpdateLessonRequest;
 use App\Http\Resources\LessonProducerResource;
 use App\Services\LessonService;
@@ -163,20 +165,32 @@ class LessonController extends Controller
 
     public function updateLesson(StoreUpdateLessonRequest $request, string $id)
     {
-        // Adiciona o ID ao pedido
-        $request->merge(['id' => $id]);
-
-        $module = $this->lessonService->update(
+        $lesson = $this->lessonService->update(
             UpdateLessonDTO::makeFromRequest($request, $id)
         );
 
-        if(!$module) {
+        if(!$lesson) {
             return response()->json([
                 'error' => 'Not Found'
-            ], Response::HTTP_FOUND);
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        return new LessonProducerResource($module);
+        return new LessonProducerResource($lesson);
+    }
+
+    public function editNameLesson(StoreUpdateEditNameLessonRequest $request, string $id)
+    {
+        $lesson = $this->lessonService->editNameLesson(
+            UpdateEditNameLessonDTO::makeFromRequest($request, $id)
+        );
+
+        if(!$lesson) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new LessonProducerResource($lesson);
     }
 
     /**
@@ -218,7 +232,7 @@ class LessonController extends Controller
         if(!$this->lessonService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
-            ], Response::HTTP_FOUND);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         $this->lessonService->delete($id);

@@ -44,12 +44,11 @@ class ModuleProducerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'identify' => $resource->id ?? null,
-            'course_id' => $resource->course_id ?? null,
-            'name' => isset($resource->name) ? ucwords(strtolower($resource->name)) : null,
-            'published' => $resource->published ?? null,
+            'identify' =>  $this->id,
+            'course_id' =>  $this->course_id,
+            'name' =>  ucwords(strtolower($this->name)),
+            'published' =>  $this->published,
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
-
         ];
     }
 }

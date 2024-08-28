@@ -41,11 +41,25 @@ class StoreUpdateLessonRequest extends FormRequest
             'module_id' => 'required',
             'name' => 'required|min:5|max:100',
             'file' => 'sometimes|file|mimes:pdf',
+            'published' => 'required|boolean',
             'url' => "nullable|min:3|max:100|unique:lessons,url,{$id},Id",
             'description' => 'nullable',
+            'published' => 'nullable',
             'video' => 'nullable',
         ];
 
         return $rules;
+    }
+
+    public function messages()
+    {
+        return [
+            'module_id.required' => 'O campo module_id é obrigatório.',
+            'name.required' => 'O campo name é obrigatório.',
+            'name.min' => 'O campo name deve ter pelo menos mínimo de 5 caracteres.',
+            'name.max' => 'O campo name não pode ter de máximo de 100 caracteres.',
+            'file.mimes' => 'O arquivo deve ser do tipo PDF.',
+            'url.unique' => 'O URL já está em uso por outra lição.'
+        ];
     }
 }

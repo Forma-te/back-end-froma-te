@@ -21,7 +21,7 @@ class CreateLessonsTable extends Migration
             $table->string('url', 225)->unique();
             $table->text('description')->nullable();
             $table->string('file', 225)->nullable();
-            $table->boolean('free')->default(false);
+            $table->boolean('published')->default(false);
             $table->string('video')->nullable();
 
             $table->timestamps();

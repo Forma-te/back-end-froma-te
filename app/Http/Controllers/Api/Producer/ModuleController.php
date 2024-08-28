@@ -163,8 +163,16 @@ class ModuleController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return ModuleProducerResource::collection($modules);
+        return response()->json(ModuleProducerResource::collection($modules));
     }
+
+    public function getModuleById(string $moduleId)
+    {
+        $module = $this->moduleService->findById($moduleId);
+
+        return new ModuleProducerResource($module);
+    }
+
 
     /**
      * @OA\Put(
@@ -278,7 +286,7 @@ class ModuleController extends Controller
         if(!$this->moduleService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
-            ], Response::HTTP_FOUND);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         $this->moduleService->delete($id);

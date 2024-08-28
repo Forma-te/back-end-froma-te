@@ -105,22 +105,8 @@ class Lesson extends Model
     private $video;
 
     protected $fillable = [
-        'module_id', 'name', 'file', 'url', 'description', 'free', 'video',
-
+        'module_id', 'name', 'file', 'url', 'description', 'video', 'published'
     ];
-
-    public function rules($id = '')
-    {
-        return [
-            'module_id' => 'required',
-            'name' => 'required|min:5|max:100',
-            'file' => 'nullable|file|mimes:pdf',
-            'url' => "nullable|min:3|max:100|unique:lessons,url,{$id},id",
-            'description' => 'nullable',
-            'video' => 'nullable',
-
-        ];
-    }
 
     public function views()
     {

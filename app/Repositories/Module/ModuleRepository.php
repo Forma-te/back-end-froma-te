@@ -43,7 +43,7 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public function findById(string $id): object|null
     {
-        return $this->entity->find($id);
+        return $this->entity->with('lessons')->find($id);
     }
 
     public function createModule(): ?array
@@ -95,7 +95,8 @@ class ModuleRepository implements ModuleRepositoryInterface
 
         if (Gate::authorize('owner-course', $course)) {
             $module->delete();
+        } else {
+            abort(403, 'Unauthorized'); // Aborta com código 403 se a autorização falhar
         }
     }
-
 }
