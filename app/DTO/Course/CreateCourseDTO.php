@@ -18,7 +18,7 @@ class CreateCourseDTO
         public string $published,
         public string $free,
         public string $price,
-        public  $image,
+        public $image,
     ) {
     }
 

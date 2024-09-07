@@ -39,6 +39,7 @@ class StoreUpdateSaleRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'file' => 'sometimes|required|file|mimes:csv,txt|max:2048',
             'course_id' => 'required',
             'user_id' => 'nullable',
             'name' => 'sometimes|required',

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Annotations as OA;
 
 /**
@@ -94,7 +95,7 @@ class Ebook extends Model
 
     public static function scopeUserByAuth($query)
     {
-        return $query->where('user_id', auth()->user()->id);
+        return $query->where('user_id', Auth::user()->id);
     }
 
     public function sales()

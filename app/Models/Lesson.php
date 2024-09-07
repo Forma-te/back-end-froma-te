@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use OpenApi\Annotations as OA;
 
@@ -112,8 +113,8 @@ class Lesson extends Model
     {
         return $this->hasMany(View::class)
             ->where(function ($query) {
-                if (auth()->check()) {
-                    return $query->where('user_id', auth()->user()->id);
+                if (Auth::check()) {
+                    return $query->where('user_id', Auth::user()->id);
                 }
             });
     }

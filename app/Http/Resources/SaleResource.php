@@ -27,7 +27,8 @@ class SaleResource extends JsonResource
             'status' => $this->status,
             'blocked' => $this->blocked,
             'payment_mode' => $this->payment_mode,
-            'date_created' => $this->date_created
+            'date_created' => $this->date_created,
+            'product_type' => $this->product_type
         ];
     }
 }

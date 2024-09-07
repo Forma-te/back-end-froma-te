@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @OA\Schema(
@@ -76,7 +77,7 @@ class Support extends Model
 
     public static function scopeOwnedByAuthUser($query)
     {
-        return $query->where('producer_id', auth()->user()->id);
+        return $query->where('producer_id', Auth::user()->id);
     }
 
     public function user()

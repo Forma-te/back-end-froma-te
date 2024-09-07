@@ -35,6 +35,8 @@ class StoreUpdateLessonRequest extends FormRequest
      */
     public function rules(): array
     {
+        logger()->info('Dados da validação:', $this->all());
+
         $id = $this->route('Id') ?? ''; // Obter o ID dos parâmetros da rota
 
         $rules = [
@@ -56,8 +58,8 @@ class StoreUpdateLessonRequest extends FormRequest
         return [
             'module_id.required' => 'O campo module_id é obrigatório.',
             'name.required' => 'O campo name é obrigatório.',
-            'name.min' => 'O campo name deve ter pelo menos mínimo de 5 caracteres.',
-            'name.max' => 'O campo name não pode ter de máximo de 100 caracteres.',
+            'name.min' => 'O campo name deve ter pelo menos :min 5 caracteres.',
+            'name.max' => 'O campo name não pode ter mais de :max 100 caracteres.',
             'file.mimes' => 'O arquivo deve ser do tipo PDF.',
             'url.unique' => 'O URL já está em uso por outra lição.'
         ];

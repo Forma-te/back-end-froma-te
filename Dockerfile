@@ -45,6 +45,12 @@ RUN pecl install -o -f redis \
 # Set working directory
 WORKDIR /var/www
 
+# Dockerfile
+RUN mkdir -p /var/www/storage/app/temp \
+    && chown -R www-data:www-data /var/www/storage \
+    && chmod -R 775 /var/www/storage
+
+
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 

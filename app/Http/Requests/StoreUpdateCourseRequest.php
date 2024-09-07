@@ -51,7 +51,7 @@ class StoreUpdateCourseRequest extends FormRequest
             'description' => 'nullable',
             'short_name' => 'nullable|max:255',
             'url' => 'nullable',
-            'image' => 'required|image|mimes:png,jpg|max:7000|dimensions:max_width=600,max_height=450',
+            'image' => 'nullable|image|mimes:png,jpg|max:7000|dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',
             'type' => 'nullable',
             'code' => "nullable|unique:courses,code,{$id},Id",

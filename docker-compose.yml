@@ -50,7 +50,7 @@ services:
             - dev-api
 
     # queue
-    queue: 
+    queue:
         image: 010107/docker-image-supervisor:php-8-3
         container_name: queue-api
         restart: unless-stopped

@@ -26,6 +26,8 @@ class CreateSalesTable extends Migration
             $table->string('transaction');
             $table->string('email_student');
             $table->string('payment_mode');
+            $table->string('bank', 50)->nullable();
+            $table->string('account', 225)->nullable();
             $table->boolean('blocked')->default(false);
             $table->enum('status', ['C', 'A', 'E', 'P'])->default('C');
             $table->date('date_created');

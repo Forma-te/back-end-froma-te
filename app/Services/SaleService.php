@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Sale\CreateNewSaleDTO;
+use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
 use App\Models\Sale;
 use App\Repositories\PaginationInterface;
@@ -17,7 +18,7 @@ class SaleService
 
     public function getMyStudents(
         int $page = 1,
-        int $totalPerPage  = 15,
+        int $totalPerPage  = 10,
         string $filter = null
     ): PaginationInterface {
         return $this->repository->getMyStudents(
@@ -51,6 +52,11 @@ class SaleService
         return $this->repository->createNewSale($dto);
     }
 
+    public function csvImportMember(ImportCsvDTO $dto)
+    {
+        return $this->repository->csvImportMember($dto);
+    }
+
     public function updateSale(UpdateNewSaleDTO $dto): Sale
     {
         return $this->repository->updateSale($dto);
@@ -60,5 +66,7 @@ class SaleService
     {
         $this->repository->delete($id);
     }
+
+
 
 }

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
 use OpenApi\Annotations as OA;
 
 /**
@@ -72,7 +72,7 @@ class Module extends Model
     public function modulesUser()
     {
         return $this->join('courses', 'courses.id', '=', 'modules.course_id')
-            ->where('courses.user_id', auth()->user()->id)
+            ->where('courses.user_id', Auth::user()->id)
             ->pluck('modules.name', 'modules.id');
     }
 

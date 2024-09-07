@@ -2,9 +2,7 @@
 
 namespace App\DTO\Sale;
 
-use App\Http\Requests\StoreUpdateSaleRequest;
-
-class CreateNewSaleDTO
+class ImportCsvDTO
 {
     public function __construct(
         public string $course_id,
@@ -20,14 +18,12 @@ class CreateNewSaleDTO
         public string $product_type
     ) {
     }
-    public static function makeFromRequest(StoreUpdateSaleRequest $request): self
+    public static function makeFromArray(array $data): self
     {
-        $data = $request->all();
-
-        $transaction = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
-        $date_created = now();
-        $blocked = 0;
-        $status = 'A';
+        $transaction = sprintf('%07X', mt_rand(0, 0xFFFFFFF)); // Geração de transação aleatória
+        $date_created = now(); // Data de criação atual
+        $blocked = 0; // Bloqueio padrão (desbloqueado)
+        $status = 'A'; // Status padrão
 
         return new self(
             $data['course_id'],
@@ -38,7 +34,7 @@ class CreateNewSaleDTO
             $data['email_student'],
             $status,
             $blocked,
-            $date_created,
+            $date_created->format('Y-m-d H:i:s'),
             $data['date_expired'],
             $data['product_type']
         );

@@ -16,7 +16,8 @@ class UpdateNewSaleDTO
         public string $status,
         public string $blocked,
         public string $date_created,
-        public string $date_expired
+        public string $date_expired,
+        public string $product_type
     ) {
     }
     public static function makeFromRequest(StoreUpdateSaleRequest $request, string $id = null): self
@@ -33,7 +34,8 @@ class UpdateNewSaleDTO
             $data['status'],
             $data['blocked'],
             $data['date_created'],
-            $data['date_expired']
+            $data['date_expired'],
+            $data['product_type']
         );
     }
 }

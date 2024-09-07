@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -40,9 +41,6 @@ class User extends Authenticatable
      * @var int
      */
 
-    use HasApiTokens;
-    use HasFactory;
-    use Notifiable;
 
     /**
      * @OA\Property(
@@ -206,7 +204,7 @@ class User extends Authenticatable
 
     public static function scopeUserByAuth($query)
     {
-        return $query->where('id', auth()->user()->id);
+        return $query->where('id', Auth::user()->id);
     }
 
     public function banks()
@@ -227,12 +225,12 @@ class User extends Authenticatable
 
     public function checkAccess($idCourse)
     {
-        if (! auth()->check()) {
+        if (! Auth::check()) {
             return false;
         }
 
         $permission = $this->join('sales', 'sales.user_id', '=', 'users.id')
-            ->where('sales.user_id', auth()->user()->id)
+            ->where('sales.user_id', Auth::user()->id)
             ->where('sales.course_id', $idCourse)
             ->where('sales.status', 'A')
             ->count();

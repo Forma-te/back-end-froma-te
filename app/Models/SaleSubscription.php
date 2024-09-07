@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class SaleSubscription extends Model
 {
@@ -26,7 +27,7 @@ class SaleSubscription extends Model
 
     public static function scopeUserByAuth($query)
     {
-        return $query->where('producer_id', auth()->user()->id);
+        return $query->where('producer_id', Auth::user()->id);
     }
 
     public function producer()

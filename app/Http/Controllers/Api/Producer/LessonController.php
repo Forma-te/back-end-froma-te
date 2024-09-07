@@ -165,6 +165,9 @@ class LessonController extends Controller
 
     public function updateLesson(StoreUpdateLessonRequest $request, string $id)
     {
+        $validated = $request->validated();
+        logger()->info('Dados validados na API:', $validated);
+
         $lesson = $this->lessonService->update(
             UpdateLessonDTO::makeFromRequest($request, $id)
         );

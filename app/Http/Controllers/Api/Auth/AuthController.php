@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Annotations as OA;
 
 /**
@@ -102,7 +103,7 @@ class AuthController extends Controller
 
     public function me()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         return new UserResource($user);
     }
 
@@ -133,7 +134,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->user()->tokens()->delete();
+        Auth::user()->tokens()->delete();
         return response()->json((['success' => true]));
     }
 }

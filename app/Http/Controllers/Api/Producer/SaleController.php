@@ -5,16 +5,22 @@ namespace App\Http\Controllers\Api\Producer;
 use App\Adapters\ApiAdapter;
 use App\Adapters\SaleAdapters;
 use App\DTO\Sale\CreateNewSaleDTO;
+use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
 use App\Enum\SaleEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CsvImportRequest;
 use App\Http\Requests\StoreUpdateSaleRequest;
 use App\Http\Resources\SaleResource;
+use App\Jobs\ImportCsvJb;
+use App\Services\ImportFile;
 use App\Services\SaleService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use League\Csv\Reader;
 
 class SaleController extends Controller
 {
@@ -227,7 +233,7 @@ class SaleController extends Controller
             filter: $request->filter,
         );
 
-        return ApiAdapter::paginateToJson($sales, '');
+        return ApiAdapter::paginateToJson($sales);
     }
 
     private function errorResponse($message, $statusCode)
@@ -338,6 +344,46 @@ class SaleController extends Controller
         return new SaleResource($sale);
     }
 
+    public function csvImportMember(CsvImportRequest $request)
+    {
+        // Definir os campos que serão mapeados
+        $dataFile = ['course_id', 'name', 'email_student', 'date_expired', 'product_type'];
+
+        // Obter o arquivo CSV do request
+        $file = $request->file('file');
+        $csv = Reader::createFromPath($file->getPathname(), 'r');
+        $csv->setDelimiter(';');
+        $csv->setHeaderOffset(0);
+
+        $mappedValues = [];
+
+        foreach ($csv->getRecords() as $record) {
+            // Mapear os valores do CSV para os campos correspondentes
+            $values = array_combine($dataFile, $record);
+
+            if ($values === false) {
+                return response()->json(['error' => 'Erro ao mapear valores do CSV. Verifique o arquivo e tente novamente.'], 400);
+            }
+
+            // Adicionar os valores validados ao array de mapeamento
+            $mappedValues[] = $values;
+        }
+
+        $sales = [];
+        foreach ($mappedValues as $values) {
+            // Criar o DTO a partir dos valores validados
+            $dto = ImportCsvDTO::makeFromArray($values);
+
+            // Processar a criação da nova venda
+            $sales[] = $this->saleService->csvImportMember($dto);
+        }
+
+        return response()->json([
+            'message' => 'Vendas importadas com sucesso!',
+            'sales' => SaleResource::collection($sales)
+        ]);
+    }
+
     /**
      * @OA\Patch(
      *     path="/api/sales/{id}",
@@ -394,7 +440,7 @@ class SaleController extends Controller
             UpdateNewSaleDTO::makeFromRequest($request, $id)
         );
 
-        if(!$sale) {
+        if (!$sale) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_FOUND);
@@ -435,7 +481,7 @@ class SaleController extends Controller
 
     public function destroySele(string $id)
     {
-        if(!$this->saleService->findById($id)) {
+        if (!$this->saleService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_FOUND);

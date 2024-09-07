@@ -3,6 +3,7 @@
 namespace App\Repositories\Sale;
 
 use App\DTO\Sale\CreateNewSaleDTO;
+use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
 use App\DTO\User\CreateUserDTO;
 use App\Events\SaleToNewAndOldMembers;
@@ -12,6 +13,7 @@ use App\Repositories\Course\CourseRepository;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +27,7 @@ class SaleRepository implements SaleRepositoryInterface
     ) {
     }
 
-    public function getMyStudents(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
+    public function getMyStudents(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface
     {
         $query = $this->entity
                       ->newQuery()
@@ -37,22 +39,25 @@ class SaleRepository implements SaleRepositoryInterface
                           'sales.status',
                           'sales.date_created',
                           'sales.date_expired',
-                          'sales.id',
+                          'sales.product_type',
+                          'sales.id as sale_id',
                           'courses.name as course_name',
                           'courses.price',
+                          'courses.id as course_id',
                           'courses.url',
                           DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', courses.image) as image_url"),
                           'users.name as user_name',
+                          'users.id as user_id',
                           'users.email as student_email',
                           DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', users.image) as student_image_url")
                       )
-                      ->where('courses.user_id', auth()->user()->id)
+                      ->where('courses.user_id', Auth::user()->id)
                       ->where('sales.status', 'A');
 
         // Aplicar o filtro se fornecido
         if ($filter) {
             $query->where(function ($query) use ($filter) {
-                $query->where('users.email', $filter)
+                $query->where('users.name', $filter)
                   ->orWhere('users.name', 'like', "%{$filter}%");
             });
         }
@@ -70,7 +75,7 @@ class SaleRepository implements SaleRepositoryInterface
                     ->join('courses', 'courses.id', '=', 'sales.course_id')
                     ->join('users', 'users.id', '=', 'sales.user_id')
                     ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
-                    ->where('courses.user_id', auth()->user()->id);
+                    ->where('courses.user_id', Auth::user()->id);
         // Aplicar filtro por status
         if ($status) {
             $query->where('status', $status);
@@ -100,7 +105,7 @@ class SaleRepository implements SaleRepositoryInterface
         $member = $this->userRepository->findByEmail($dto->email_student);
 
         $password = null;
-        if($member === null) {
+        if ($member === null) {
             $password = generatePassword();
             $userDto = new CreateUserDTO(
                 $dto->name,
@@ -121,8 +126,48 @@ class SaleRepository implements SaleRepositoryInterface
             'date_expired' => $dto->date_expired,
             'status' => $dto->status,
             'blocked' => $dto->blocked,
-            'payment_mode' => 'banco',
-            'date_created' => $dto->date_created
+            'payment_mode' => 'Banco',
+            'date_created' => $dto->date_created,
+            'product_type' => $dto->product_type
+            ]);
+
+        event(new SaleToNewAndOldMembers($member, $course, $password, $bankUsers));
+
+        return $newSale;
+    }
+
+    public function csvImportMember(ImportCsvDTO $dto)
+    {
+        $course = $this->courseRepository->getCourseById($dto->course_id);
+        $authUser = $this->userRepository->findByAuth();
+        $bankUsers = $this->bankRepository->findBankByUserId($authUser->first()->id);
+        $member = $this->userRepository->findByEmail($dto->email_student);
+
+        $password = null;
+        if ($member === null) {
+            $password = generatePassword();
+            $userDto = new CreateUserDTO(
+                $dto->name,
+                $dto->email_student,
+                bcrypt($password),
+                'default_device' // ou alguma lógica para definir o device_name
+            );
+
+            $member = $this->userRepository->create($userDto);
+        }
+
+        $newSale = Sale::create([
+            'course_id' => $course->id,
+            'user_id' => $member->id,
+            'instrutor_id' => $authUser->first()->id,
+            'email_student' => $dto->email_student,
+            'transaction' => $dto->transaction,
+            'date_expired' => $dto->date_expired,
+            'status' => $dto->status,
+            'blocked' => $dto->blocked,
+            'payment_mode' => 'Banco',
+            'date_created' => $dto->date_created,
+            'product_type' => $dto->product_type
             ]);
 
         event(new SaleToNewAndOldMembers($member, $course, $password, $bankUsers));
@@ -135,7 +180,7 @@ class SaleRepository implements SaleRepositoryInterface
         $sale = $this->entity->find($dto->id);
         Gate::authorize('owner-sale', $sale);
 
-        if($sale) {
+        if ($sale) {
             $sale->update((array) $dto);
             return $sale;
         }

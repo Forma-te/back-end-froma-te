@@ -122,6 +122,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/sales', [SaleController::class, 'newSale']);
     Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);
     Route::delete('/sales/{Id}', [SaleController::class, 'destroySele']);
+    Route::post('/import-csv', [SaleController::class, 'csvImportMember']);
 
     /**
     * Route supports

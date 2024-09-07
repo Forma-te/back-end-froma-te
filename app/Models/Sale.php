@@ -77,7 +77,7 @@ class Sale extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created', 'date_expired'
+        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created', 'date_expired', 'product_type'
     ];
 
     public $statusOptions = [
@@ -100,19 +100,13 @@ class Sale extends Model
     public function rules()
     {
         return [
-            'course_id' => 'required',
-            'name' => 'required',
-            'email_student' => 'required|email',
-            'bank' => 'nullable',
-            'account' => 'nullable',
-            'iban' => 'nullable',
-            'date_expired' => 'required'
+            'file' => 'required|file|mimes:csv,txt|max:2048',
         ];
     }
 
     public static function scopeUserByAuth($query)
     {
-        return $query->where('instrutor_id', auth()->user()->id);
+        return $query->where('instrutor_id', Auth::user()->id);
     }
 
 
