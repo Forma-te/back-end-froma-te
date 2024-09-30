@@ -59,6 +59,9 @@ class StoreUpdateCourseRequest extends FormRequest
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
             'price' => 'nullable',
+            'discount' => 'nullable',
+            'acceptsMcxPayment' => 'nullable',
+            'acceptsRefPayment' => 'nullable',
         ];
 
         return $rules;

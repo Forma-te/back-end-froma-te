@@ -19,11 +19,13 @@ class SaleService
     public function getMyStudents(
         int $page = 1,
         int $totalPerPage  = 10,
+        string $status = '',
         string $filter = null
     ): PaginationInterface {
         return $this->repository->getMyStudents(
             page: $page,
             totalPerPage: $totalPerPage,
+            status: $status,
             filter: $filter,
         );
     }
@@ -31,7 +33,7 @@ class SaleService
     public function getMembersByStatus(
         int $page = 1,
         int $totalPerPage  = 15,
-        string $status = null,
+        string $status = '',
         string $filter = null
     ): PaginationInterface {
         return $this->repository->getMembersByStatus(

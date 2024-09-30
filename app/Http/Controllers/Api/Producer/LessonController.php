@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Http\Controllers\Controller;
@@ -172,7 +173,7 @@ class LessonController extends Controller
             UpdateLessonDTO::makeFromRequest($request, $id)
         );
 
-        if(!$lesson) {
+        if (!$lesson) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
@@ -187,11 +188,20 @@ class LessonController extends Controller
             UpdateEditNameLessonDTO::makeFromRequest($request, $id)
         );
 
-        if(!$lesson) {
+        if (!$lesson) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
+
+        return new LessonProducerResource($lesson);
+    }
+
+    public function createNameLesson(StoreUpdateEditNameLessonRequest $request)
+    {
+        $lesson = $this->lessonService->createNameLesson(
+            CreateNameLessonDTO::makeFromRequest($request)
+        );
 
         return new LessonProducerResource($lesson);
     }
@@ -232,7 +242,7 @@ class LessonController extends Controller
 
     public function destroyLesson(string $id)
     {
-        if(!$this->lessonService->findById($id)) {
+        if (!$this->lessonService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);

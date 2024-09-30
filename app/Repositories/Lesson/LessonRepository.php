@@ -3,6 +3,7 @@
 namespace App\Repositories\Lesson;
 
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
@@ -69,7 +70,7 @@ class LessonRepository implements LessonRepositoryInterface
     {
         $lesson = $this->entity->find($dto->id);
 
-        if($lesson) {
+        if ($lesson) {
             $lesson->update((array) $dto);
             return $lesson;
         }
@@ -81,12 +82,18 @@ class LessonRepository implements LessonRepositoryInterface
     {
         $lesson = $this->entity->find($dto->id);
 
-        if($lesson) {
+        if ($lesson) {
             $lesson->update((array) $dto);
             return $lesson;
         }
 
         return null;
+    }
+
+    public function createNameLesson(CreateNameLessonDTO $dto): Lesson
+    {
+        return $this->entity->create((array) $dto);
+
     }
 
     public function delete(string $id): void

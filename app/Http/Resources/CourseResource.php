@@ -27,6 +27,10 @@ class CourseResource extends JsonResource
             'total_hours' => $this->total_hours,
             'published' => $this->published,
             'free' => $this->free,
+            'acceptsMcxPayment' => $this->acceptsMcxPayment,
+            'acceptsRefPayment' => $this->acceptsRefPayment,
+            'affiliationPercentage' => $this->affiliationPercentage,
+            'discount' => $this->discount,
             'price' => $this->price,
             'imagem' => $this->image,
             'modules' => ModuleResource::collection($this->whenLoaded('modules'))

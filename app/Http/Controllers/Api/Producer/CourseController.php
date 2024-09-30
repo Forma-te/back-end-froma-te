@@ -92,7 +92,7 @@ class CourseController extends Controller
     {
         $course = $this->courseService->paginate(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
+            totalPerPage: $request->get('per_page', 20),
             filter: $request->filter,
         );
 

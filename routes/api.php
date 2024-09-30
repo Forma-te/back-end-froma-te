@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::post('/register', [UserController::class, 'registerUser']);
 Route::put('/update-user/{Id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum');
-Route::get('/getAuthenticatedUser', [AuthController::class, 'me'])->middleware('auth:sanctum');
+Route::get('/getMe', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
@@ -76,6 +76,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/lesson', [LessonController::class, 'createLesson']);
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
     Route::put('/lesson/edit/name/{Id}', [LessonController::class, 'editNameLesson']);
+    Route::post('/lesson/create/name', [LessonController::class, 'createNameLesson']);
     Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
     // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 

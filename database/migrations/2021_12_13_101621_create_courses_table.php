@@ -32,6 +32,9 @@ class CreateCoursesTable extends Migration
             $table->boolean('published');
             $table->boolean('free')->default(false);
             $table->double('price', 10, 2);
+            $table->integer('discount')->nullable();
+            $table->integer('acceptsMcxPayment')->nullable();
+            $table->integer('acceptsRefPayment')->nullable();
             $table->double('price_plots', 10, 2)->nullable();
             $table->integer('total_plots')->nullable();
             $table->string('link_buy')->nullable();

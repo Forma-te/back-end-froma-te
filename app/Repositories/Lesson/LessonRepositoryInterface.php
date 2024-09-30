@@ -3,6 +3,7 @@
 namespace App\Repositories\Lesson;
 
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
@@ -16,5 +17,6 @@ interface LessonRepositoryInterface
     public function new(CreateLessonDTO $dto): ?Lesson;
     public function update(UpdateLessonDTO $dto): ?Lesson;
     public function editNameLesson(UpdateEditNameLessonDTO $dto): ?Lesson;
+    public function createNameLesson(CreateNameLessonDTO $dto): ?Lesson;
     public function delete(string $id): void;
 }

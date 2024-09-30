@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use App\Services\SaleService;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProcessCsvImportJob implements ShouldQueue
 {
@@ -36,38 +36,42 @@ class ProcessCsvImportJob implements ShouldQueue
      */
     public function handle(SaleService $saleService): void
     {
-        $fullPath = storage_path('app/' . $this->filePath);
-
-        // Verificar se o arquivo existe
-        if (!Storage::exists($this->filePath)) {
-            // Log ou lança uma exceção caso o arquivo não exista
-            throw new \Exception("Arquivo não encontrado: {$fullPath}");
-        }
-
-        // Cria o Reader a partir do caminho do arquivo
-        $csv = Reader::createFromPath($fullPath, 'r');
+        $dataFile = ['course_id', 'name', 'email_student', 'date_expired', 'product_type'];
+        $csv = Reader::createFromPath($this->filePath, 'r');
         $csv->setDelimiter(';');
         $csv->setHeaderOffset(0);
+        $csv->setEscape('');
 
         $offset = 0;
-        $limit = 100;
+        $limit = 100; // Limite por bloco
+
+        $sales = [];
 
         while (true) {
             $stmt = (new Statement())->offset($offset)->limit($limit);
-            $record = $stmt->process($csv);
+            $records = $stmt->process($csv);
 
-            if (count($record) === 0) {
+            if (count($records) === 0) {
                 break;
             }
 
-            foreach ($record as $record) {
-                $values = $record;
+            foreach ($records as $record) {
+                $values = array_combine($dataFile, $record);
+
+                if ($values === false) {
+                    Log::error('Erro ao mapear valores do CSV. Verifique o arquivo e tente novamente.');
+                    return;
+                }
+
                 $dto = ImportCsvDTO::makeFromArray($values);
-                $saleService->csvImportMember($dto);
+                $sales[] = $saleService->csvImportMember($dto);
             }
 
             $offset += $limit;
         }
 
+        // Aqui você pode fazer outras ações, como registrar que a importação foi concluída.
+        Log::info('Vendas importadas com sucesso!', ['sales' => $sales]);
     }
+
 }

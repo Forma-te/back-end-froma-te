@@ -70,6 +70,20 @@ services:
         networks:
             - dev-api
 
+    # Ngrok service
+    ngrok:
+        image: wernight/ngrok
+        container_name: ngrok
+        depends_on:
+            - webserver
+        environment:
+            NGROK_PORT: "webserver:80"  # Expor o Nginx através do Ngrok
+            NGROK_AUTHTOKEN: "2gF5uOlGrkZkdelVqU21ueEQGPi_2cdxLZiZYP8WuFcPzEMDU"
+        ports:
+            - "4040:4040"  # Porta da interface web do Ngrok (opcional)
+        networks:
+            - dev-api
+
 networks:
     dev-api:
         driver: bridge

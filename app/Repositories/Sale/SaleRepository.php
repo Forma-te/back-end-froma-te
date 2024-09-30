@@ -6,6 +6,7 @@ use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
 use App\DTO\User\CreateUserDTO;
+use App\Enum\SaleEnum;
 use App\Events\SaleToNewAndOldMembers;
 use App\Models\Sale;
 use App\Repositories\Bank\BankRepository;
@@ -27,7 +28,7 @@ class SaleRepository implements SaleRepositoryInterface
     ) {
     }
 
-    public function getMyStudents(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface
+    public function getMyStudents(int $page = 1, int $totalPerPage  = 10, string $status = '', string $filter = null): PaginationInterface
     {
         $query = $this->entity
                       ->newQuery()
@@ -39,7 +40,7 @@ class SaleRepository implements SaleRepositoryInterface
                           'sales.status',
                           'sales.date_created',
                           'sales.date_expired',
-                          'sales.product_type',
+                          'sales.product_type as type',
                           'sales.id as sale_id',
                           'courses.name as course_name',
                           'courses.price',
@@ -47,17 +48,26 @@ class SaleRepository implements SaleRepositoryInterface
                           'courses.url',
                           DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', courses.image) as image_url"),
                           'users.name as user_name',
+                          'users.phone_number',
                           'users.id as user_id',
-                          'users.email as student_email',
+                          'users.email as member_email',
                           DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', users.image) as student_image_url")
                       )
                       ->where('courses.user_id', Auth::user()->id)
                       ->where('sales.status', 'A');
 
+        // Aplicar filtro por status
+        if ($status) {
+            $statusEnum = SaleEnum::tryFrom($status);
+            if ($statusEnum) {
+                $query->where('sales.status', $statusEnum->name);
+            }
+        }
+
         // Aplicar o filtro se fornecido
         if ($filter) {
             $query->where(function ($query) use ($filter) {
-                $query->where('users.name', $filter)
+                $query->where('users.name', 'like', "%{$filter}%")
                   ->orWhere('users.name', 'like', "%{$filter}%");
             });
         }
@@ -68,26 +78,52 @@ class SaleRepository implements SaleRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function getMembersByStatus(int $page = 1, int $totalPerPage  = 15, string $status, string $filter = null): PaginationInterface
+    public function getMembersByStatus(int $page = 1, int $totalPerPage  = 10, string $status = '', string $filter = null): PaginationInterface
     {
         $query = $this->entity
                     ->newQuery()
                     ->join('courses', 'courses.id', '=', 'sales.course_id')
                     ->join('users', 'users.id', '=', 'sales.user_id')
-                    ->select('sales.transaction', 'sales.status', 'sales.date_created', 'sales.id', 'courses.name as course_name', 'courses.price', 'courses.url', 'courses.image', 'users.name as user_name', 'users.email as student_email', 'users.image as student_image')
+                    ->select(
+                        'sales.transaction',
+                        'sales.payment_mode',
+                        'sales.status',
+                        'sales.date_created',
+                        'sales.date_expired',
+                        'sales.product_type as type',
+                        'sales.id as sale_id',
+                        'courses.name as course_name',
+                        'courses.price',
+                        'courses.id as course_id',
+                        'courses.url',
+                        DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', courses.image) as image_url"),
+                        'users.name as user_name',
+                        'users.phone_number',
+                        'users.id as user_id',
+                        'users.email as member_email',
+                        DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', users.image) as student_image_url")
+                    )
                     ->where('courses.user_id', Auth::user()->id);
+
         // Aplicar filtro por status
         if ($status) {
-            $query->where('status', $status);
+            $statusEnum = SaleEnum::tryFrom($status);
+            if ($statusEnum) {
+                $query->where('sales.status', $statusEnum->name);
+            }
         }
 
         // Aplicar filtro por e-mail do estudante
         if ($filter) {
-            $query->orWhere('email_student', 'like', "%{$filter}%");
+            $query->where(function ($query) use ($filter) {
+                $query->where('users.name', 'like', "%{$filter}%")
+                  ->orWhere('users.email', 'like', "%{$filter}%");
+            });
         }
 
         // Paginar os resultados
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }

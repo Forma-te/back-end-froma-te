@@ -12,14 +12,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CsvImportRequest;
 use App\Http\Requests\StoreUpdateSaleRequest;
 use App\Http\Resources\SaleResource;
-use App\Jobs\ImportCsvJb;
-use App\Services\ImportFile;
 use App\Services\SaleService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use League\Csv\Reader;
 
 class SaleController extends Controller
@@ -139,21 +135,20 @@ class SaleController extends Controller
     public function getMembersByStatus(Request $request)
     {
         try {
+
             $sales = $this->saleService->getMembersByStatus(
                 page: $request->get('page', 1),
-                totalPerPage: $request->get('per_page', 15),
-                status: $request->get('status', ''),
-                filter: $request->filter,
+                totalPerPage: $request->get('per_page', 10),
+                status: (string) $request->get('status', ''),
+                filter: $request->get('filter', '')
             );
 
             $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
 
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'sales' => SaleAdapters::paginateToJson($sales, $statusOptions),
-                ],
-            ], Response::HTTP_OK);
+            return response()->json(
+                SaleAdapters::paginateToJson($sales, $statusOptions),
+                Response::HTTP_OK
+            );
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -227,13 +222,27 @@ class SaleController extends Controller
 
     public function getMyMembers(Request $request)
     {
-        $sales = $this->saleService->getMyStudents(
-            page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
-            filter: $request->filter,
-        );
+        try {
+            $sales = $this->saleService->getMyStudents(
+                page: $request->get('page', 1),
+                totalPerPage: $request->get('per_page', 10),
+                status: (string) $request->get('status', ''),
+                filter: $request->get('filter', '')
+            );
 
-        return ApiAdapter::paginateToJson($sales);
+            $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
+
+            return response()->json(
+                SaleAdapters::paginateToJson($sales, $statusOptions),
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve sales:' . $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     private function errorResponse($message, $statusCode)

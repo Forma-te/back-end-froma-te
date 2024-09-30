@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Lesson\CreateLessonDTO;
+use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
@@ -84,6 +85,11 @@ class LessonService
     public function editNameLesson(UpdateEditNameLessonDTO $dto)
     {
         return $this->repository->editNameLesson($dto);
+    }
+
+    public function createNameLesson(CreateNameLessonDTO $dto)
+    {
+        return $this->repository->createNameLesson($dto);
     }
 
     public function delete(string $id): void

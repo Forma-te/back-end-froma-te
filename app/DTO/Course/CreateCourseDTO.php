@@ -18,7 +18,11 @@ class CreateCourseDTO
         public string $published,
         public string $free,
         public string $price,
-        public $image,
+        public string $discount,
+        public string $acceptsMcxPayment,
+        public string $acceptsRefPayment,
+        public string $affiliationPercentage,
+        public $image
     ) {
     }
 
@@ -49,6 +53,10 @@ class CreateCourseDTO
             $data['published'],
             $data['free'],
             $data['price'],
+            $data['discount'],
+            $data['acceptsMcxPayment'],
+            $data['acceptsRefPayment'],
+            $data['affiliationPercentage'],
             $image,
         );
     }
