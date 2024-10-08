@@ -23,7 +23,6 @@ class CreateCoursesTable extends Migration
             $table->string('short_name', 150)->nullable();
             $table->string('url', 255)->unique();
             $table->text('description')->nullable();
-            $table->boolean('available')->default(true);
             $table->text('spotlight')->nullable();
             $table->string('image', 225)->nullable();
             $table->string('file', 225)->nullable();
@@ -37,9 +36,7 @@ class CreateCoursesTable extends Migration
             $table->integer('discount')->nullable();
             $table->integer('acceptsMcxPayment')->nullable();
             $table->integer('acceptsRefPayment')->nullable();
-            $table->string('product_type')->nullable();
             $table->double('price_plots', 10, 2)->nullable();
-            $table->integer('total_plots')->nullable();
             $table->string('link_buy')->nullable();
             $table->timestamps();
         });
@@ -52,6 +49,6 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('products');
     }
 }
