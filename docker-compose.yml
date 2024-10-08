@@ -1,4 +1,4 @@
-name: back-end-frorma-te
+version: '3.3'
 
 services:
     # image project
