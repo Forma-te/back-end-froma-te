@@ -14,6 +14,7 @@ use App\Services\CourseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use OpenApi\Annotations as OA;
 
@@ -97,6 +98,33 @@ class CourseController extends Controller
         );
 
         return ApiAdapter::paginateToJson($course);
+    }
+
+    public function fetchAllCoursesByProducers(Request $request)
+    {
+        // Obter os parâmetros da requisição
+        $page = $request->get('page', 1);
+        $totalPerPage = $request->get('per_page', 20);
+        $filter = $request->get('filter');
+        $producerName = $request->get('producer_name');
+        $categoryName = $request->get('category_name');
+
+        // Construir a chave de cache com base nos parâmetros
+        $cacheKey = "courses.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
+
+        // Verificar se os dados estão em cache
+        $courses = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
+            return $this->courseService->fetchAllCoursesByProducers(
+                page: $page,
+                totalPerPage: $totalPerPage,
+                filter: $filter,
+                producerName: $producerName,
+                categoryName: $categoryName
+            );
+        });
+
+        // Retornar a resposta no formato paginado usando o ApiAdapter
+        return ApiAdapter::paginateToJson($courses);
     }
 
     private function errorResponse($message, $statusCode)

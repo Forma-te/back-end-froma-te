@@ -4,8 +4,8 @@ namespace App\Repositories\Course;
 
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Course;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
@@ -18,7 +18,7 @@ class CourseRepository implements CourseRepositoryInterface
 {
     protected $entity;
 
-    public function __construct(Course $model)
+    public function __construct(Product $model)
     {
         $this->entity = $model;
     }
@@ -27,26 +27,75 @@ class CourseRepository implements CourseRepositoryInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
+                      //->where('product_type', 'product_type')
                       ->userByAuth();
+
         // Aplicar o filtro se fornecido
         if ($filter) {
             $query->where(function ($query) use ($filter) {
                 $query->where('name', 'like', "%{$filter}%");
             });
         }
+
         // Paginar os resultados
-        $result = $query->with('users', 'sales')->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('user', 'users', 'sales')->paginate($totalPerPage, ['*'], 'page', $page);
 
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
 
-    public function new(CreateCourseDTO $dto): Course
+    public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 15, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface
+    {
+        // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
+        $query = $this->entity
+                    ->where('product_type', 'course')
+                    ->with(['user:id,name,email', 'category:id,name'])
+                    ->select(
+                        'id',
+                        'name',
+                        'user_id',
+                        'category_id',
+                        'image',
+                        'total_hours',
+                        'published',
+                        'price',
+                        'discount',
+                        'created_at'
+                    )
+                    ->orderBy('updated_at', 'desc');
+
+        // Filtrar pelo nome do curso (se fornecido)
+        if ($filter) {
+            $query->where('name', 'like', "%{$filter}%");
+        }
+
+        // Filtrar pelo nome do produtor (user)
+        if ($producerName) {
+            $query->whereHas('user', function ($query) use ($producerName) {
+                $query->where('name', 'like', "%{$producerName}%");
+            });
+        }
+
+        // Filtrar pelo nome da categoria
+        if ($categoryName) {
+            $query->whereHas('category', function ($query) use ($categoryName) {
+                $query->where('name', 'like', "%{$categoryName}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
+    }
+
+    public function new(CreateCourseDTO $dto): Product
     {
         return $this->entity->create((array) $dto);
     }
 
-    public function update(UpdateCourseDTO $dto): ?Course
+    public function update(UpdateCourseDTO $dto): ?Product
     {
         $course = $this->entity->find($dto->id);
 

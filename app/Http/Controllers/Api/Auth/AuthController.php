@@ -104,6 +104,11 @@ class AuthController extends Controller
     public function me()
     {
         $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Utilizador não autenticado.'], 401);
+        }
+
         return new UserResource($user);
     }
 

@@ -3,6 +3,7 @@
 namespace App\DTO\Course;
 
 use App\Http\Requests\StoreUpdateCourseRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 
 class CreateCourseDTO
@@ -22,7 +23,8 @@ class CreateCourseDTO
         public string $acceptsMcxPayment,
         public string $acceptsRefPayment,
         public string $affiliationPercentage,
-        public $image
+        public string $product_type,
+        public $image = null,
     ) {
     }
 
@@ -35,10 +37,13 @@ class CreateCourseDTO
 
         $user = Auth::user();
         if (!$user) {
-            throw new \Exception('User not authenticated');
+            throw new AuthorizationException('User not authenticated');
         }
 
         $userId = $user->id;
+
+        $product_type = 'course';
+
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
 
@@ -57,7 +62,8 @@ class CreateCourseDTO
             $data['acceptsMcxPayment'],
             $data['acceptsRefPayment'],
             $data['affiliationPercentage'],
-            $image,
+            $product_type,
+            $image
         );
     }
 }

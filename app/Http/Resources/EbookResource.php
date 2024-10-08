@@ -15,14 +15,24 @@ class EbookResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'product_id' => $this->id,
             'category_id' => $this->category_id,
-            'user_id' => $this->user_id,
-            'name' => $this->name,
-            'url' => $this->url,
             'code' => $this->code,
+            'user_id' => $this->user_id,
+            'name' => ucwords(strtolower($this->name)),
+            'url' => $this->url,
+            'description' => $this->description,
+            'total_hours' => $this->total_hours,
+            'published' => $this->published,
+            'free' => $this->free,
+            'acceptsMcxPayment' => $this->acceptsMcxPayment,
+            'acceptsRefPayment' => $this->acceptsRefPayment,
+            'affiliationPercentage' => $this->affiliationPercentage,
+            'discount' => $this->discount,
             'price' => $this->price,
-            'imagem' => $this->image
+            'allowDownload' => $this->allowDownload,
+            'imagem' => $this->image,
+            'file' => $this->file,
         ];
     }
 }

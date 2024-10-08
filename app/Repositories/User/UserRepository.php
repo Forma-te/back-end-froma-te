@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\DTO\User\CreateCustomerDetailsDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User as Model;
@@ -69,6 +70,16 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->create([
             'name' => $dto->name,
             'email' => $dto->email,
+            'password' => $dto->password,
+        ]);
+    }
+
+    public function createCustomerDetails(CreateCustomerDetailsDTO $dto): object
+    {
+        return $this->model->create([
+            'name' => $dto->name,
+            'email' => $dto->email,
+            'phone_number' => $dto->phone_number,
             'password' => $dto->password
         ]);
     }
@@ -77,7 +88,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $user = $this->model->find($dto->id);
 
-        if($user) {
+        if ($user) {
             $user->update((array) $dto);
             return $user;
         }

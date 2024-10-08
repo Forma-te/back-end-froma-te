@@ -15,12 +15,12 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('course_id')->unsigned();
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->bigInteger('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 
             $table->bigInteger('user_id')->unsigned();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->bigInteger('instrutor_id')->unsigned();
 
             $table->string('transaction');
@@ -35,6 +35,7 @@ class CreateSalesTable extends Migration
             $table->double('discountedPrice', 10, 2);
             $table->date('date_created');
             $table->timestamp('date_expired');
+            $table->string('product_type')->nullable();
             $table->timestamps();
         });
     }

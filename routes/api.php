@@ -17,7 +17,10 @@ use App\Http\Controllers\Api\Auth\{
     AuthController,
     ResetPasswordController
 };
-use App\Http\Controllers\Api\Cart\CartPlanController;
+use App\Http\Controllers\Api\Cart\{
+    CartPlanController,
+    CartController
+};
 use App\Http\Controllers\Api\Member\{
     MemberController,
     SupportController
@@ -54,6 +57,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Course
     */
     Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/courses/producers', [CourseController::class, 'fetchAllCoursesByProducers']);
     Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
     Route::post('/course', [CourseController::class, 'createCourse']);
     Route::put('/course/{Id}', [CourseController::class, 'updateCourse']);
@@ -151,6 +155,34 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Subscription
     */
     Route::get('/subscription', [SubscriptionController::class, 'getSubscription']);
+
+    Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
+
+    /**
+    * Route Cart
+    */
+    Route::prefix('cart')->group(function () {
+
+        // Adicionar produto ao carrinho
+        Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
+
+        // Visualizar carrinho
+        Route::get('/view', [CartController::class, 'viewCart'])->name('cart.view');
+
+        // Atualizar quantidade no carrinho
+        Route::put('/update', [CartController::class, 'updateCart'])->name('cart.update');
+
+        // Remover produto do carrinho
+        Route::delete('/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+        // Sincronizar carrinho da sessão
+        Route::post('/sync-session', [CartController::class, 'syncSessionCart'])->name('cart.syncSession');
+
+        // Finalizar compra (checkout)
+        Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    });
+
+
 });
 
 Route::get('/', function () {

@@ -4,8 +4,7 @@ namespace App\Repositories\Ebook;
 
 use App\DTO\Ebook\CreateEbookDTO;
 use App\DTO\Ebook\UpdateEbookDTO;
-use App\Models\Ebook;
-
+use App\Models\Product;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
 use Illuminate\Support\Facades\Gate;
@@ -15,39 +14,39 @@ class EbookRepository implements EbookRepositoryInterface
 {
     protected $entity;
 
-    public function __construct(Ebook $model)
+    public function __construct(Product $model)
     {
         $this->entity = $model;
     }
 
     public function paginate(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
     {
-        // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
+        // Construir a consulta inicial com as relações necessárias e o tipo 'Ebook'
         $query = $this->entity
-                ->userByAuth();
+                    ->where('product_type', 'ebook')
+                    ->userByAuth();
 
         // Aplicar o filtro se fornecido
         if ($filter) {
             $query->where(function ($query) use ($filter) {
-                $query->where('name', $filter)
-                      ->orWhere('name', 'like', "%{$filter}%");
+                $query->where('name', 'like', "%{$filter}%");
             });
         }
-
         // Paginar os resultados
-        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('user', 'users', 'sales')->paginate($totalPerPage, ['*'], 'page', $page);
+
 
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
 
-    public function new(CreateEbookDTO $dto): Ebook
+    public function new(CreateEbookDTO $dto): Product
     {
         return $this->entity->create((array) $dto);
 
     }
 
-    public function update(UpdateEbookDTO $dto): ?Ebook
+    public function update(UpdateEbookDTO $dto): ?Product
     {
         $ebook = $this->entity->find($dto->id);
 

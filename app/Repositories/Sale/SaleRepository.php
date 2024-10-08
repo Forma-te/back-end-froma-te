@@ -32,7 +32,7 @@ class SaleRepository implements SaleRepositoryInterface
     {
         $query = $this->entity
                       ->newQuery()
-                      ->join('courses', 'courses.id', '=', 'sales.course_id')
+                      ->join('products', 'products.id', '=', 'sales.product_id')
                       ->join('users', 'users.id', '=', 'sales.user_id')
                       ->select(
                           'sales.transaction',
@@ -42,18 +42,18 @@ class SaleRepository implements SaleRepositoryInterface
                           'sales.date_expired',
                           'sales.product_type as type',
                           'sales.id as sale_id',
-                          'courses.name as course_name',
-                          'courses.price',
-                          'courses.id as course_id',
-                          'courses.url',
-                          DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', courses.image) as image_url"),
+                          'products.name as course_name',
+                          'products.price',
+                          'products.id as product_id',
+                          'products.url',
+                          DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', products.image) as image_url"),
                           'users.name as user_name',
                           'users.phone_number',
                           'users.id as user_id',
                           'users.email as member_email',
                           DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', users.image) as student_image_url")
                       )
-                      ->where('courses.user_id', Auth::user()->id)
+                      ->where('products.user_id', Auth::user()->id)
                       ->where('sales.status', 'A');
 
         // Aplicar filtro por status
@@ -82,7 +82,7 @@ class SaleRepository implements SaleRepositoryInterface
     {
         $query = $this->entity
                     ->newQuery()
-                    ->join('courses', 'courses.id', '=', 'sales.course_id')
+                    ->join('products', 'products.id', '=', 'sales.product_id')
                     ->join('users', 'users.id', '=', 'sales.user_id')
                     ->select(
                         'sales.transaction',
@@ -92,18 +92,18 @@ class SaleRepository implements SaleRepositoryInterface
                         'sales.date_expired',
                         'sales.product_type as type',
                         'sales.id as sale_id',
-                        'courses.name as course_name',
-                        'courses.price',
-                        'courses.id as course_id',
-                        'courses.url',
-                        DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', courses.image) as image_url"),
+                        'products.name as course_name',
+                        'products.price',
+                        'products.id as course_id',
+                        'products.url',
+                        DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', products.image) as image_url"),
                         'users.name as user_name',
                         'users.phone_number',
                         'users.id as user_id',
                         'users.email as member_email',
                         DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', users.image) as student_image_url")
                     )
-                    ->where('courses.user_id', Auth::user()->id);
+                    ->where('products.user_id', Auth::user()->id);
 
         // Aplicar filtro por status
         if ($status) {
@@ -154,7 +154,7 @@ class SaleRepository implements SaleRepositoryInterface
         }
 
         $newSale = Sale::create([
-            'course_id' => $course->id,
+            'product_id' => $course->id,
             'user_id' => $member->id,
             'instrutor_id' => $authUser->first()->id,
             'email_student' => $dto->email_student,
@@ -193,7 +193,7 @@ class SaleRepository implements SaleRepositoryInterface
         }
 
         $newSale = Sale::create([
-            'course_id' => $course->id,
+            'product_id' => $course->id,
             'user_id' => $member->id,
             'instrutor_id' => $authUser->first()->id,
             'email_student' => $dto->email_student,

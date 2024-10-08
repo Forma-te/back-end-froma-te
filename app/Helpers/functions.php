@@ -2,26 +2,19 @@
 
 function generatePassword()
 {
-    //Letras minúsculas embaralhadas
-    $capitalLetters = str_shuffle('abcdefghijklmnopqrstuvwxyz');
+    // Números aleatórios
+    $numbers = str_shuffle('0123456789');
 
-    //Letras maiúsculas embaralhadas
-    $smallLetters = str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-
-    //Números aleatórios
-    $numbers = (((date('Ymd') / 12) * 24) + mt_rand(800, 9999));
-    $numbers .= 1234567890;
-
-    //Caracters Especiais
+    // Caracteres especiais
     $specialCharacters = str_shuffle('!@#$%*-');
 
-    //Junta tudo
-    $characters = $capitalLetters.$smallLetters.$numbers.$specialCharacters;
+    // Junta os números e caracteres especiais
+    $characters = $numbers . $specialCharacters;
 
-    //Embaralha e pega apenas 8 caracters
+    // Embaralha e pega apenas 8 caracteres
     $password = substr(str_shuffle($characters), 0, 8);
 
-    //Retorna a senha
+    // Retorna a senha
     return $password;
 }
 

@@ -197,9 +197,9 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class, 'instrutor_id');
     }
 
-    public function courses()
+    public function products()
     {
-        return $this->belongsToMany(Course::class, 'sales');
+        return $this->belongsToMany(Product::class);
     }
 
     public static function scopeUserByAuth($query)
@@ -214,7 +214,7 @@ class User extends Authenticatable
 
     public function coursesProducer()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Product::class);
     }
 
     public function student()
@@ -231,7 +231,7 @@ class User extends Authenticatable
 
         $permission = $this->join('sales', 'sales.user_id', '=', 'users.id')
             ->where('sales.user_id', Auth::user()->id)
-            ->where('sales.course_id', $idCourse)
+            ->where('sales.product_id', $idCourse)
             ->where('sales.status', 'A')
             ->count();
         if ($permission > 0) {

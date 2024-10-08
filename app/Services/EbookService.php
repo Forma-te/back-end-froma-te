@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\DTO\Ebook\CreateEbookDTO;
 use App\DTO\Ebook\UpdateEbookDTO;
-use App\Models\Ebook;
+use App\Models\Product;
 use App\Repositories\Ebook\EbookRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use Illuminate\Http\UploadedFile;
@@ -30,16 +30,23 @@ class EbookService
         );
     }
 
-    public function new(CreateEbookDTO $dto): Ebook
+    public function new(CreateEbookDTO $dto): Product
     {
-        if ($dto->image) {
+         // Processar imagem se existir
+         if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
-
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'coverEbooks', $customImageName);
-
-            $dto->image = $uploadedFilePath;
+            $uploadedImagePath = $this->uploadFile->storeAs($dto->image, 'Products/Images', $customImageName);
+            $dto->image = $uploadedImagePath;
         }
 
+        // Processar ficheiro se existir
+        if ($dto->file) {
+            $customFileName = $dto->code . '.' . $dto->file->getClientOriginalExtension();
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'Products/Files', $customFileName);
+            $dto->file = $uploadedFilePath;
+        }
+
+        // Criar o produto
         return $this->repository->new($dto);
     }
 
@@ -48,7 +55,7 @@ class EbookService
         return $this->repository->findById($id);
     }
 
-    public function update(UpdateEbookDTO $dto): ?Ebook
+    public function update(UpdateEbookDTO $dto): ?Product
     {
         // Buscar a lição existente
         $ebook = $this->repository->findById($dto->id);

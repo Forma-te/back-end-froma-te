@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use OpenApi\Annotations as OA;
 
 /**
- * Class Course.
+ * Class Product.
  *
  * @OA\Schema(
  *     description="Course model",
@@ -22,7 +22,7 @@ use OpenApi\Annotations as OA;
  * )
  */
 
-class Course extends Model
+class Product extends Model
 {
     use HasFactory;
 
@@ -129,7 +129,7 @@ class Course extends Model
 
     protected $fillable = [
         'category_id', 'user_id', 'name', 'url','description', 'image', 'code', 'total_hours', 'published', 'free',
-        'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount'
+        'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allow_download', 'product_type'
     ];
 
     public static function scopeUserByAuth($query)

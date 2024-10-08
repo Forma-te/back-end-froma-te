@@ -77,7 +77,7 @@ class Sale extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'course_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created', 'date_expired', 'product_type'
+        'product_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created', 'date_expired', 'product_type'
     ];
 
     public $statusOptions = [
@@ -115,15 +115,15 @@ class Sale extends Model
         $studentId = Auth::id(); // Obtém o ID do aluno logado
 
         return $this->where('user_id', $studentId)
-            ->where('status', 'approved')
-            ->with('course')
-            ->first()
-            ->course;
+                    ->where('status', 'approved')
+                    ->with('course')
+                    ->first()
+                    ->course;
     }
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Product::class);
     }
 
     public function student()

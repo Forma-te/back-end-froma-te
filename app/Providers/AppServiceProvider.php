@@ -11,9 +11,10 @@ use App\Repositories\Admin\Plan\PlanRepository;
 use App\Repositories\Admin\Plan\PlanRepositoryInterface;
 use App\Repositories\Bank\BankRepository;
 use App\Repositories\Bank\BankRepositoryInterface;
+use App\Repositories\Cart\CartRepository;
+use App\Repositories\Cart\CartRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
-
 use App\Repositories\Course\{
     CourseRepository,
     CourseRepositoryInterface
@@ -125,6 +126,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             PlanRepositoryInterface::class,
             PlanRepository::class,
+        );
+
+        $this->app->singleton(
+            CartRepositoryInterface::class,
+            CartRepository::class,
         );
 
     }

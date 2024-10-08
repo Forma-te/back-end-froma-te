@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
-use App\Models\Course;
+use App\Models\Product;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use Illuminate\Http\UploadedFile;
@@ -30,12 +30,28 @@ class CourseService
         );
     }
 
-    public function new(CreateCourseDTO $dto): Course
+    public function fetchAllCoursesByProducers(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null,
+        string $producerName = null,
+        string $categoryName = null
+    ): PaginationInterface {
+        return $this->repository->fetchAllCoursesByProducers(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+            producerName: $producerName,
+            categoryName: $categoryName
+        );
+    }
+
+    public function new(CreateCourseDTO $dto): Product
     {
         if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
 
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'courses', $customImageName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products', $customImageName);
 
             $dto->image = $uploadedFilePath;
         }
@@ -48,7 +64,7 @@ class CourseService
         return $this->repository->findById($id);
     }
 
-    public function update(UpdateCourseDTO $dto): ?Course
+    public function update(UpdateCourseDTO $dto): ?Product
     {
         // Buscar a course existente
         $course = $this->repository->findById($dto->id);
@@ -63,7 +79,7 @@ class CourseService
             $file = $dto->image;
             $customImageName = Str::of($dto->code)->slug('-') . '.' . $file->getClientOriginalExtension();
             // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'courses', $customImageName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products', $customImageName);
 
             // Atualizar o DTO com o caminho relativo do ficheiro armazenado
             $dto->image = $uploadedFilePath;

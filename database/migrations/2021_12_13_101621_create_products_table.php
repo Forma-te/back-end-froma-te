@@ -13,7 +13,7 @@ class CreateCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
@@ -27,14 +27,17 @@ class CreateCoursesTable extends Migration
             $table->text('spotlight')->nullable();
             $table->string('image', 225)->nullable();
             $table->string('file', 225)->nullable();
+            $table->boolean('allow_download');
+            $table->string('product_type', 225)->nullable();
             $table->string('code', 255)->unique()->default(null);
-            $table->time('total_hours');
+            $table->time('total_hours')->default('0');
             $table->boolean('published');
             $table->boolean('free')->default(false);
             $table->double('price', 10, 2);
             $table->integer('discount')->nullable();
             $table->integer('acceptsMcxPayment')->nullable();
             $table->integer('acceptsRefPayment')->nullable();
+            $table->string('product_type')->nullable();
             $table->double('price_plots', 10, 2)->nullable();
             $table->integer('total_plots')->nullable();
             $table->string('link_buy')->nullable();

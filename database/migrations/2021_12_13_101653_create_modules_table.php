@@ -11,19 +11,19 @@ class CreateModulesTable extends Migration
      *
      * @return void
      */
-    public function up() 
+    public function up()
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('course_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
             $table->string('name', 150);
-            $table->string('description')->nullable(); 
+            $table->string('description')->nullable();
             $table->boolean('published');
             $table->timestamps();
 
-            $table->foreign('course_id')
+            $table->foreign('product_id')
                         ->references('id')
-                        ->on('courses')
+                        ->on('products')
                         ->onDelete('cascade');
         });
     }
