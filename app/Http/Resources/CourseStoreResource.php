@@ -48,7 +48,11 @@ class CourseStoreResource extends JsonResource
             'free' => $this->free,
             'price' => $this->price,
             'available' => $this->available,
-            'imagem' => $this->image
+            'imagem' => $this->image,
+            'discount' => $this->discount,
+            'acceptsMcxPayment' => $this->acceptsMcxPayment,
+            'acceptsRefPayment' => $this->acceptsRefPayment,
+            'affiliationPercentage' => $this->affiliationPercentage,
         ];
     }
 }

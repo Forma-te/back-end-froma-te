@@ -5,7 +5,7 @@ namespace App\Repositories\Cart;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Course;
+use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PlatformBalances;
@@ -20,7 +20,7 @@ class CartRepository implements CartRepositoryInterface
     public function __construct(
         protected Cart $entity,
         protected CartItem $cartItem,
-        protected Course $product,
+        protected Product $product,
         protected Order $order,
         protected OrderItem $orderItem,
         protected UserBalance $userBalance,
@@ -44,7 +44,7 @@ class CartRepository implements CartRepositoryInterface
     public function validateOrCreateCustomer(CreateCustomerDetailsDTO $dto)
     {
         $member = $this->userRepository->findByEmail($dto->email);
- 
+
         $password = null;
 
         if ($member === null) {

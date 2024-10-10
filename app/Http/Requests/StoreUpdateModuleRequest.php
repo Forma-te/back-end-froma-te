@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Course;
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
-
 use OpenApi\Annotations as OA;
 
 /**
@@ -37,7 +36,7 @@ class StoreUpdateModuleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $course = Course::find($this->get('course_id'));
+        $course = Product::find($this->get('product_id'));
 
         return Gate::allows('owner-course', $course);
 
@@ -52,7 +51,7 @@ class StoreUpdateModuleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'course_id' => 'required|exists:courses,id',
+            'product_id' => 'required|exists:courses,id',
             'name' => 'required|min:2|max:150',
         ];
     }

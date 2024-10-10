@@ -4,7 +4,7 @@ namespace App\Repositories\Module;
 
 use App\DTO\Module\CreateModuleDTO;
 use App\DTO\Module\UpdateModuleDTO;
-use App\Models\Course;
+use App\Models\Product;
 use App\Models\Module;
 use App\Repositories\Module\ModuleRepositoryInterface;
 use App\Repositories\PaginationInterface;
@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Gate;
 class ModuleRepository implements ModuleRepositoryInterface
 {
     protected $entity;
-    protected $course;
+    protected $product;
 
-    public function __construct(Module $model, Course $course)
+    public function __construct(Module $model, Product $product)
     {
         $this->entity = $model;
-        $this->course = $course;
+        $this->product = $product;
     }
 
     public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface
@@ -48,14 +48,14 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public function createModule(): ?array
     {
-        $courses = $this->course->userByAuth()->pluck('name', 'id');
+        $courses = $this->product->userByAuth()->pluck('name', 'id');
 
         return $courses->toArray();
     }
 
     public function getModulesByCourseId(string $courseId): object|null
     {
-        $course = $this->course->find($courseId);
+        $course = $this->product->find($courseId);
 
         if (!$course) {
             return null;

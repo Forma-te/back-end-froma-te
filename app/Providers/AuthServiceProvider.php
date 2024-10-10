@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Course;
+use App\Models\Product;
 use App\Models\Ebook;
 use App\Models\Sale;
 use App\Models\User;
@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Gate::policy(Course::class, CoursePolicy::class);
+        Gate::policy(Product::class, CoursePolicy::class);
     }
 
     /**
@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('owner-course', function (User $user, Course $course) {
+        Gate::define('owner-course', function (User $user, Product $course) {
             return $course->user_id ===  $user->id;
         });
 

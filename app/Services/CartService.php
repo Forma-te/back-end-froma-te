@@ -6,14 +6,13 @@ use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Repositories\Cart\CartRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
-use App\Models\Cart;
-use App\Models\Course;
+use App\Models\Product;
 
 class CartService
 {
     public function __construct(
         protected CartRepositoryInterface $repository,
-        protected Course $product,
+        protected Product $product,
         protected CartItem $cartItem
     ) {
     }

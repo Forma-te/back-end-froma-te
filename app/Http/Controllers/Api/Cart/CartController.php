@@ -18,23 +18,6 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    // Exibe o carrinho atual do utilizador
-    public function viewCart()
-    {
-        $cart = $this->cartService->viewCart();
-        return response()->json($cart);
-    }
-
-    public function validateOrCreateCustomer(StoreCustomerDetailsRequest $request)
-    {
-        $member = $this->cartService->validateOrCreateCustomer(
-            CreateCustomerDetailsDTO::makeFromRequest($request)
-        );
-
-        return new UserResource($member);
-    }
-
-
     // Adiciona um produto ao carrinho
     public function addToCart(Request $request)
     {
@@ -49,6 +32,22 @@ class CartController extends Controller
             'message' => 'Produto adicionado ao carrinho com sucesso.',
             'cartItem' => $cartItem,
         ]);
+    }
+
+    // Exibe o carrinho atual do utilizador
+    public function viewCart()
+    {
+        $cart = $this->cartService->viewCart();
+        return response()->json($cart);
+    }
+
+    public function validateOrCreateCustomer(StoreCustomerDetailsRequest $request)
+    {
+        $member = $this->cartService->validateOrCreateCustomer(
+            CreateCustomerDetailsDTO::makeFromRequest($request)
+        );
+
+        return new UserResource($member);
     }
 
     // Atualiza a quantidade de um produto no carrinho
