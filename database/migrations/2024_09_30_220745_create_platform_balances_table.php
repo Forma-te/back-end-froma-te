@@ -13,7 +13,7 @@ return new class () extends Migration {
         Schema::create('platform_balances', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->decimal('product_value', 10, 2); // Valor do produto
             $table->decimal('product_percentage', 10, 2);
             $table->decimal('total_balance', 10, 2)->default(0); // Saldo total da plataforma

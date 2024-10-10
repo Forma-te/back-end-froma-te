@@ -15,7 +15,7 @@ return new class () extends Migration {
             $table->bigInteger('cart_id')->unsigned();
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('quantity'); // Quantidade do produto
             $table->decimal('price', 10, 2);
             $table->timestamps();
