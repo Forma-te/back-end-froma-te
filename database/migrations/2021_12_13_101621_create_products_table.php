@@ -36,6 +36,7 @@ class CreateProductsTable extends Migration
             $table->integer('discount')->nullable();
             $table->integer('acceptsMcxPayment')->nullable();
             $table->integer('acceptsRefPayment')->nullable();
+            $table->integer('affiliationPercentage')->nullable();
             $table->double('price_plots', 10, 2)->nullable();
             $table->string('link_buy')->nullable();
             $table->timestamps();
