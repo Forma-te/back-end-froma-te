@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
 use OpenApi\Annotations as OA;
 
 /**
@@ -45,7 +44,7 @@ class ModuleProducerResource extends JsonResource
     {
         return [
             'identify' =>  $this->id,
-            'course_id' =>  $this->course_id,
+            'course_id' =>  $this->product_id,
             'name' =>  ucwords(strtolower($this->name)),
             'published' =>  $this->published,
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
