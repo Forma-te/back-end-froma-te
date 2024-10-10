@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->text('spotlight')->nullable();
             $table->string('image', 225)->nullable();
             $table->string('file', 225)->nullable();
-            $table->boolean('allow_download');
+            $table->boolean('allow_download')->nullable();
             $table->string('product_type', 225)->nullable();
             $table->string('code', 255)->unique()->default(null);
             $table->time('total_hours')->default('0');
