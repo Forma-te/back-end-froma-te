@@ -51,7 +51,7 @@ class StoreUpdateModuleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:courses,id',
+            'product_id' => 'required|exists:products,id',
             'name' => 'required|min:2|max:150',
         ];
     }

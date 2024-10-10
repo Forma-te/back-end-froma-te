@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUpdateModuleRequest;
 class CreateModuleDTO
 {
     public function __construct(
-        public string $course_id,
+        public string $product_id,
         public string $name
     ) {
     }
@@ -17,7 +17,7 @@ class CreateModuleDTO
         $data = $request->all();
 
         return new self(
-            $data['course_id'],
+            $data['product_id'],
             $data['name']
         );
     }
