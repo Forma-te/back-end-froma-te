@@ -51,7 +51,7 @@ class Module extends Model
     private $published;
 
     protected $fillable = [
-        'product_id', 'name'
+        'product_id', 'name', 'published'
     ];
 
     // Verifica se o usuário atual é o proprietário do curso

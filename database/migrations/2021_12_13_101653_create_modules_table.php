@@ -18,7 +18,7 @@ class CreateModulesTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->string('name', 150);
             $table->string('description')->nullable();
-            $table->boolean('published');
+            $table->boolean('published')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')
