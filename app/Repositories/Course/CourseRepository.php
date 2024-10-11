@@ -27,7 +27,7 @@ class CourseRepository implements CourseRepositoryInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
-                      //->where('product_type', 'product_type')
+                      ->with('user', 'users', 'sales')
                       ->userByAuth();
 
         // Aplicar o filtro se fornecido
@@ -38,7 +38,7 @@ class CourseRepository implements CourseRepositoryInterface
         }
 
         // Paginar os resultados
-        $result = $query->with('user', 'users', 'sales')->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
 
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
