@@ -18,6 +18,6 @@ class CartItem extends Model
 
     public function product()
     {
-        return $this->belongsTo(Course::class, );
+        return $this->belongsTo(Product::class, );
     }
 }

@@ -22,7 +22,7 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:courses,id',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1'
         ]);
 

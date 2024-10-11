@@ -110,7 +110,7 @@ class CourseController extends Controller
         $categoryName = $request->get('category_name');
 
         // Construir a chave de cache com base nos parâmetros
-        $cacheKey = "courses.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
+        $cacheKey = "products.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
 
         // Verificar se os dados estão em cache
         $courses = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
