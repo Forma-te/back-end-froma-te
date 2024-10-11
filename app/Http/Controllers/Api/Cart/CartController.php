@@ -54,7 +54,7 @@ class CartController extends Controller
     public function updateCart(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:courses,id',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1'
         ]);
 
@@ -66,7 +66,7 @@ class CartController extends Controller
     public function removeFromCart(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:courses,id'
+            'product_id' => 'required|exists:products,id'
         ]);
 
         $this->cartService->removeFromCart($request);
