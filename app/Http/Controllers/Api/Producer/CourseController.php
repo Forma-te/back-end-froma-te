@@ -11,11 +11,12 @@ use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseStoreResource;
 use App\Repositories\Course\CourseRepository;
 use App\Services\CourseService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use OpenApi\Annotations as OA;
 
 class CourseController extends Controller
@@ -380,7 +381,20 @@ class CourseController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $this->courseService->delete($id);
+        try {
+            $this->courseService->delete($id);
+        } catch (FileNotFoundException $e) {
+
+            return response()->json([
+                'error' => $e->getMessage()
+            ], Response::HTTP_NOT_FOUND);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'error' => 'Erro ao eliminar o curso'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return response()->json([], Response::HTTP_NO_CONTENT);
 

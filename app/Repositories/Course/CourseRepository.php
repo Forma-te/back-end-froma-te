@@ -10,10 +10,9 @@ use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
 use Exception;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
-use stdClass;
 
 class CourseRepository implements CourseRepositoryInterface
 {
