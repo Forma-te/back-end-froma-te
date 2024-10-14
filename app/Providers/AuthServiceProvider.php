@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
             return $course->user_id ===  $user->id;
         });
 
-        Gate::define('owner-ebook', function (User $user, Ebook $ebook) {
+        Gate::define('owner-ebook', function (User $user, Product $ebook) {
             return $ebook->user_id === $user->id;
         });
 
