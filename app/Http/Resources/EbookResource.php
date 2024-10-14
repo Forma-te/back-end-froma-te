@@ -30,7 +30,7 @@ class EbookResource extends JsonResource
             'affiliationPercentage' => $this->affiliationPercentage,
             'discount' => $this->discount,
             'price' => $this->price,
-            'allowDownload' => $this->allowDownload,
+            'allowDownload' => $this->allow_download,
             'imagem' => $this->image,
             'file' => $this->file,
         ];
