@@ -36,10 +36,10 @@ class StoreUpdateEbookRequest extends FormRequest
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
-            'price' => 'required',
+            'price' => 'nullable',
             'discount' => 'nullable',
-            'acceptsMcxPayment' => 'required',
-            'acceptsRefPayment' => 'required',
+            'acceptsMcxPayment' => 'nullable',
+            'acceptsRefPayment' => 'nullable',
             'product_type' => 'nullable',
             'allow_download' => 'nullable'
         ];
