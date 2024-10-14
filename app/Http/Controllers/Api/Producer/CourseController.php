@@ -376,7 +376,7 @@ class CourseController extends Controller
     {
         if (!$this->courseService->findById($id)) {
             return response()->json([
-                'error' => 'Not Found'
+                'error' => 'Curso não encontrado'
             ], Response::HTTP_NOT_FOUND);
         }
 

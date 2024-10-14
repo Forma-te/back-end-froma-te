@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
+use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
@@ -121,13 +122,11 @@ class CourseRepository implements CourseRepositoryInterface
                 $course->delete();
             }
         } catch (ModelNotFoundException $e) {
-            // Lidar com o caso onde o curso não foi encontrado
-            // Pode-se lançar uma exceção personalizada ou apenas registrar o erro
+
             throw new FileNotFoundException("Curso não encontrado");
-        } catch (\Exception $e) {
-            // Lidar com outras possíveis exceções
-            // Pode-se lançar uma exceção personalizada ou apenas registrar o erro
-            throw new \Exception("Erro ao eliminar o curso");
+
+        } catch (Exception $e) {
+            throw new Exception("Erro ao eliminar o curso");
         }
     }
 
