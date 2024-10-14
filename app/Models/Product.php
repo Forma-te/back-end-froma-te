@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -40,19 +41,19 @@ class Product extends Model
     public function usersCourse()
     {
         return $this->belongsToMany(User::class, 'sales', 'product_id', 'user_id')
-            ->select('sales.course_id');
+                    ->select('sales.course_id');
     }
 
     public function users()
     {
         return $this->belongsToMany(User::class, 'sales', 'product_id', 'user_id')
-            ->where('sales.status', 'A');
+                    ->where('sales.status', 'A');
     }
 
     public function usersEnrolled()
     {
         return $this->belongsToMany(User::class, 'sales', 'product_id', 'user_id')
-            ->where('sales.status', 'expired');
+                    ->where('sales.status', 'expired');
     }
 
     public function category()
@@ -72,6 +73,7 @@ class Product extends Model
 
     protected function getCreatedAtAttribute($value)
     {
-        return $value ? \Carbon\Carbon::parse($value)->format('d/m/Y') : null;
+        return $value ? Carbon::parse($value)->format('d/m/Y') : null;
     }
+
 }

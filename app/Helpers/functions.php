@@ -6,7 +6,7 @@ function generatePassword()
     $numbers = str_shuffle('0123456789');
 
     // Caracteres especiais
-    $specialCharacters = str_shuffle('!@#$%*-');
+    $specialCharacters = str_shuffle('@#$%*');
 
     // Junta os números e caracteres especiais
     $characters = $numbers . $specialCharacters;

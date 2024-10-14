@@ -10,8 +10,8 @@ class CreateCustomerDetailsDTO
     public function __construct(
         public string $name,
         public string $email,
-        public string $password,
         public string $phone_number,
+        public string $password,
         public string $device_name
     ) {
     }
@@ -19,13 +19,13 @@ class CreateCustomerDetailsDTO
     {
         $data = $request->all();
 
-        //$data['password'] = Hash::make($data['password']);
+        $password = generatePassword();
 
         return new self(
             $data['name'],
             $data['email'],
-            $data['password'],
             $data['phone_number'],
+            $password,
             $data['device_name']
         );
     }

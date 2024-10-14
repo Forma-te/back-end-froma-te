@@ -10,10 +10,16 @@ class UpdateEbookDTO
         public string $id,
         public string $category_id,
         public string $name,
-        public string $url,
-        public string $code,
+        public string $description,
+        public string $published,
         public string $price,
-        public  $image,
+        public string $discount,
+        public string $acceptsMcxPayment,
+        public string $acceptsRefPayment,
+        public string $affiliationPercentage,
+        public string $allowDownload,
+        public $image = null,
+        public $file = null
     ) {
     }
 
@@ -22,17 +28,24 @@ class UpdateEbookDTO
         $data = $request->all();
 
         // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
+        // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
+        $file = $request->hasFile('file') ? $request->file('file') : null;
 
         return new self(
             $id ?? $request->id,
             $data['category_id'],
             $data['name'],
-            $data['url'],
             $data['description'],
-            $data['code'],
+            $data['published'],
             $data['price'],
-            $image
+            $data['discount'],
+            $data['acceptsMcxPayment'],
+            $data['acceptsRefPayment'],
+            $data['affiliationPercentage'],
+            $data['allowDownload'],
+            $image,
+            $file
         );
     }
 }

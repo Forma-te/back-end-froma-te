@@ -57,7 +57,7 @@ class Module extends Model
     // Verifica se o usuário atual é o proprietário do curso
     public function authorize()
     {
-        $course = Product::find($this->get('product_id'));
+        $course = Product::find($this->get('id'));
 
         return Gate::allows('owner-course', $course);
     }
@@ -65,15 +65,15 @@ class Module extends Model
     // Definição da relação com o modelo Course
     public function course()
     {
-        return $this->belongsto(Product::class);
+        return $this->belongsto(Product::class, 'product_id');
     }
 
     // Obtém os módulos do usuário autenticado
     public function modulesUser()
     {
         return $this->join('products', 'products.id', '=', 'modules.product_id')
-            ->where('products.user_id', Auth::user()->id)
-            ->pluck('modules.name', 'modules.id');
+                    ->where('products.user_id', Auth::user()->id)
+                    ->pluck('modules.name', 'modules.id');
     }
 
     public function lessons()

@@ -50,9 +50,9 @@ class LessonRepository implements LessonRepositoryInterface
 
         $course = $module->course;
 
-        Gate::authorize('owner-course', $course);
-
-        $lessons = $module->lessons()->get();
+        if (Gate::authorize('owner-course', $course)) {
+            $lessons = $module->lessons()->get();
+        }
 
         if ($lessons->isEmpty()) {
             return null;

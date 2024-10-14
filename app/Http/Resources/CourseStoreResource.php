@@ -47,7 +47,7 @@ class CourseStoreResource extends JsonResource
             'published' => $this->published,
             'free' => $this->free,
             'price' => $this->price,
-            'available' => $this->available,
+            'product_type' => $this->product_type,
             'imagem' => $this->image,
             'discount' => $this->discount,
             'acceptsMcxPayment' => $this->acceptsMcxPayment,

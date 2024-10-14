@@ -5,7 +5,6 @@ namespace App\Repositories\User;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
-use App\Models\User as Model;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 
@@ -13,7 +12,7 @@ class UserRepository implements UserRepositoryInterface
 {
     private $model;
 
-    public function __construct(Model $model)
+    public function __construct(User $model)
     {
         $this->model = $model;
     }
@@ -80,7 +79,7 @@ class UserRepository implements UserRepositoryInterface
             'name' => $dto->name,
             'email' => $dto->email,
             'phone_number' => $dto->phone_number,
-            'password' => $dto->password
+            'password' => $dto->password,
         ]);
     }
 

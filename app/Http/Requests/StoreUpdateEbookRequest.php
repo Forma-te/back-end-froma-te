@@ -31,17 +31,17 @@ class StoreUpdateEbookRequest extends FormRequest
             'url' => 'nullable',
             'image' => 'nullable|image|mimes:png,jpg|max:7000|dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',
-            'type' => 'nullable',
+            'product_type' => 'nullable',
             'code' => "nullable|unique:products,code,{$id},Id",
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
             'price' => 'nullable',
             'discount' => 'nullable',
-            'acceptsMcxPayment' => 'nullable',
-            'acceptsRefPayment' => 'nullable',
+            'acceptsMcxPayment' => 'required',
+            'acceptsRefPayment' => 'required',
             'product_type' => 'nullable',
-            'allowDownload' => 'nullable'
+            'allowDownload' => 'required'
         ];
 
         return $rules;

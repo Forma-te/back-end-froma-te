@@ -38,7 +38,10 @@ class CartController extends Controller
     public function viewCart()
     {
         $cart = $this->cartService->viewCart();
-        return response()->json($cart);
+
+        return response()->json([
+            'cart' => $cart,
+        ]);
     }
 
     public function validateOrCreateCustomer(StoreCustomerDetailsRequest $request)
@@ -82,7 +85,7 @@ class CartController extends Controller
     }
 
     // Finaliza a compra e cria o pedido
-    public function checkout(Request $request)
+    public function checkout()
     {
         return $this->cartService->checkout();
     }

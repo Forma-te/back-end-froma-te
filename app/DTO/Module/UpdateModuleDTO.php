@@ -9,7 +9,7 @@ class UpdateModuleDTO
 {
     public function __construct(
         public string $id,
-        public int $course_id,
+        public int $product_id,
         public string $name,
     ) {
     }
@@ -18,7 +18,7 @@ class UpdateModuleDTO
     {
         return new self(
             $id,
-            $request->input('course_id'),
+            $request->input('product_id'),
             $request->input('name'),
         );
     }

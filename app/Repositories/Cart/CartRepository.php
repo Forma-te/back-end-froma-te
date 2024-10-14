@@ -45,21 +45,23 @@ class CartRepository implements CartRepositoryInterface
     {
         $member = $this->userRepository->findByEmail($dto->email);
 
-        $password = null;
-
-        if ($member === null) {
-            $password = generatePassword();
-
-            $userDto = new CreateCustomerDetailsDTO(
-                $dto->name,
-                $dto->email,
-                Hash::make($password),
-                $dto->phone_number,
-                'default_device' // ou alguma lógica para definir o device_name
-            );
-
-            $member = $this->userRepository->createCustomerDetails($userDto);
+        dd($member);
+        // Se o utilizador já existir, apenas retorna o utilizador
+        if ($member !== null) {
+            return $member;
         }
+
+        // Caso o utilizador não exista, cria um novo
+        $userDto = new CreateCustomerDetailsDTO(
+            $dto->name,
+            $dto->email,
+            Hash::make($dto->password),  // Encripta a password
+            $dto->phone_number,
+            'default_device'  // Ou lógica para definir o device_name
+        );
+
+        // Cria o novo utilizador no repositório
+        $member = $this->userRepository->createCustomerDetails($userDto);
 
         return $member;
     }
@@ -110,7 +112,7 @@ class CartRepository implements CartRepositoryInterface
             'total_amount' => $totalAmount,
             'platform_fee' => $platformFee,
             'net_amount' => $netAmount,
-            'status' => 'completed',
+            'status' => 'completed'
         ]);
 
         // Criar os itens do pedido
@@ -119,7 +121,7 @@ class CartRepository implements CartRepositoryInterface
                 'order_id' => $order->id,
                 'product_id' => $item['product_id'],
                 'quantity' => $item['quantity'],
-                'price' => $item['price'],
+                'price' => $item['price']
             ]);
 
             // Atualizar saldo do vendedor

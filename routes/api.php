@@ -76,7 +76,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Lesson
     */
     Route::get('/lessons', [LessonController::class, 'getAllLesson']);
-    Route::get('/module/{moduleId}/lessons', [LessonController::class, 'getLessonByModuleId']);
+    Route::get('/lessons/{moduleId}', [LessonController::class, 'getLessonByModuleId']);
     Route::post('/lesson', [LessonController::class, 'createLesson']);
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
     Route::put('/lesson/edit/name/{Id}', [LessonController::class, 'editNameLesson']);

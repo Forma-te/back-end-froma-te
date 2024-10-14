@@ -31,7 +31,7 @@ class StoreCustomerDetailsRequest extends FormRequest
             }],
             'email' => "required|string|email|max:255|unique:users,email,{$id},Id",
             'password' => 'sometimes|string|min:8',
-            'phone_number' => 'required'
+            'phone_number' => 'required|string|min:10|max:15|regex:/^\+?[0-9]{9,15}$/'
         ];
     }
 }
