@@ -14,7 +14,7 @@ class Product extends Model
 
     protected $fillable = [
         'category_id', 'user_id', 'name', 'url','description', 'image', 'file', 'code', 'total_hours', 'published', 'free',
-        'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allowDownload', 'product_type'
+        'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allow_download', 'product_type'
     ];
 
     public static function scopeUserByAuth($query)

@@ -58,10 +58,10 @@ class StoreUpdateCourseRequest extends FormRequest
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
-            'price' => 'nullable',
+            'price' => 'required',
             'discount' => 'nullable',
-            'acceptsMcxPayment' => 'nullable',
-            'acceptsRefPayment' => 'nullable',
+            'acceptsMcxPayment' => 'required',
+            'acceptsRefPayment' => 'required',
         ];
 
         return $rules;

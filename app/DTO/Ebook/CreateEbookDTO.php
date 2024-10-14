@@ -21,7 +21,7 @@ class CreateEbookDTO
         public string $acceptsMcxPayment,
         public string $acceptsRefPayment,
         public string $affiliationPercentage,
-        public string $allowDownload,
+        public string $allow_download,
         public string $product_type,
         public $image = null,
         public $file = null
@@ -61,7 +61,7 @@ class CreateEbookDTO
             $data['acceptsMcxPayment'],
             $data['acceptsRefPayment'],
             $data['affiliationPercentage'],
-            $data['allowDownload'],
+            $data['allow_download'],
             $product_type,
             $image,
             $file

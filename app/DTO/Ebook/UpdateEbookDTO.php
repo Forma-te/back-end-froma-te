@@ -17,7 +17,7 @@ class UpdateEbookDTO
         public string $acceptsMcxPayment,
         public string $acceptsRefPayment,
         public string $affiliationPercentage,
-        public string $allowDownload,
+        public string $allow_download,
         public $image = null,
         public $file = null
     ) {
@@ -43,7 +43,7 @@ class UpdateEbookDTO
             $data['acceptsMcxPayment'],
             $data['acceptsRefPayment'],
             $data['affiliationPercentage'],
-            $data['allowDownload'],
+            $data['allow_download'],
             $image,
             $file
         );
