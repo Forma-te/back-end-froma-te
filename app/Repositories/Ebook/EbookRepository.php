@@ -7,8 +7,10 @@ use App\DTO\Ebook\UpdateEbookDTO;
 use App\Models\Product;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
+use Exception;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class EbookRepository implements EbookRepositoryInterface
 {
@@ -67,7 +69,20 @@ class EbookRepository implements EbookRepositoryInterface
 
     public function delete(string $id): void
     {
-        $this->entity->findOrFail($id)->delete();
+        try {
+            $ebook = $this->entity->findOrFail($id);
+
+            if (Gate::authorize('owner-ebook', $ebook)) {
+                $ebook->delete();
+            }
+
+        } catch (ModelNotFoundException $e) {
+
+            throw new FileNotFoundException("Curso não encontrado");
+
+        } catch (Exception $e) {
+            throw new Exception("Erro ao eliminar o curso");
+        }
 
     }
 

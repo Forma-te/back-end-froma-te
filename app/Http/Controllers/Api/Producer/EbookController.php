@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateEbookRequest;
 use App\Http\Resources\EbookResource;
 use App\Services\EbookService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class EbookController extends Controller
 {
@@ -307,13 +309,28 @@ class EbookController extends Controller
     {
         if (!$this->ebookService->findById($id)) {
             return response()->json([
-                'error' => 'Not Found'
+                'error' => 'Ebook não encontrado'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $this->ebookService->delete($id);
+        try {
+            $this->ebookService->delete($id);
+        } catch (FileNotFoundException $e) {
 
-        return response()->json([], Response::HTTP_NO_CONTENT);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], Response::HTTP_NOT_FOUND);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'error' => 'Erro ao eliminar o ebook'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response()->json([
+            'success' => 'Ebook eliminado com sucesso'
+        ], Response::HTTP_OK);
 
     }
 
