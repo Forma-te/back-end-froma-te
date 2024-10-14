@@ -52,9 +52,7 @@ class EbookRepository implements EbookRepositoryInterface
     {
         $ebook = $this->entity->find($dto->id);
 
-        Gate::authorize('owner-ebook', $ebook);
-
-        if ($ebook) {
+        if ($ebook && Gate::authorize('owner-ebook', $ebook)) {
             $ebook->update((array) $dto);
             return $ebook;
         }
