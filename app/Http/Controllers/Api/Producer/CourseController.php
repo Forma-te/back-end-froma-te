@@ -396,7 +396,9 @@ class CourseController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return response()->json([], Response::HTTP_NO_CONTENT);
+        return response()->json([
+            'success' => 'Curso eliminado com sucesso'
+        ], Response::HTTP_OK);
 
     }
 
