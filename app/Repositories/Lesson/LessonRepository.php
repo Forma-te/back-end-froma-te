@@ -10,6 +10,7 @@ use App\Models\Lesson;
 use App\Models\Module;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
 
 class LessonRepository implements LessonRepositoryInterface
@@ -44,9 +45,13 @@ class LessonRepository implements LessonRepositoryInterface
         return $this->entity->find($id);
     }
 
-    public function getLessonByModuleId(string $moduleId): ?array
+    public function getLessonByModuleId(string $moduleId): ?Collection
     {
         $module = $this->module->find($moduleId);
+
+        if (!$module) {
+            return null; // Módulo não encontrado
+        }
 
         $course = $module->course;
 
@@ -55,10 +60,10 @@ class LessonRepository implements LessonRepositoryInterface
         }
 
         if ($lessons->isEmpty()) {
-            return null;
+            return null; // Sem lições
         }
 
-        return $lessons->toArray();
+        return $lessons; // Retorna uma coleção
     }
 
     public function new(CreateLessonDTO $dto): Lesson

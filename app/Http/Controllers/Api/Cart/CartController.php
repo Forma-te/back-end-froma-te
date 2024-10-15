@@ -46,11 +46,11 @@ class CartController extends Controller
 
     public function validateOrCreateCustomer(StoreCustomerDetailsRequest $request)
     {
-        $member = $this->cartService->validateOrCreateCustomer(
+        $user = $this->cartService->validateOrCreateCustomer(
             CreateCustomerDetailsDTO::makeFromRequest($request)
         );
 
-        return new UserResource($member);
+        return new UserResource($user);
     }
 
     // Atualiza a quantidade de um produto no carrinho

@@ -33,6 +33,7 @@ class CartRepository implements CartRepositoryInterface
     {
         if (Auth::check()) {
             $cart = $this->entity::firstOrCreate(['user_id' => Auth::user()->id]);
+
         } else {
             $sessionId = session()->getId();
             $cart = $this->entity::firstOrCreate(['session_id' => $sessionId]);
@@ -43,27 +44,26 @@ class CartRepository implements CartRepositoryInterface
 
     public function validateOrCreateCustomer(CreateCustomerDetailsDTO $dto)
     {
-        $member = $this->userRepository->findByEmail($dto->email);
+        $existingUser  = $this->userRepository->findByEmail($dto->email);
 
-        dd($member);
         // Se o utilizador já existir, apenas retorna o utilizador
-        if ($member !== null) {
-            return $member;
+        if ($existingUser !== null) {
+            return $existingUser;
         }
 
         // Caso o utilizador não exista, cria um novo
         $userDto = new CreateCustomerDetailsDTO(
             $dto->name,
             $dto->email,
-            Hash::make($dto->password),  // Encripta a password
             $dto->phone_number,
-            'default_device'  // Ou lógica para definir o device_name
+            Hash::make($dto->password),  // Encripta a password
         );
 
         // Cria o novo utilizador no repositório
-        $member = $this->userRepository->createCustomerDetails($userDto);
+        $newUser  = $this->userRepository->createCustomerDetails($userDto);
 
-        return $member;
+        // Retorna o novo utilizador criado
+        return $newUser;
     }
 
     public function addToCart(array $data)
@@ -72,8 +72,8 @@ class CartRepository implements CartRepositoryInterface
 
         // Verifica se o produto já está no carrinho
         $existingCartItem = $this->cartItem::where('cart_id', $cart->id)
-            ->where('product_id', $data['product_id'])
-            ->first();
+                                ->where('product_id', $data['product_id'])
+                                ->first();
 
         // Se o produto já existe, não faz nada e retorna o item existente
         if ($existingCartItem) {

@@ -12,7 +12,6 @@ class CreateCustomerDetailsDTO
         public string $email,
         public string $phone_number,
         public string $password,
-        public string $device_name
     ) {
     }
     public static function makeFromRequest(StoreCustomerDetailsRequest $request): self
@@ -26,7 +25,6 @@ class CreateCustomerDetailsDTO
             $data['email'],
             $data['phone_number'],
             $password,
-            $data['device_name']
         );
     }
 }

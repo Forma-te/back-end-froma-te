@@ -116,7 +116,7 @@ class LessonController extends Controller
     {
         $lessons = $this->lessonService->getLessonByModuleId($moduleId);
 
-        if ($lessons instanceof Collection && $lessons->isEmpty()) {
+        if (is_null($lessons) || $lessons->isEmpty()) {
             return response()->json([
                 'error' => 'Resource not found'
             ], Response::HTTP_NOT_FOUND);

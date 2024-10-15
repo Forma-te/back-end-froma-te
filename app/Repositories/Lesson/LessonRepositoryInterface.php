@@ -8,12 +8,13 @@ use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
 use App\Repositories\PaginationInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 interface LessonRepositoryInterface
 {
     public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface;
     public function findById(string $id): object|null;
-    public function getLessonByModuleId(string $lessonId): ?array;
+    public function getLessonByModuleId(string $lessonId): ?Collection;
     public function new(CreateLessonDTO $dto): ?Lesson;
     public function update(UpdateLessonDTO $dto): ?Lesson;
     public function editNameLesson(UpdateEditNameLessonDTO $dto): ?Lesson;

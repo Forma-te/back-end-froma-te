@@ -21,17 +21,28 @@ class StoreCustomerDetailsRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('Id') ?? '';
-
         return [
             'name' => ['required', 'string', 'regex:/^[\pL\s]+$/u', 'min:2', function ($attribute, $value, $fail) {
                 if (count(explode(' ', $value)) < 2) {
                     $fail('O campo ' . $attribute . ' deve conter o primeiro e último nome.');
                 }
             }],
-            'email' => "required|string|email|max:255|unique:users,email,{$id},Id",
+            'email' => 'required|email|max:255',
             'password' => 'sometimes|string|min:8',
-            'phone_number' => 'required|string|min:10|max:15|regex:/^\+?[0-9]{9,15}$/'
+            'phone_number' => 'required|string|min:13|max:13|regex:/^\+?[0-9]{9,13}$/'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'O campo nome é obrigatório.',
+            'email.required' => 'O campo email é obrigatório.',
+            'email.email' => 'O campo email deve ser um endereço de email válido.',
+            'email.unique' => 'O email fornecido já está em uso.',
+            'password.required' => 'O campo password é obrigatório.',
+            'password.min' => 'A password deve ter pelo menos :min caracteres.',
+            'phone_number.required' => 'O campo número de telefone é obrigatório.',
         ];
     }
 }

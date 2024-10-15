@@ -9,6 +9,7 @@ use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\PaginationInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
@@ -36,7 +37,7 @@ class LessonService
         return $this->repository->findById($id);
     }
 
-    public function getLessonByModuleId(string $Lesson): ?array
+    public function getLessonByModuleId(string $Lesson): ?Collection
     {
         return $this->repository->getLessonByModuleId($Lesson);
     }

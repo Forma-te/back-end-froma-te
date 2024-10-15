@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
             $table->boolean('allow_download')->nullable();
             $table->string('product_type', 225)->nullable();
             $table->string('code', 255)->unique()->default(null);
-            $table->time('total_hours')->default('0');
+            $table->string('total_hours')->default('0');
             $table->boolean('published');
             $table->boolean('free')->default(false);
             $table->double('price', 10, 2);
