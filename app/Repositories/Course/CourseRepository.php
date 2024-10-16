@@ -49,6 +49,7 @@ class CourseRepository implements CourseRepositoryInterface
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
                     ->where('product_type', 'course')
+                    ->where('published', 1)
                     ->with(['user:id,name,email', 'category:id,name'])
                     ->select(
                         'id',

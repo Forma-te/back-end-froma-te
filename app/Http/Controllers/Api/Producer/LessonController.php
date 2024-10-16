@@ -10,13 +10,12 @@ use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateFileLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateEditFileLessonRequest;
 use App\Http\Requests\StoreUpdateEditNameLessonRequest;
+use App\Http\Requests\StoreUpdateFileLessonRequest;
 use App\Http\Requests\StoreUpdateLessonRequest;
 use App\Http\Resources\LessonFileResource;
 use App\Http\Resources\LessonProducerResource;
 use App\Services\LessonService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -208,7 +207,7 @@ class LessonController extends Controller
         return new LessonProducerResource($lesson);
     }
 
-    public function createFileLesson(StoreUpdateEditFileLessonRequest $request)
+    public function createFileLesson(StoreUpdateFileLessonRequest $request)
     {
 
         $lessonFile = $this->lessonService->createFileLesson(
@@ -218,7 +217,7 @@ class LessonController extends Controller
         return new LessonFileResource($lessonFile);
     }
 
-    public function updateFileLesson(StoreUpdateEditFileLessonRequest $request, string $id)
+    public function updateFileLesson(StoreUpdateFileLessonRequest $request, string $id)
     {
         $lessonFile = $this->lessonService->updateFileLesson(
             UpdateFileLessonDTO::makeFromRequest($request, $id)

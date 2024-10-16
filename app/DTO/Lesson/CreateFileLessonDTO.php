@@ -2,7 +2,7 @@
 
 namespace App\DTO\Lesson;
 
-use App\Http\Requests\StoreUpdateEditFileLessonRequest;
+use App\Http\Requests\StoreUpdateFileLessonRequest;
 
 class CreateFileLessonDTO
 {
@@ -13,7 +13,7 @@ class CreateFileLessonDTO
     ) {
     }
 
-    public static function makeFromRequest(StoreUpdateEditFileLessonRequest $request): self
+    public static function makeFromRequest(StoreUpdateFileLessonRequest $request): self
     {
         $data = $request->all();
 
