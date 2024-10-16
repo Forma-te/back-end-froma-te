@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\DTO\Lesson\CreateFileLessonDTO;
 use App\DTO\Lesson\CreateLessonDTO;
 use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
+use App\DTO\Lesson\UpdateFileLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
 use App\Repositories\Lesson\LessonRepositoryInterface;
@@ -91,6 +93,49 @@ class LessonService
     public function createNameLesson(CreateNameLessonDTO $dto)
     {
         return $this->repository->createNameLesson($dto);
+    }
+
+    public function createFileLesson(CreateFileLessonDTO $dto)
+    {
+        if ($dto->file) {
+
+            $file = $dto->file;
+            $customImageName = Str::of($dto->lesson_id . '.' . $dto->url)->slug('-') . '.' . $file->getClientOriginalExtension();
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'lessonPdf', $customImageName);
+
+            $dto->file = $uploadedFilePath;
+        }
+
+        return $this->repository->createFileLesson($dto);
+    }
+
+    public function updateFileLesson(UpdateFileLessonDTO $dto)
+    {
+
+        // Buscar a lição existente
+        $lessonFile = $this->repository->findById($dto->id);
+
+        // Verificar instância da classe UploadedFile
+        if ($dto->file instanceof UploadedFile) {
+            if ($lessonFile && $lessonFile->file) {
+                // Remover o ficheiro existente, se houver
+                $this->uploadFile->removeFile($lessonFile->file);
+            }
+            // Processar o novo ficheiro
+            $file = $dto->file;
+            $customImageName = Str::of($dto->lesson_id . '.' . $dto->url)->slug('-') . '.' . $file->getClientOriginalExtension();
+            // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'lessonPdf', $customImageName);
+
+            // Atualizar o DTO com o caminho relativo do ficheiro armazenado
+            $dto->file = $uploadedFilePath;
+        } else {
+            // Manter o caminho do ficheiro existente, se não houver novo ficheiro
+            unset($dto->file);
+        }
+        // Atualizar a lição no repositório com os dados do DTO
+        return $this->repository->updateFileLesson($dto);
+
     }
 
     public function delete(string $id): void

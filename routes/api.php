@@ -81,6 +81,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
     Route::put('/lesson/edit/name/{Id}', [LessonController::class, 'editNameLesson']);
     Route::post('/lesson/create/name', [LessonController::class, 'createNameLesson']);
+    Route::post('/lesson/file/create', [LessonController::class, 'createFileLesson']);
+    Route::put('/lesson/{Id}/file', [LessonController::class, 'updateFileLesson']);
     Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
     // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 

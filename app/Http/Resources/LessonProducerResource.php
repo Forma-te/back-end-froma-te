@@ -32,8 +32,8 @@ class LessonProducerResource extends JsonResource
             'name' => isset($resource->name) ? ucwords(strtolower($resource->name)) : null,
             'description' => $resource->description ?? null,
             'video' => $resource->video ?? null,
-            'file' => $resource->file ?? null,
-            'published' => $resource->published ?? null
+            'published' => $resource->published ?? null,
+            'files' => LessonFileResource::collection($this->whenLoaded('files')),
         ];
     }
 }

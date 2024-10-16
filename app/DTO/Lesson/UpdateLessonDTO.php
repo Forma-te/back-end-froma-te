@@ -19,16 +19,6 @@ class UpdateLessonDTO
 
     public static function makeFromRequest(StoreUpdateLessonRequest  $request, string $id = null): self
     {
-
-        logger()->info('Dados da DTO:', [
-            'module_id' => $request->input('module_id'),
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'video' => $request->input('video'),
-            'published' => $request->input('published'),
-            'file' => $request->hasFile('file') ? $request->file('file')->getClientOriginalName() : null,
-        ]);
-
         // Se o file estiver presente na requisição, obtenha o UploadedFile correspondente
         $file = $request->hasFile('file') ? $request->file('file') : null;
 

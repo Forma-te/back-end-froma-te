@@ -2,11 +2,14 @@
 
 namespace App\Repositories\Lesson;
 
+use App\DTO\Lesson\CreateFileLessonDTO;
 use App\DTO\Lesson\CreateLessonDTO;
 use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
+use App\DTO\Lesson\UpdateFileLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
+use App\Models\LessonFile;
 use App\Repositories\PaginationInterface;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -19,5 +22,7 @@ interface LessonRepositoryInterface
     public function update(UpdateLessonDTO $dto): ?Lesson;
     public function editNameLesson(UpdateEditNameLessonDTO $dto): ?Lesson;
     public function createNameLesson(CreateNameLessonDTO $dto): ?Lesson;
+    public function createFileLesson(CreateFileLessonDTO $dto): ?LessonFile;
+    public function updateFileLesson(UpdateFileLessonDTO $dto): ?LessonFile;
     public function delete(string $id): void;
 }

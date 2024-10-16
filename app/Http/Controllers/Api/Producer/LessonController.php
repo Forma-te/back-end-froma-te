@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
+use App\DTO\Lesson\CreateFileLessonDTO;
 use App\DTO\Lesson\CreateLessonDTO;
 use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
+use App\DTO\Lesson\UpdateFileLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateEditFileLessonRequest;
 use App\Http\Requests\StoreUpdateEditNameLessonRequest;
 use App\Http\Requests\StoreUpdateLessonRequest;
+use App\Http\Resources\LessonFileResource;
 use App\Http\Resources\LessonProducerResource;
 use App\Services\LessonService;
 use Illuminate\Database\Eloquent\Collection;
@@ -166,8 +170,6 @@ class LessonController extends Controller
 
     public function updateLesson(StoreUpdateLessonRequest $request, string $id)
     {
-        $validated = $request->validated();
-        logger()->info('Dados validados na API:', $validated);
 
         $lesson = $this->lessonService->update(
             UpdateLessonDTO::makeFromRequest($request, $id)
@@ -204,6 +206,31 @@ class LessonController extends Controller
         );
 
         return new LessonProducerResource($lesson);
+    }
+
+    public function createFileLesson(StoreUpdateEditFileLessonRequest $request)
+    {
+
+        $lessonFile = $this->lessonService->createFileLesson(
+            CreateFileLessonDTO::makeFromRequest($request)
+        );
+
+        return new LessonFileResource($lessonFile);
+    }
+
+    public function updateFileLesson(StoreUpdateEditFileLessonRequest $request, string $id)
+    {
+        $lessonFile = $this->lessonService->updateFileLesson(
+            UpdateFileLessonDTO::makeFromRequest($request, $id)
+        );
+
+        if (!$lessonFile) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new LessonFileResource($lessonFile);
     }
 
     /**

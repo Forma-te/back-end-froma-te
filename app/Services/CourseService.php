@@ -77,7 +77,7 @@ class CourseService
             }
             // Processar o novo ficheiro
             $file = $dto->image;
-            $customImageName = Str::of($dto->code)->slug('-') . '.' . $file->getClientOriginalExtension();
+            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
             // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
             $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products', $customImageName);
 

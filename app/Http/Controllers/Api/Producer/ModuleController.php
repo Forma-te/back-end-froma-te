@@ -155,6 +155,7 @@ class ModuleController extends Controller
 
     public function getModulesByCourse(string $courseId)
     {
+        // Obtem os módulos do curso
         $modules = $this->moduleService->getModulesByCourseId($courseId);
 
         if ($modules instanceof Collection && $modules->isEmpty()) {
@@ -172,7 +173,6 @@ class ModuleController extends Controller
 
         return new ModuleProducerResource($module);
     }
-
 
     /**
      * @OA\Put(
@@ -228,7 +228,7 @@ class ModuleController extends Controller
             UpdateModuleDTO::makeFromRequest($request, $id)
         );
 
-        if(!$module) {
+        if (!$module) {
             return response()->json([
                 'error' => 'Module not found or failed to update.'
             ], Response::HTTP_FOUND);
@@ -283,7 +283,7 @@ class ModuleController extends Controller
 
     public function destroyModule(string $id)
     {
-        if(!$this->moduleService->findById($id)) {
+        if (!$this->moduleService->findById($id)) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);

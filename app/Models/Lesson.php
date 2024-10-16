@@ -124,6 +124,11 @@ class Lesson extends Model
         return $this->belongsTo(Module::class, 'module_id', 'id');
     }
 
+    public function files()
+    {
+        return $this->hasMany(LessonFile::class, 'lesson_id');
+    }
+
     public function supports()
     {
         return $this->hasMany(Support::class);

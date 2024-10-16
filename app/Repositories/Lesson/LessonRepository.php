@@ -2,11 +2,14 @@
 
 namespace App\Repositories\Lesson;
 
+use App\DTO\Lesson\CreateFileLessonDTO;
 use App\DTO\Lesson\CreateLessonDTO;
 use App\DTO\Lesson\CreateNameLessonDTO;
 use App\DTO\Lesson\UpdateEditNameLessonDTO;
+use App\DTO\Lesson\UpdateFileLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
+use App\Models\LessonFile;
 use App\Models\Module;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
@@ -17,7 +20,8 @@ class LessonRepository implements LessonRepositoryInterface
 {
     public function __construct(
         protected Lesson $entity,
-        protected Module $module
+        protected Module $module,
+        protected LessonFile $lessonFile
     ) {
     }
 
@@ -34,7 +38,7 @@ class LessonRepository implements LessonRepositoryInterface
         }
 
         // Paginar os resultados
-        $result = $query->with('modules')->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('modules', 'files')->paginate($totalPerPage, ['*'], 'page', $page);
 
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
@@ -56,7 +60,7 @@ class LessonRepository implements LessonRepositoryInterface
         $course = $module->course;
 
         if (Gate::authorize('owner-course', $course)) {
-            $lessons = $module->lessons()->get();
+            $lessons = $module->lessons()->with('files')->get();
         }
 
         if ($lessons->isEmpty()) {
@@ -99,6 +103,23 @@ class LessonRepository implements LessonRepositoryInterface
     {
         return $this->entity->create((array) $dto);
 
+    }
+
+    public function createFileLesson(CreateFileLessonDTO $dto): ?LessonFile
+    {
+        return $this->lessonFile->create((array) $dto);
+    }
+
+    public function updateFileLesson(UpdateFileLessonDTO $dto): ?LessonFile
+    {
+        $lessonFile = $this->lessonFile->find($dto->id);
+
+        if ($lessonFile) {
+            $lessonFile->update((array) $dto);
+            return $lessonFile;
+        }
+
+        return null;
     }
 
     public function delete(string $id): void
