@@ -21,21 +21,22 @@ class CreateSalesTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->bigInteger('instrutor_id')->unsigned();
+            $table->bigInteger('producer_id')->unsigned();
+            $table->foreign('producer_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->string('transaction');
-            $table->string('email_student');
-            $table->string('payment_mode');
+            $table->string('transaction')->nullable();
+            $table->string('email_member')->nullable();
+            $table->string('payment_mode')->nullable();
             $table->string('bank', 50)->nullable();
             $table->string('account', 225)->nullable();
-            $table->boolean('blocked')->default(false);
+            $table->string('product_type')->nullable();
             $table->enum('status', ['C', 'A', 'E', 'P']);
             $table->enum('sales_channel', ['VP', 'VA', 'VF']);
-            $table->double('Price', 10, 2);
-            $table->double('discountedPrice', 10, 2);
-            $table->date('date_created');
-            $table->timestamp('date_expired');
-            $table->string('product_type')->nullable();
+            $table->integer('discount')->default('0');
+            $table->double('sale_price', 10, 2);
+            $table->date('date_created')->nullable();
+            $table->timestamp('date_expired')->nullable();
+            $table->boolean('blocked')->default(false);
             $table->timestamps();
         });
     }

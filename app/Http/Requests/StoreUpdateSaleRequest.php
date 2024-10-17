@@ -40,12 +40,12 @@ class StoreUpdateSaleRequest extends FormRequest
     {
         return [
             'file' => 'sometimes|required|file|mimes:csv,txt|max:2048',
-            'course_id' => 'required',
+            'product_id' => 'required',
             'user_id' => 'nullable',
             'name' => 'sometimes|required',
-            'instrutor_id' => 'nullable',
+            'producer_id' => 'nullable',
             'transaction' => 'nullable',
-            'email_student' => 'required|email',
+            'email_member' => 'required|email',
             'payment_mode' => 'nullable',
             'blocked' => 'nullable',
             'status' => 'nullable',

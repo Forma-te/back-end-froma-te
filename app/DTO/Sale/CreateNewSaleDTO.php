@@ -7,12 +7,12 @@ use App\Http\Requests\StoreUpdateSaleRequest;
 class CreateNewSaleDTO
 {
     public function __construct(
-        public string $course_id,
+        public string $product_id,
         public ?string $user_id,
         public string $name,
-        public ?string $instrutor_id,
+        public ?string $producer_id,
         public string $transaction,
-        public string $email_student,
+        public string $email_member,
         public string $status,
         public string $blocked,
         public string $date_created,
@@ -30,12 +30,12 @@ class CreateNewSaleDTO
         $status = 'A';
 
         return new self(
-            $data['course_id'],
+            $data['product_id'],
             $data['user_id'] ?? null,
             $data['name'],
-            $data['instrutor_id'] ?? null,
+            $data['producer_id'] ?? null,
             $transaction,
-            $data['email_student'],
+            $data['email_member'],
             $status,
             $blocked,
             $date_created,

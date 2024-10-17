@@ -30,10 +30,26 @@ class EbookService
         );
     }
 
+    public function fetchAllEbooksByProducers(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null,
+        string $producerName = null,
+        string $categoryName = null
+    ): PaginationInterface {
+        return $this->repository->fetchAllEbooksByProducers(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+            producerName: $producerName,
+            categoryName: $categoryName
+        );
+    }
+
     public function new(CreateEbookDTO $dto): Product
     {
-         // Processar imagem se existir
-         if ($dto->image) {
+        // Processar imagem se existir
+        if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
             $uploadedImagePath = $this->uploadFile->storeAs($dto->image, 'Products/Images', $customImageName);
             $dto->image = $uploadedImagePath;

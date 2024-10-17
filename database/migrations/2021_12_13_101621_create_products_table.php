@@ -33,7 +33,7 @@ class CreateProductsTable extends Migration
             $table->boolean('published');
             $table->boolean('free')->default(false);
             $table->double('price', 10, 2);
-            $table->integer('discount')->nullable();
+            $table->integer('discount')->default('0');
             $table->integer('acceptsMcxPayment')->nullable();
             $table->integer('acceptsRefPayment')->nullable();
             $table->integer('affiliationPercentage')->nullable();

@@ -130,22 +130,24 @@ class SaleRepository implements SaleRepositoryInterface
 
     public function findById(string $id): ?object
     {
-        return $this->entity->with('student', 'instrutor')->find($id);
+        return $this->entity->with('member', 'producer')->find($id);
     }
 
     public function createNewSale(CreateNewSaleDTO $dto)
     {
-        $course = $this->courseRepository->getCourseById($dto->course_id);
+        $product = $this->courseRepository->getCourseById($dto->product_id);
         $authUser = $this->userRepository->findByAuth();
         $bankUsers = $this->bankRepository->findBankByUserId($authUser->first()->id);
-        $member = $this->userRepository->findByEmail($dto->email_student);
+        $member = $this->userRepository->findByEmail($dto->email_member);
+
+        $currentPrice = $product->price - ($product->price * ($product->discount / 100));
 
         $password = null;
         if ($member === null) {
             $password = generatePassword();
             $userDto = new CreateUserDTO(
                 $dto->name,
-                $dto->email_student,
+                $dto->email_member,
                 bcrypt($password),
                 'default_device' // ou alguma lógica para definir o device_name
             );
@@ -154,20 +156,23 @@ class SaleRepository implements SaleRepositoryInterface
         }
 
         $newSale = Sale::create([
-            'product_id' => $course->id,
+            'product_id' => $product->id,
             'user_id' => $member->id,
-            'instrutor_id' => $authUser->first()->id,
-            'email_student' => $dto->email_student,
+            'producer_id' => $authUser->first()->id,
+            'email_member' => $dto->email_member,
             'transaction' => $dto->transaction,
             'date_expired' => $dto->date_expired,
             'status' => $dto->status,
             'blocked' => $dto->blocked,
+            'discount' => $product->discount,
+            'sale_price' => $currentPrice,
+            'sales_channel' => 'VP',
             'payment_mode' => 'Banco',
             'date_created' => $dto->date_created,
             'product_type' => $dto->product_type
             ]);
 
-        event(new SaleToNewAndOldMembers($member, $course, $password, $bankUsers));
+        event(new SaleToNewAndOldMembers($member, $product, $password, $bankUsers));
 
         return $newSale;
     }

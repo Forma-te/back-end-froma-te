@@ -40,7 +40,11 @@ class StoreUpdateUserRequest extends FormRequest
         $id = $this->route('Id') ?? '';
 
         return [
-            'name' => 'sometimes|required|string|max:255',
+            'name' => ['required', 'string', 'regex:/^[\pL\s]+$/u', 'min:2', function ($attribute, $value, $fail) {
+                if (count(explode(' ', $value)) < 2) {
+                    $fail('O campo ' . $attribute . ' deve conter o primeiro e último nome.');
+                }
+            }],
             'email' => "sometimes|required|string|email|max:255|unique:users,email,{$id},Id",
             'password' => 'sometimes|string|min:8|confirmed',
             'password_confirmation' => 'sometimes|required_with:password|string|min:8',

@@ -91,6 +91,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
     Route::get('/ebooks', [EbookController::class, 'getAllEbook']);
     Route::get('/ebook/{Id}', [EbookController::class, 'getEbookById']);
+    Route::get('/ebooks/producers', [EbookController::class, 'fetchAllEbooksByProducers']);
     Route::post('/ebook', [EbookController::class, 'createEbook']);
     Route::put('/ebook/{Id}', [EbookController::class, 'updateEbook']);
     Route::delete('/ebook/{Id}', [EbookController::class, 'destroyEbook']);

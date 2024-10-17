@@ -12,6 +12,7 @@ use App\Services\EbookService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class EbookController extends Controller
@@ -93,6 +94,34 @@ class EbookController extends Controller
 
         return ApiAdapter::paginateToJson($ebook);
     }
+
+    public function fetchAllEbooksByProducers(Request $request)
+    {
+        // Obter os parâmetros da requisição
+        $page = $request->get('page', 1);
+        $totalPerPage = $request->get('per_page', 20);
+        $filter = $request->get('filter');
+        $producerName = $request->get('producer_name');
+        $categoryName = $request->get('category_name');
+
+        // Construir a chave de cache com base nos parâmetros
+        $cacheKey = "products.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
+
+        // Verificar se os dados estão em cache
+        $ebooks = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
+            return $this->ebookService->fetchAllEbooksByProducers(
+                page: $page,
+                totalPerPage: $totalPerPage,
+                filter: $filter,
+                producerName: $producerName,
+                categoryName: $categoryName
+            );
+        });
+
+        // Retornar a resposta no formato paginado usando o ApiAdapter
+        return ApiAdapter::paginateToJson($ebooks);
+    }
+
 
     private function errorResponse($message, $statusCode)
     {

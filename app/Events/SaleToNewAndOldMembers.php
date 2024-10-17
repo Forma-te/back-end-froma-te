@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Course;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -19,17 +19,17 @@ class SaleToNewAndOldMembers
     use SerializesModels;
 
     public $member;
-    public $course;
+    public $product;
     public $password;
     public $bankUsers;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(User $member, Course $course, $password, $bankUsers)
+    public function __construct(User $member, Product $product, $password, $bankUsers)
     {
         $this->member = $member;
-        $this->course = $course;
+        $this->product = $product;
         $this->password = $password;
         $this->bankUsers = $bankUsers;
     }

@@ -77,7 +77,8 @@ class Sale extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id', 'user_id', 'instrutor_id', 'email_student', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created', 'date_expired', 'product_type'
+        'product_id', 'user_id', 'producer_id', 'email_member', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created',
+        'date_expired', 'discount', 'sale_price', 'sales_channel', 'product_type'
     ];
 
     public $statusOptions = [
@@ -106,7 +107,7 @@ class Sale extends Model
 
     public static function scopeUserByAuth($query)
     {
-        return $query->where('instrutor_id', Auth::user()->id);
+        return $query->where('producer_id', Auth::user()->id);
     }
 
 
@@ -121,18 +122,18 @@ class Sale extends Model
                     ->course;
     }
 
-    public function course()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function student()
+    public function member()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function instrutor()
+    public function producer()
     {
-        return $this->belongsTo(User::class, 'instrutor_id');
+        return $this->belongsTo(User::class, 'producer_id');
     }
 }
