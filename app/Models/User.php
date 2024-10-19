@@ -185,6 +185,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords(strtolower($value));
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(

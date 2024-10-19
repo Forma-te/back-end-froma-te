@@ -94,6 +94,7 @@ class SaleRepository implements SaleRepositoryInterface
                         'sales.id as sale_id',
                         'products.name as course_name',
                         'products.price',
+                        'sales.sale_price',
                         'products.id as course_id',
                         'products.url',
                         DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', products.image) as image_url"),

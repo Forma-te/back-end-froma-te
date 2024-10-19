@@ -88,6 +88,11 @@ class Sale extends Model
         'P' => 'Pendente'
     ];
 
+    public function setEmailMemberAttribute($value)
+    {
+        $this->attributes['email_member'] = strtolower($value);
+    }
+
     public function getDateCreatedAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');

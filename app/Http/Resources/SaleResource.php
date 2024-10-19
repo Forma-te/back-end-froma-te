@@ -19,7 +19,7 @@ class SaleResource extends JsonResource
             'product_id' => $this->product_id,
             'user_id' => $this->user_id,
             'user_name' => $this->member->name,
-            'producer_id' => $this->instrutor_id,
+            'producer_id' => $this->producer_id,
             'producer_name' => $this->producer->name,
             'email_member' => $this->email_member,
             'transaction' => $this->transaction,

@@ -33,6 +33,7 @@ class EbookResource extends JsonResource
             'allowDownload' => $this->allow_download,
             'imagem' => $this->image,
             'file' => $this->file,
+            'product_type' => $this->product_type,
         ];
     }
 }

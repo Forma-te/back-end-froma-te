@@ -33,7 +33,8 @@ class CourseResource extends JsonResource
             'discount' => $this->discount,
             'price' => $this->price,
             'imagem' => $this->image,
-            'modules' => ModuleResource::collection($this->whenLoaded('modules'))
+            'modules' => ModuleResource::collection($this->whenLoaded('modules')),
+            'product_type' => $this->product_type,
         ];
     }
 }
