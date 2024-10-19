@@ -58,7 +58,7 @@ class StoreUpdateCourseRequest extends FormRequest
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
-            'price' => 'required',
+            'price' => 'sometimes',
             'discount' => 'nullable',
             'acceptsMcxPayment' => 'required',
             'acceptsRefPayment' => 'required',
@@ -66,4 +66,29 @@ class StoreUpdateCourseRequest extends FormRequest
 
         return $rules;
     }
+
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'A categoria é obrigatória.',
+            'category_id.exists' => 'A categoria selecionada é inválida.',
+            'name.required' => 'O nome é obrigatório.',
+            'name.min' => 'O nome deve ter no mínimo 5 caracteres.',
+            'name.max' => 'O nome não pode exceder 255 caracteres.',
+            'short_name.max' => 'O nome curto não pode exceder 255 caracteres.',
+            'image.image' => 'O ficheiro deve ser uma imagem.',
+            'image.mimes' => 'A imagem deve ser dos tipos: png, jpg.',
+            'image.max' => 'A imagem não pode exceder 7000KB.',
+            'image.dimensions' => 'A imagem deve ter no máximo 600x450 pixels.',
+            'file.mimes' => 'O ficheiro deve ser do tipo: pdf.',
+            'code.unique' => 'O código já está em uso.',
+            'published.boolean' => 'O valor de publicado deve ser verdadeiro ou falso.',
+            'free.boolean' => 'O valor de gratuito deve ser verdadeiro ou falso.',
+            'price.required' => 'O preço é obrigatório.',
+            'acceptsMcxPayment.required' => 'O campo de pagamento MCX é obrigatório.',
+            'acceptsRefPayment.required' => 'O campo de pagamento por referência é obrigatório.',
+        ];
+    }
+
+
 }

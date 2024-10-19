@@ -45,6 +45,27 @@ class CourseRepository implements CourseRepositoryInterface
         return new PaginationPresenter($result);
     }
 
+    public function getProducts(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
+    {
+        // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
+        $query = $this->entity
+                      ->with('user', 'users', 'sales')
+                      ->userByAuth();
+
+        // Aplicar o filtro se fornecido
+        if ($filter) {
+            $query->where(function ($query) use ($filter) {
+                $query->where('name', 'like', "%{$filter}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
+    }
+
     public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 15, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
@@ -62,6 +83,7 @@ class CourseRepository implements CourseRepositoryInterface
                         'published',
                         'price',
                         'discount',
+                        'product_type',
                         'created_at'
                     )
                     ->orderBy('updated_at', 'desc');

@@ -11,6 +11,7 @@ use stdClass;
 interface CourseRepositoryInterface
 {
     public function paginate(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface;
+    public function getProducts(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface;
     public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 15, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface;
     public function findById(string $id): object|null;
     public function new(CreateCourseDTO $dto): Product;

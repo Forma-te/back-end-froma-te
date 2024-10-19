@@ -30,6 +30,18 @@ class CourseService
         );
     }
 
+    public function getProducts(
+        int $page = 1,
+        int $totalPerPage  = 15,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getProducts(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
+    }
+
     public function fetchAllCoursesByProducers(
         int $page = 1,
         int $totalPerPage  = 15,

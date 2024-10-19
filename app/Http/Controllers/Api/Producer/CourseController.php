@@ -101,6 +101,18 @@ class CourseController extends Controller
         return ApiAdapter::paginateToJson($course);
     }
 
+    public function getProducts(Request $request)
+    {
+        $course = $this->courseService->getProducts(
+            page: $request->get('page', 1),
+            totalPerPage: $request->get('per_page', 20),
+            filter: $request->filter,
+        );
+
+        return ApiAdapter::paginateToJson($course);
+    }
+
+
     public function fetchAllCoursesByProducers(Request $request)
     {
         // Obter os parâmetros da requisição

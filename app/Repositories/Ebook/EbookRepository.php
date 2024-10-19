@@ -59,6 +59,7 @@ class EbookRepository implements EbookRepositoryInterface
                         'published',
                         'price',
                         'discount',
+                        'product_type',
                         'created_at'
                     )
                     ->orderBy('updated_at', 'desc');
