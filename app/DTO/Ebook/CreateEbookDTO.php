@@ -5,6 +5,7 @@ namespace App\DTO\Ebook;
 use App\Http\Requests\StoreUpdateEbookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
 
 class CreateEbookDTO
 {
@@ -24,8 +25,8 @@ class CreateEbookDTO
         public string $affiliationPercentage,
         public string $allow_download,
         public string $product_type,
-        public $image = null,
-        public $file = null
+        public string|UploadedFile|null $image = null, // Permitir tanto string (caminho) quanto UploadedFile
+        public string|UploadedFile|null $file = null   // Permitir tanto string (caminho) quanto UploadedFile
     ) {
     }
 
@@ -45,7 +46,6 @@ class CreateEbookDTO
 
         $product_type = 'ebook';
 
-        // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
         $image = $request->hasFile('image') ? $request->file('image') : null;
         $file = $request->hasFile('file') ? $request->file('file') : null;
 

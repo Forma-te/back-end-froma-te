@@ -72,7 +72,7 @@ class CourseRepository implements CourseRepositoryInterface
         $query = $this->entity
                     ->where('product_type', 'course')
                     ->where('published', 1)
-                    ->with(['user:id,name,email', 'category:id,name'])
+                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name'])
                     ->select(
                         'id',
                         'name',
@@ -121,9 +121,9 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function update(UpdateCourseDTO $dto): ?Product
     {
-        $course = $this->entity->find($dto->id);
+        $course = $this->findById($dto->id);
 
-        if ($course && Gate::authorize('owner-course', $course)) {
+        if ($course) {
             $course->update((array) $dto);
             return $course;
         }

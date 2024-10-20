@@ -108,7 +108,7 @@ class EbookController extends Controller
         $cacheKey = "products.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
 
         // Verificar se os dados estão em cache
-        $ebooks = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
+        $ebooks = Cache::remember($cacheKey, now()->addMinutes(0), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
             return $this->ebookService->fetchAllEbooksByProducers(
                 page: $page,
                 totalPerPage: $totalPerPage,
@@ -291,7 +291,7 @@ class EbookController extends Controller
      * )
      */
 
-    public function updateEbook(StoreUpdateEbookRequest $request, string $id)
+    public function updateEbook(StoreUpdateEbookRequest $request, int $id)
     {
         $ebook = $this->ebookService->update(
             UpdateEbookDTO::makeFromRequest($request, $id)

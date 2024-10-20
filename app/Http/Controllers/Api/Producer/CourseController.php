@@ -126,7 +126,7 @@ class CourseController extends Controller
         $cacheKey = "products.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
 
         // Verificar se os dados estão em cache
-        $courses = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
+        $courses = Cache::remember($cacheKey, now()->addMinutes(0), function () use ($page, $totalPerPage, $filter, $producerName, $categoryName) {
             return $this->courseService->fetchAllCoursesByProducers(
                 page: $page,
                 totalPerPage: $totalPerPage,

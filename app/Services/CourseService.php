@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class CourseService
@@ -81,26 +82,33 @@ class CourseService
         // Buscar a course existente
         $course = $this->repository->findById($dto->id);
 
-        // Verificar instância da classe UploadedFile
-        if ($dto->image instanceof UploadedFile) {
-            if ($course && $course->image) {
-                // Remover o ficheiro existente, se houver
-                $this->uploadFile->removeFile($course->image);
-            }
-            // Processar o novo ficheiro
-            $file = $dto->image;
-            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
-            // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products', $customImageName);
+        if ($course && Gate::authorize('owner-course', $course)) {
+            // Verificar instância da classe UploadedFile
 
-            // Atualizar o DTO com o caminho relativo do ficheiro armazenado
-            $dto->image = $uploadedFilePath;
-        } else {
-            // Manter o caminho do ficheiro existente, se não houver novo ficheiro
-            unset($dto->image);
+            if ($dto->image instanceof UploadedFile) {
+                if ($course && $course->image) {
+                    // Remover o ficheiro existente, se houver
+                    $this->uploadFile->removeFile($course->image);
+                }
+
+                // Processar o novo ficheiro
+                $file = $dto->image;
+                $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
+
+                // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
+                $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesCourses', $customImageName);
+
+                // Atualizar o DTO com o caminho relativo do ficheiro armazenado
+                $dto->image = $uploadedFilePath;
+            } else {
+                // Manter o caminho do ficheiro existente, se não houver novo ficheiro
+                unset($dto->image);
+            }
+            // Atualizar a lição no repositório com os dados do DTO
+            return $this->repository->update($dto);
         }
-        // Atualizar a lição no repositório com os dados do DTO
-        return $this->repository->update($dto);
+
+        return null;
     }
 
     public function delete(string $id)

@@ -48,7 +48,7 @@ class EbookRepository implements EbookRepositoryInterface
         $query = $this->entity
                     ->where('product_type', 'ebook')
                     ->where('published', 1)
-                    ->with(['user:id,name,email', 'category:id,name'])
+                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name'])
                     ->select(
                         'id',
                         'name',
@@ -98,14 +98,14 @@ class EbookRepository implements EbookRepositoryInterface
 
     public function update(UpdateEbookDTO $dto): ?Product
     {
-        $ebook = $this->entity->find($dto->id);
+        $ebook = $this->findById($dto->id);
 
-        if ($ebook && Gate::authorize('owner-ebook', $ebook)) {
+        if ($ebook) {
             $ebook->update((array) $dto);
             return $ebook;
         }
 
-        return null;
+        return null; // Retorna null se o eBook não for encontrado
     }
 
     public function findById(string $id): object|null
