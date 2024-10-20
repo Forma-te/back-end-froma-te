@@ -64,7 +64,7 @@ class CourseService
         if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
 
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products', $customImageName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesCourses', $customImageName);
 
             $dto->image = $uploadedFilePath;
         }

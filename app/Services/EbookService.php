@@ -52,14 +52,14 @@ class EbookService
         // Processar imagem se existir
         if ($dto->image) {
             $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
-            $uploadedImagePath = $this->uploadFile->storeAs($dto->image, 'Products/Images', $customImageName);
+            $uploadedImagePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesEbooks', $customImageName);
             $dto->image = $uploadedImagePath;
         }
 
         // Processar ficheiro se existir
         if ($dto->file) {
             $customFileName = $dto->code . '.' . $dto->file->getClientOriginalExtension();
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'Products/Files', $customFileName);
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'Products/FilesEbooks', $customFileName);
             $dto->file = $uploadedFilePath;
         }
 
