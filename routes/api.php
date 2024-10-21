@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Producer\{
     FileController,
     LessonController,
     ModuleController,
+    OrderBumpController,
     ReplySupportController,
     SaleController,
     SubscriptionController,
@@ -102,11 +103,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route File
     */
     Route::get('/files', [FileController::class, 'getAllFiles']);
-    Route::get('/file/{Id}', [FileController::class, 'getFileById']);
+    Route::get('/file/{id}', [FileController::class, 'getFileById']);
     Route::get('/producers/files', [FileController::class, 'fetchAllFilesByProducers']);
     Route::post('/file', [FileController::class, 'createFile']);
-    Route::put('/file/{Id}', [FileController::class, 'updateFile']);
-    Route::delete('/file/{Id}', [FileController::class, 'destroyFile']);
+    Route::put('/file/{id}', [FileController::class, 'updateFile']);
+    Route::delete('/file/{id}', [FileController::class, 'destroyFile']);
 
     /**
     * Route Ebook Content
@@ -124,8 +125,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Bank
     */
     Route::post('/bank', [BankController::class, 'createBank']);
-    Route::put('/bank/{Id}', [BankController::class, 'updateBank']);
-    Route::delete('/bank/{Id}', [BankController::class, 'deleteBank']);
+    Route::put('/bank/{id}', [BankController::class, 'updateBank']);
+    Route::delete('/bank/{id}', [BankController::class, 'deleteBank']);
+
+    /**
+    * Route Order Bump
+    */
+    Route::post('/order-bump', [OrderBumpController::class, 'createOrderBump']);
+    Route::put('/order-bump/{id}', [OrderBumpController::class, 'updateOrderBump']);
+    Route::delete('/order-bump/{id}', [OrderBumpController::class, 'deleteOrderBump']);
 
     /**
     * Route Member

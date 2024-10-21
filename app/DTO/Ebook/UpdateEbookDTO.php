@@ -29,7 +29,7 @@ class UpdateEbookDTO
 
     public static function makeFromRequest(StoreUpdateEbookRequest $request, string $id = null): self
     {
-        $data = $request->all();
+        $data = $request->json()->all();
 
         // Processa o ficheiro de imagem, se existir
         $image = $request->hasFile('image') ? $request->file('image') : null;

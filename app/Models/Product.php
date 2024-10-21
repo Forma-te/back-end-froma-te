@@ -17,6 +17,14 @@ class Product extends Model
         'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allow_download', 'product_type'
     ];
 
+    /**
+     * Relacionamento: Um Product pode ter muitos OrderBumps.
+     */
+    public function orderBumps()
+    {
+        return $this->hasMany(OrderBump::class);
+    }
+
     public static function scopeUserByAuth($query)
     {
         return $query->where('user_id', Auth::user()->id);

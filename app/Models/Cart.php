@@ -21,4 +21,5 @@ class Cart extends Model
     {
         return $value ? Carbon::parse($value)->format('d/m/Y') : null;
     }
+
 }
