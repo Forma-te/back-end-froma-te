@@ -23,6 +23,8 @@ use App\Repositories\Ebook\EbookRepository;
 use App\Repositories\Ebook\EbookRepositoryInterface;
 use App\Repositories\EbookContent\EbookContentRepository;
 use App\Repositories\EbookContent\EbookContentRepositoryInterface;
+use App\Repositories\File\FileRepository;
+use App\Repositories\File\FileRepositoryInterface;
 use App\Repositories\Lesson\LessonRepository;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\Module\ModuleRepository;
@@ -46,6 +48,7 @@ use App\Repositories\Plan\CartPlanRepositoryInterface;
 use App\Repositories\User\{
     UserRepository,
     UserRepositoryInterface};
+use Faker\Core\File;
 use Illuminate\Support\{
     ServiceProvider
 };
@@ -133,6 +136,10 @@ class AppServiceProvider extends ServiceProvider
             CartRepository::class,
         );
 
+        $this->app->singleton(
+            FileRepositoryInterface::class,
+            FileRepository::class,
+        );
     }
 
     /**

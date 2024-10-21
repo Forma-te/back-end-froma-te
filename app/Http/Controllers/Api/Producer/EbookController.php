@@ -11,7 +11,7 @@ use App\Http\Resources\EbookResource;
 use App\Services\EbookService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 

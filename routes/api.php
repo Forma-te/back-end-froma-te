@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Producer\{
     CourseController,
     EbookContentController,
     EbookController,
+    FileController,
     LessonController,
     ModuleController,
     ReplySupportController,
@@ -96,6 +97,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/ebook', [EbookController::class, 'createEbook']);
     Route::put('/ebook/{Id}', [EbookController::class, 'updateEbook']);
     Route::delete('/ebook/{Id}', [EbookController::class, 'destroyEbook']);
+
+    /**
+    * Route File
+    */
+    Route::get('/files', [FileController::class, 'getAllFiles']);
+    Route::get('/file/{Id}', [FileController::class, 'getFileById']);
+    Route::get('/producers/files', [FileController::class, 'fetchAllFilesByProducers']);
+    Route::post('/file', [FileController::class, 'createFile']);
+    Route::put('/file/{Id}', [FileController::class, 'updateFile']);
+    Route::delete('/file/{Id}', [FileController::class, 'destroyFile']);
 
     /**
     * Route Ebook Content

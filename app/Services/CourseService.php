@@ -62,7 +62,7 @@ class CourseService
     public function new(CreateCourseDTO $dto): Product
     {
         if ($dto->image) {
-            $customImageName = $dto->code . '.' . $dto->image->getClientOriginalExtension();
+            $customImageName = Str::of($dto->name)->slug('-') . '.' . $dto->image->getClientOriginalExtension();
 
             $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesCourses', $customImageName);
 

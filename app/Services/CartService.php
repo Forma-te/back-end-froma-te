@@ -33,8 +33,8 @@ class CartService
 
         // Verifica se o produto já está no carrinho
         $existingCartItem = $this->cartItem::where('cart_id', $cart->id)
-        ->where('product_id', $data['product_id'])
-        ->first();
+                                ->where('product_id', $data['product_id'])
+                                ->first();
 
         // Obtém o preço atual do produto
         $product = $this->product::find($data['product_id']);

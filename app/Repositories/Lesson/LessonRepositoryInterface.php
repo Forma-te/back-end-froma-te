@@ -17,6 +17,7 @@ interface LessonRepositoryInterface
 {
     public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface;
     public function findById(string $id): object|null;
+    public function findByIdFileLesson(string $lessonId): object|null;
     public function getLessonByModuleId(string $lessonId): ?Collection;
     public function new(CreateLessonDTO $dto): ?Lesson;
     public function update(UpdateLessonDTO $dto): ?Lesson;

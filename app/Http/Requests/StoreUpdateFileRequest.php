@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateEbookRequest extends FormRequest
+class StoreUpdateFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,8 +29,8 @@ class StoreUpdateEbookRequest extends FormRequest
             'description' => 'nullable|string',
             'short_name' => 'nullable|max:255',
             'url' => 'nullable',
-            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024|dimensions:max_width=300,max_height=450',
-            'file' => 'nullable|file|mimes:pdf|max:10240',
+            'image' => 'nullable|image|mimes:png,jpg|max:1024|dimensions:max_width=300,max_height=450',
+            'file' => 'nullable|file|mimes:pdf,docx,xls,pptx,ps,ai,zip,rar|max:10240',
             'code' => "nullable|unique:products,code,{$id},id",
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
@@ -55,10 +55,10 @@ class StoreUpdateEbookRequest extends FormRequest
             'name.max' => 'O nome não pode exceder 255 caracteres.',
             'short_name.max' => 'O nome curto não pode exceder 255 caracteres.',
             'image.image' => 'O ficheiro deve ser uma imagem.',
-            'image.mimes' => 'A imagem deve ser do tipo: jpeg, png ou jpg.',
-            'image.max' => 'O tamanho máximo da imagem é de 1M.',
+            'image.mimes' => 'A imagem deve ser do tipo: png ou jpg.',
+            'image.max' => 'O tamanho máximo da imagem é de 1MB.',
             'image.dimensions' => 'A imagem deve ter no máximo 300px de largura e 450px de altura.',
-            'file.mimes' => 'O ficheiro deve ser do tipo: pdf.',
+            'file.mimes' => 'O ficheiro deve ser do tipo: pdf, docx, xls, pptx, ps, ai, zip, rar.',
             'file.max' => 'O tamanho máximo da imagem é de 10MB.',
             'code.unique' => 'O código fornecido já está em uso.',
             'published.boolean' => 'O campo publicado deve ser verdadeiro ou falso.',
@@ -72,5 +72,4 @@ class StoreUpdateEbookRequest extends FormRequest
             'allow_download.boolean' => 'O campo de permitir download deve ser verdadeiro ou falso.',
         ];
     }
-
 }

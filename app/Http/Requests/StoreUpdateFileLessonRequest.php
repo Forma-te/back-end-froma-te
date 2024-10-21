@@ -23,7 +23,8 @@ class StoreUpdateFileLessonRequest extends FormRequest
     {
         return [
             'lesson_id' => 'required',
-            'file' => 'required|file|mimes:pdf',
+            'name' => 'required|min:5|max:255',
+            'file' => 'required|file|mimes:pdf|max:10240',
         ];
     }
 
@@ -32,6 +33,7 @@ class StoreUpdateFileLessonRequest extends FormRequest
         return [
             'module_id.required' => 'O campo module_id é obrigatório.',
             'file.required' => 'O arquivo deve ser do tipo PDF.',
+            'file.max' => 'O tamanho máximo da imagem é de 10MB.',
         ];
     }
 }

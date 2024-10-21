@@ -60,11 +60,12 @@ class UploadFile
     public function removeFile(string $filePath): bool
     {
         try {
-            if (Storage::disk('s3')->exists($filePath)) {
-                return Storage::disk('s3')->delete($filePath);
-            } else {
-                throw new Exception("Ficheiro não encontrado no S3: $filePath");
-            }
+            // Certifica-te de que o caminho do ficheiro é relativo ao bucket S3
+            $relativeFilePath = str_replace('https://forma-te-ebooks-bucket.s3.amazonaws.com/', '', $filePath);
+
+            // Elimina diretamente o ficheiro sem verificar a existência
+            return Storage::disk('s3')->delete($relativeFilePath);
+
         } catch (Exception $e) {
             throw new Exception('Erro ao remover o ficheiro: ' . $e->getMessage());
         }

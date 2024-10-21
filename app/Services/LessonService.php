@@ -9,6 +9,7 @@ use App\DTO\Lesson\UpdateEditNameLessonDTO;
 use App\DTO\Lesson\UpdateFileLessonDTO;
 use App\DTO\Lesson\UpdateLessonDTO;
 use App\Models\Lesson;
+use App\Models\LessonFile;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\PaginationInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -37,6 +38,11 @@ class LessonService
     public function findById(string $id): object|null
     {
         return $this->repository->findById($id);
+    }
+
+    public function findByIdFileLesson(string $id): object|null
+    {
+        return $this->repository->findByIdFileLesson($id);
     }
 
     public function getLessonByModuleId(string $Lesson): ?Collection
@@ -97,10 +103,17 @@ class LessonService
 
     public function createFileLesson(CreateFileLessonDTO $dto)
     {
-        if ($dto->file) {
+        // Verifica se já existe um ficheiro de lição para esta lição
+        $existingLessonFile = LessonFile::where('lesson_id', $dto->lesson_id)->first();
 
+        // Se já existir, elimina o ficheiro da S3
+        if ($existingLessonFile && $existingLessonFile->file) {
+            $this->uploadFile->removeFile($existingLessonFile->file);
+        }
+
+        if ($dto->file) {
             $file = $dto->file;
-            $customImageName = Str::of($dto->lesson_id . '.' . $dto->url)->slug('-') . '.' . $file->getClientOriginalExtension();
+            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
             $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'lessonPdf', $customImageName);
 
             $dto->file = $uploadedFilePath;

@@ -105,8 +105,22 @@ class LessonRepository implements LessonRepositoryInterface
 
     }
 
+    public function findByIdFileLesson(string $lessonId): object|null
+    {
+        return $this->lessonFile->find($lessonId);
+    }
+
     public function createFileLesson(CreateFileLessonDTO $dto): ?LessonFile
     {
+        // Verifica se já existe um ficheiro de lição para esta lição
+        $existingLessonFile = $this->lessonFile::where('lesson_id', $dto->lesson_id)->first();
+
+        // Se já existir, elimina o ficheiro
+        if ($existingLessonFile) {
+            $existingLessonFile->delete();
+        }
+
+        // Caso contrário, cria um novo ficheiro de lição
         return $this->lessonFile->create((array) $dto);
     }
 

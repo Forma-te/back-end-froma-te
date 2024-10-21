@@ -43,7 +43,7 @@ class StoreUpdateCourseRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('Id') ?? ''; // Obter o ID dos parâmetros da rota
+        $id = $this->route('id') ?? ''; // Obter o ID dos parâmetros da rota
 
         $rules = [
             'category_id' => 'required|exists:categories,id',
@@ -51,10 +51,10 @@ class StoreUpdateCourseRequest extends FormRequest
             'description' => 'nullable',
             'short_name' => 'nullable|max:255',
             'url' => 'nullable',
-            'image' => 'nullable|image|mimes:png,jpg|max:7000|dimensions:max_width=600,max_height=450',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024|dimensions:max_width=600,max_height=450',
             'file' => 'nullable|file|mimes:pdf',
             'product_type' => 'nullable',
-            'code' => "nullable|unique:products,code,{$id},Id",
+            'code' => "nullable|unique:products,code,{$id},id",
             'total_hours' => 'nullable',
             'published' => 'sometimes|boolean',
             'free' => 'sometimes|boolean',
