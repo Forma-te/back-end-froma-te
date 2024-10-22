@@ -24,7 +24,8 @@ class StoreUpdateProductFileRequest extends FormRequest
         return [
            'product_id' => 'required|exists:products,id',
            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:1024|dimensions:max_width=600,max_height=450',
-           'file' => 'nullable|file|mimes:pdf|max:10240'
+           'file' => 'nullable|file|mimes:pdf|max:10240',
+           'name' => 'required|min:5|max:255',
         ];
     }
 
@@ -38,6 +39,7 @@ class StoreUpdateProductFileRequest extends FormRequest
             'image.dimensions' => 'A imagem deve ter no máximo 600x450 pixels.',
             'file.mimes' => 'O ficheiro deve ser do tipo: pdf.',
             'file.max' => 'O tamanho máximo da imagem é de 10MB.',
+            'name.required' => 'O nome é obrigatório.',
         ];
     }
 
