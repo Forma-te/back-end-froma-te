@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Member;
 
-use App\Models\Course;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -10,7 +10,7 @@ class MemberRepository
 {
     protected $entity;
 
-    public function __construct(Course $model)
+    public function __construct(Product $model)
     {
         $this->entity = $model;
     }

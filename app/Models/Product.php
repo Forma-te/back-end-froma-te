@@ -13,9 +13,15 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id', 'user_id', 'name', 'url','description', 'image', 'file', 'code', 'total_hours', 'published', 'free',
+        'category_id', 'user_id', 'name', 'url','description', 'code', 'total_hours', 'published', 'free',
         'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allow_download', 'product_type'
     ];
+
+    // Relacionamento com ficheiros
+    public function files()
+    {
+        return $this->hasMany(productFile::class);
+    }
 
     /**
      * Relacionamento: Um Product pode ter muitos OrderBumps.

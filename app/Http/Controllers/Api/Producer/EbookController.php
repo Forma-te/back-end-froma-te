@@ -291,10 +291,11 @@ class EbookController extends Controller
      * )
      */
 
-    public function updateEbook(StoreUpdateEbookRequest $request, int $id)
+    public function updateEbook(StoreUpdateEbookRequest $request, $id)
     {
         $ebook = $this->ebookService->update(
-            UpdateEbookDTO::makeFromRequest($request, $id)
+            UpdateEbookDTO::makeFromRequest($request),
+            $id
         );
 
         if (!$ebook) {

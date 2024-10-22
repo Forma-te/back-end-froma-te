@@ -121,7 +121,7 @@ class Lesson extends Model
 
     public function modules()
     {
-        return $this->belongsTo(Module::class, 'module_id', 'id');
+        return $this->belongsTo(Module::class, 'module_id');
     }
 
     public function files()

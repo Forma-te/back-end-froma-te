@@ -35,7 +35,7 @@ class EbookRepository implements EbookRepositoryInterface
             });
         }
         // Paginar os resultados
-        $result = $query->with('user', 'users', 'sales')->paginate($totalPerPage, ['*'], 'page', $page);
+        $result = $query->with('user', 'users', 'sales', 'files')->paginate($totalPerPage, ['*'], 'page', $page);
 
 
         // Retornar os resultados paginados usando o PaginationPresenter
@@ -48,7 +48,7 @@ class EbookRepository implements EbookRepositoryInterface
         $query = $this->entity
                     ->where('product_type', 'ebook')
                     ->where('published', 1)
-                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name'])
+                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name', 'files'])
                     ->select(
                         'id',
                         'name',

@@ -16,15 +16,14 @@ class CreateCourseDTO
         public string $description,
         public string $code,
         public string $total_hours,
-        public string $published,
+        //public string $published,
         public string $free,
         public string $price,
         public string $discount,
         public string $acceptsMcxPayment,
         public string $acceptsRefPayment,
         public string $affiliationPercentage,
-        public string $product_type,
-        public $image = null,
+        public string $product_type
     ) {
     }
 
@@ -44,9 +43,6 @@ class CreateCourseDTO
 
         $product_type = 'course';
 
-        // Se a imagem estiver presente na requisição, obtenha o UploadedFile correspondente
-        $image = $request->hasFile('image') ? $request->file('image') : null;
-
         return new self(
             $data['category_id'],
             $userId,
@@ -55,7 +51,7 @@ class CreateCourseDTO
             $data['description'],
             $codigo,
             $data['total_hours'],
-            $data['published'],
+            //$data['published'],
             $data['free'],
             $data['price'],
             $data['discount'],
@@ -63,7 +59,6 @@ class CreateCourseDTO
             $data['acceptsRefPayment'],
             $data['affiliationPercentage'],
             $product_type,
-            $image
         );
     }
 }

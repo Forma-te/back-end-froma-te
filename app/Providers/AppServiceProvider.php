@@ -47,6 +47,8 @@ use App\Repositories\OrderBump\OrderBumpRepository;
 use App\Repositories\OrderBump\OrderBumpRepositoryInterface;
 use App\Repositories\Plan\CartPlanRepository;
 use App\Repositories\Plan\CartPlanRepositoryInterface;
+use App\Repositories\ProductFile\ProductFileRepository;
+use App\Repositories\ProductFile\ProductFileRepositoryInterface;
 use App\Repositories\User\{
     UserRepository,
     UserRepositoryInterface};
@@ -146,6 +148,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             OrderBumpRepositoryInterface::class,
             OrderBumpRepository::class
+        );
+
+        $this->app->singleton(
+            ProductFileRepositoryInterface::class,
+            ProductFileRepository::class
         );
     }
 

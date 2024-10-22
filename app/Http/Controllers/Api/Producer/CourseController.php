@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api\Producer;
 use App\Adapters\ApiAdapter;
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
+use App\DTO\Course\UpdatePublishedDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCourseRequest;
+use App\Http\Requests\UpdatePublishedRequest;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseStoreResource;
 use App\Repositories\Course\CourseRepository;
@@ -186,7 +188,11 @@ class CourseController extends Controller
 
     public function getCourseById(string $id)
     {
-        $course = $this->courseService->findById($id);
+        $course = $this->courseService->getCourseById($id);
+
+        if (!$course) {
+            return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
+        }
 
         return new CourseResource($course);
     }
@@ -263,64 +269,6 @@ class CourseController extends Controller
         return new CourseStoreResource($course);
     }
 
-    /**
-     * Updates an existing course.
-     *
-     * @param StoreUpdateCourseRequest $request The request object containing the course update data.
-     * @param string $id The ID of the course to update.
-     * @return \Illuminate\Http\JsonResponse The JSON response containing the updated course data or an error message.
-     *
-     * @OA\Put(
-     *     path="/api/course/{courseId}",
-     *     summary="Update a course",
-     *     description="Update an existing course by ID",
-     *     operationId="updateCourse",
-     *     tags={"Courses"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/StoreUpdateCourseRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Course updated successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/CourseStoreResource")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not Found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Not Found")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=409,
-     *         description="Duplicate entry for the course URL",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Duplicate entry for the course URL")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="An error occurred while updating the course",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="An error occurred while updating the course"),
-     *             @OA\Property(property="details", type="string", example="Error details here")
-     *         )
-     *     )
-     * )
-     *
-     * @throws \Illuminate\Database\QueryException If there is a database query error.
-     * @throws \Exception For any other type of error.
-     */
-
     public function updateCourse(StoreUpdateCourseRequest $request, string $id)
     {
         try {
@@ -357,33 +305,21 @@ class CourseController extends Controller
         }
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/course/{courseId}",
-     *     tags={"Courses"},
-     *     summary="Delete a course",
-     *     description="Deletes an existing course based on the provided ID.",
-     *     operationId="destroyCourse",
-     *     @OA\Parameter(
-     *         name="courseId",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the course to delete",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Course deleted successfully",
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Course not found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Not Found")
-     *         ),
-     *     ),
-     * )
-     */
+    public function publishedCourse(UpdatePublishedRequest $request, int $id)
+    {
+        $course = $this->courseService->publishedCourse(
+            UpdatePublishedDTO::makeFromRequest($request, $id)
+        );
+
+        if (!$course) {
+            return response()->json([
+                'error' => 'Ocorreu um erro ao publicar o curso',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new CourseStoreResource($course);
+
+    }
 
     public function destroyCourse(string $id)
     {

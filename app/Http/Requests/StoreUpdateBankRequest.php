@@ -21,12 +21,12 @@ class StoreUpdateBankRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('Id') ?? '';
+        $id = $this->route('id') ?? '';
 
         return [
             'bank' => 'required',
-            'account' => "required|unique:banks,account,{$id},Id",
-            'iban' => "required|unique:banks,iban,{$id},Id",
+            'account' => "required|unique:banks,account,{$id},id",
+            'iban' => "required|unique:banks,iban,{$id},id",
             'phone_number' => [
                 'required',
                 'nullable',

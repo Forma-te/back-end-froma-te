@@ -4,6 +4,7 @@ namespace App\Repositories\Course;
 
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
+use App\DTO\Course\UpdatePublishedDTO;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Course\CourseRepositoryInterface;
@@ -28,7 +29,7 @@ class CourseRepository implements CourseRepositoryInterface
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
                       ->where('product_type', 'course')
-                      ->with('user', 'users', 'sales')
+                      ->with('user', 'users', 'sales', 'files')
                       ->userByAuth();
 
         // Aplicar o filtro se fornecido
@@ -49,7 +50,7 @@ class CourseRepository implements CourseRepositoryInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
-                      ->with('user', 'users', 'sales')
+                      ->with('user', 'users', 'sales', 'files')
                       ->userByAuth();
 
         // Aplicar o filtro se fornecido
@@ -66,13 +67,23 @@ class CourseRepository implements CourseRepositoryInterface
         return new PaginationPresenter($result);
     }
 
+    public function getCourseById(string $id): object|null
+    {
+        $course = $this->entity
+                        ->where('product_type', 'course')
+                        ->with('modules.lessons', 'user')
+                        ->findOrFail($id);
+
+        return $course ?: [];
+    }
+
     public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 15, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
                     ->where('product_type', 'course')
                     ->where('published', 1)
-                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name'])
+                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name', 'files'])
                     ->select(
                         'id',
                         'name',
@@ -131,6 +142,18 @@ class CourseRepository implements CourseRepositoryInterface
         return null;
     }
 
+    public function publishedCourse(UpdatePublishedDTO $dto): ?Product
+    {
+        $course = $this->findById($dto->id);
+
+        if ($course) {
+            $course->update((array) $dto);
+            return $course;
+        }
+
+        return null;
+    }
+
     public function findById(string $id): object|null
     {
         return $this->entity->find($id);
@@ -153,10 +176,6 @@ class CourseRepository implements CourseRepositoryInterface
         }
     }
 
-    public function getCourseById(string $id): object|null
-    {
-        return $this->entity->with('modules.lessons')->findOrFail($id);
-    }
 
     public function getCoursesForModuleCreation(): array
     {

@@ -207,7 +207,7 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class, 'instrutor_id');
     }
 
-    public function products()
+    public function product()
     {
         return $this->belongsToMany(Product::class);
     }

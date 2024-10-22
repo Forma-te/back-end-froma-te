@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Producer\{
     LessonController,
     ModuleController,
     OrderBumpController,
+    ProductFileController,
     ReplySupportController,
     SaleController,
     SubscriptionController,
@@ -52,7 +53,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'getAllCategories']);
     Route::get('/categories/{categoryId}', [CategoryController::class, 'getCategoryById']);
     Route::post('/categories', [CategoryController::class, 'storeCategory']);
-    Route::put('/categories/{Id}', [CategoryController::class, 'updateCategory']);
+    Route::put('/categories/{id}', [CategoryController::class, 'updateCategory']);
     Route::delete('/categories/{Id}', [CategoryController::class, 'destroyCategory']);
 
     /**
@@ -63,8 +64,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/courses/producers', [CourseController::class, 'fetchAllCoursesByProducers']);
     Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
     Route::post('/course', [CourseController::class, 'createCourse']);
-    Route::put('/course/{Id}', [CourseController::class, 'updateCourse']);
-    Route::delete('/course/{Id}', [CourseController::class, 'destroyCourse']);
+    Route::put('/course/{id}', [CourseController::class, 'updateCourse']);
+    Route::put('/published/{id}', [CourseController::class, 'publishedCourse']);
+    Route::delete('/course/{id}', [CourseController::class, 'destroyCourse']);
+
+    /**
+    * Route file product
+    */
+    Route::post('/product/image/course', [ProductFileController::class, 'store']);
+    Route::post('/product/image/ebook', [ProductFileController::class, 'createImageEbook']);
+    Route::post('/product/file/ebook', [ProductFileController::class, 'createFileEbook']);
 
     /**
     * Route Modules
@@ -72,8 +81,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/course/{courseId}/modules', [ModuleController::class, 'getModulesByCourse']);
     Route::get('/module/{Id}', [ModuleController::class, 'getModuleById']);
     Route::post('/module', [ModuleController::class, 'createModule']);
-    Route::put('/module/{Id}', [ModuleController::class, 'updateModule']);
-    Route::delete('/module/{Id}', [ModuleController::class, 'destroyModule']);
+    Route::put('/module/{id}', [ModuleController::class, 'updateModule']);
+    Route::delete('/module/{id}', [ModuleController::class, 'destroyModule']);
 
     /**
     * Route Lesson
@@ -81,12 +90,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/lessons', [LessonController::class, 'getAllLesson']);
     Route::get('/lessons/{moduleId}', [LessonController::class, 'getLessonByModuleId']);
     Route::post('/lesson', [LessonController::class, 'createLesson']);
-    Route::put('/lesson/{Id}', [LessonController::class, 'updateLesson']);
-    Route::put('/lesson/edit/name/{Id}', [LessonController::class, 'editNameLesson']);
+    Route::put('/lesson/{id}', [LessonController::class, 'updateLesson']);
+    Route::put('/lesson/edit/name/{id}', [LessonController::class, 'editNameLesson']);
     Route::post('/lesson/create/name', [LessonController::class, 'createNameLesson']);
     Route::post('/lesson/file/create', [LessonController::class, 'createFileLesson']);
-    Route::put('/lesson/{Id}/file', [LessonController::class, 'updateFileLesson']);
-    Route::delete('/lesson/{Id}', [LessonController::class, 'destroyLesson']);
+    Route::put('/lesson/{id}/file', [LessonController::class, 'updateFileLesson']);
+    Route::delete('/lesson/{id}', [LessonController::class, 'destroyLesson']);
     // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 
     /**
@@ -96,7 +105,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/ebook/{Id}', [EbookController::class, 'getEbookById']);
     Route::get('/ebooks/producers', [EbookController::class, 'fetchAllEbooksByProducers']);
     Route::post('/ebook', [EbookController::class, 'createEbook']);
-    Route::put('/ebook/{Id}', [EbookController::class, 'updateEbook']);
+    Route::put('/ebook/{id}', [EbookController::class, 'updateEbook']);
     Route::delete('/ebook/{Id}', [EbookController::class, 'destroyEbook']);
 
     /**
@@ -114,7 +123,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
     Route::get('/ebook/{ebookId}/ebook-content', [EbookContentController::class, 'getContentByEbookId']);
     Route::post('/ebook-content', [EbookContentController::class, 'createEbookContent']);
-    Route::put('/ebook-content/{Id}', [EbookContentController::class, 'updateEbookContent']);
+    Route::put('/ebook-content/{id}', [EbookContentController::class, 'updateEbookContent']);
     Route::delete('/ebook-content/{Id}', [EbookContentController::class, 'destroyEbookContent']);
 
 
@@ -148,7 +157,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/members', [SaleController::class, 'getMyMembers']);
     Route::get('/sale/{Id}', [SaleController::class, 'getSaleById']);
     Route::post('/sales', [SaleController::class, 'newSale']);
-    Route::put('/sales/{Id}', [SaleController::class, 'updateSale']);
+    Route::put('/sales/{id}', [SaleController::class, 'updateSale']);
     Route::delete('/sales/{Id}', [SaleController::class, 'destroySele']);
     Route::post('/import-csv', [SaleController::class, 'csvImportMember']);
 

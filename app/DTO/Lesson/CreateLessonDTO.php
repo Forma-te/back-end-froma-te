@@ -12,8 +12,7 @@ class CreateLessonDTO
         public string $url,
         public string $description,
         public string $video,
-        public string $published,
-        public $file
+        public string $published
     ) {
     }
 
@@ -22,17 +21,13 @@ class CreateLessonDTO
         $data = $request->all();
         $url = sprintf('%08X', mt_rand(0, 0xFFFFFFF));
 
-        // Se o file estiver presente na requisição, obtenha o UploadedFile correspondente
-        $file = $request->hasFile('file') ? $request->file('file') : null;
-
         return new self(
             $data['module_id'],
             $data['name'],
             $url,
             $data['description'],
             $data['video'],
-            $data['published'],
-            $file
+            $data['published']
         );
     }
 }

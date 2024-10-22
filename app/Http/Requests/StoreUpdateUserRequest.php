@@ -37,7 +37,7 @@ class StoreUpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('Id') ?? '';
+        $id = $this->route('id') ?? '';
 
         return [
             'name' => ['required', 'string', 'regex:/^[\pL\s]+$/u', 'min:2', function ($attribute, $value, $fail) {
@@ -45,7 +45,7 @@ class StoreUpdateUserRequest extends FormRequest
                     $fail('O campo ' . $attribute . ' deve conter o primeiro e último nome.');
                 }
             }],
-            'email' => "sometimes|required|string|email|max:255|unique:users,email,{$id},Id",
+            'email' => "sometimes|required|string|email|max:255|unique:users,email,{$id},id",
             'password' => 'sometimes|string|min:8|confirmed',
             'password_confirmation' => 'sometimes|required_with:password|string|min:8',
             'bibliography' => 'nullable|string',

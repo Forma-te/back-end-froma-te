@@ -37,14 +37,13 @@ class StoreUpdateLessonRequest extends FormRequest
     {
         logger()->info('Dados da validação:', $this->all());
 
-        $id = $this->route('Id') ?? ''; // Obter o ID dos parâmetros da rota
+        $id = $this->route('id') ?? ''; // Obter o ID dos parâmetros da rota
 
         $rules = [
             'module_id' => 'required',
             'name' => 'required|min:5|max:100',
-            'file' => 'sometimes|file|mimes:pdf',
             'published' => 'required|boolean',
-            'url' => "nullable|min:3|max:100|unique:lessons,url,{$id},Id",
+            'url' => "nullable|min:3|max:100|unique:lessons,url,{$id},id",
             'description' => 'nullable',
             'published' => 'nullable',
             'video' => 'nullable',

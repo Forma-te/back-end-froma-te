@@ -4,6 +4,7 @@ namespace App\Repositories\Course;
 
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
+use App\DTO\Course\UpdatePublishedDTO;
 use App\Models\Product;
 use App\Repositories\PaginationInterface;
 use stdClass;
@@ -16,6 +17,7 @@ interface CourseRepositoryInterface
     public function findById(string $id): object|null;
     public function new(CreateCourseDTO $dto): Product;
     public function update(UpdateCourseDTO $dto): ?Product;
+    public function publishedCourse(UpdatePublishedDTO $dto): ?Product;
     public function delete(string $id): void;
     public function getCoursesForModuleCreation(): array;
     public function getCoursesForAuthenticatedUser(): array;

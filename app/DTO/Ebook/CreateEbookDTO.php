@@ -24,9 +24,7 @@ class CreateEbookDTO
         public string $acceptsRefPayment,
         public string $affiliationPercentage,
         public string $allow_download,
-        public string $product_type,
-        public string|UploadedFile|null $image = null, // Permitir tanto string (caminho) quanto UploadedFile
-        public string|UploadedFile|null $file = null   // Permitir tanto string (caminho) quanto UploadedFile
+        public string $product_type
     ) {
     }
 
@@ -46,9 +44,6 @@ class CreateEbookDTO
 
         $product_type = 'ebook';
 
-        $image = $request->hasFile('image') ? $request->file('image') : null;
-        $file = $request->hasFile('file') ? $request->file('file') : null;
-
         return new self(
             $data['category_id'],
             $userId,
@@ -64,9 +59,7 @@ class CreateEbookDTO
             $data['acceptsRefPayment'],
             $data['affiliationPercentage'],
             $data['allow_download'],
-            $product_type,
-            $image,
-            $file
+            $product_type
         );
     }
 }

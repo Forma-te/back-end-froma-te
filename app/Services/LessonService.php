@@ -52,41 +52,11 @@ class LessonService
 
     public function new(CreateLessonDTO $dto): Lesson
     {
-        if ($dto->file) {
-
-            $file = $dto->file;
-            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'lessonPdf', $customImageName);
-
-            $dto->file = $uploadedFilePath;
-        }
-
         return $this->repository->new($dto);
     }
 
     public function update(UpdateLessonDTO $dto)
     {
-        // Buscar a lição existente
-        $lesson = $this->repository->findById($dto->id);
-
-        // Verificar instância da classe UploadedFile
-        if ($dto->file instanceof UploadedFile) {
-            if ($lesson && $lesson->file) {
-                // Remover o ficheiro existente, se houver
-                $this->uploadFile->removeFile($lesson->file);
-            }
-            // Processar o novo ficheiro
-            $file = $dto->file;
-            $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
-            // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'lessonPdf', $customImageName);
-
-            // Atualizar o DTO com o caminho relativo do ficheiro armazenado
-            $dto->file = $uploadedFilePath;
-        } else {
-            // Manter o caminho do ficheiro existente, se não houver novo ficheiro
-            unset($dto->file);
-        }
         // Atualizar a lição no repositório com os dados do DTO
         return $this->repository->update($dto);
     }
