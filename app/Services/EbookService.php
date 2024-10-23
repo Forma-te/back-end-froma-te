@@ -49,6 +49,20 @@ class EbookService
 
     public function new(CreateEbookDTO $dto): Product
     {
+        // Processar imagem se existir
+        if ($dto->image) {
+            $customImageName = Str::of($dto->name)->slug('-') . '.' . $dto->image->getClientOriginalExtension();
+            $uploadedImagePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesEbooks', $customImageName);
+            $dto->image = $uploadedImagePath;
+        }
+
+        // Processar ficheiro se existir
+        if ($dto->file) {
+            $customFileName = Str::of($dto->name)->slug('-') . '.' . $dto->file->getClientOriginalExtension();
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'Products/FilesEbooks', $customFileName);
+            $dto->file = $uploadedFilePath;
+        }
+
         // Criar o produto utilizando o repositório
         return $this->repository->new($dto);
     }
@@ -64,6 +78,47 @@ class EbookService
 
         if ($ebook && Gate::allows('owner-ebook', $ebook)) {
             // Atualizar imagem se uma nova foi enviada
+
+            if ($dto->image instanceof UploadedFile) {
+                if ($ebook && $ebook->image) {
+                    // Remover o ficheiro existente, se houver
+                    $this->uploadFile->removeFile($ebook->image);
+                }
+
+                // Processar o novo ficheiro
+                $image = $dto->image;
+                $customImageName = Str::of($dto->name)->slug('-') . '.' . $image->getClientOriginalExtension();
+
+                // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
+                $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesEbooks', $customImageName);
+
+                // Atualizar o DTO com o caminho relativo do ficheiro armazenado
+                $dto->image = $uploadedFilePath;
+            } else {
+                // Manter o caminho do ficheiro existente, se não houver novo ficheiro
+                unset($dto->image);
+            }
+
+            if ($dto->file instanceof UploadedFile) {
+                if ($ebook && $ebook->file) {
+                    // Remover o ficheiro existente, se houver
+                    $this->uploadFile->removeFile($ebook->file);
+                }
+
+                // Processar o novo ficheiro
+                $file = $dto->file;
+                $customFileName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
+
+                // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
+                $uploadedFilePath = $this->uploadFile->storeAs($dto->file, 'Products/FilesEbooks', $customFileName);
+
+                // Atualizar o DTO com o caminho relativo do ficheiro armazenado
+                $dto->file = $uploadedFilePath;
+            } else {
+                // Manter o caminho do ficheiro existente, se não houver novo ficheiro
+                unset($dto->file);
+            }
+
 
             // Atualizar o ebook com as novas informações
             return $this->repository->update($dto);

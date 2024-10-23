@@ -69,12 +69,12 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function getCourseById(string $id): object|null
     {
-        $course = $this->entity
-                        ->where('product_type', 'course')
-                        ->with('modules.lessons', 'user')
-                        ->findOrFail($id);
+        return $this->entity
+                    ->where('product_type', 'course')
+                    ->with('modules.lessons', 'user')
+                    ->find($id);
 
-        return $course ?: [];
+
     }
 
     public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 15, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface

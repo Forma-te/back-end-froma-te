@@ -62,6 +62,14 @@ class CourseService
 
     public function new(CreateCourseDTO $dto): Product
     {
+        if ($dto->image) {
+            $customImageName = Str::of($dto->name)->slug('-') . '.' . $dto->image->getClientOriginalExtension();
+
+            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesCourses', $customImageName);
+
+            $dto->image = $uploadedFilePath;
+        }
+
         return $this->repository->new($dto);
     }
 
@@ -70,18 +78,33 @@ class CourseService
         return $this->repository->findById($id);
     }
 
-    public function getCourseById(string $id)
-    {
-        return $this->repository->getCourseById($id);
-    }
-
     public function update(UpdateCourseDTO $dto): ?Product
     {
         // Buscar a course existente
         $course = $this->repository->findById($dto->id);
 
         if ($course && Gate::authorize('owner-course', $course)) {
+            // Verificar instância da classe UploadedFile
 
+            if ($dto->image instanceof UploadedFile) {
+                if ($course && $course->image) {
+                    // Remover o ficheiro existente, se houver
+                    $this->uploadFile->removeFile($course->image);
+                }
+
+                // Processar o novo ficheiro
+                $file = $dto->image;
+                $customImageName = Str::of($dto->name)->slug('-') . '.' . $file->getClientOriginalExtension();
+
+                // Armazenar o novo ficheiro e obter o caminho do ficheiro armazenado
+                $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'Products/ImagesCourses', $customImageName);
+
+                // Atualizar o DTO com o caminho relativo do ficheiro armazenado
+                $dto->image = $uploadedFilePath;
+            } else {
+                // Manter o caminho do ficheiro existente, se não houver novo ficheiro
+                unset($dto->image);
+            }
             // Atualizar a lição no repositório com os dados do DTO
             return $this->repository->update($dto);
         }
@@ -115,4 +138,8 @@ class CourseService
         return $this->repository->getCoursesForAuthenticatedUser($id);
     }
 
+    public function getCourseById(string $id)
+    {
+        return $this->repository->getCourseById($id);
+    }
 }

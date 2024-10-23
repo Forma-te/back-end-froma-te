@@ -10,6 +10,7 @@ class UpdateFileLessonDTO
         public string $id,
         public string $lesson_id,
         public string $url,
+        public string $name,
         public $file
     ) {
     }
@@ -25,6 +26,7 @@ class UpdateFileLessonDTO
             $id,
             $data['lesson_id'],
             $url,
+            $data['name'],
             $file,
         );
     }

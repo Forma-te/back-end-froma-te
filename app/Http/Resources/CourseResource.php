@@ -14,8 +14,6 @@ class CourseResource extends JsonResource
      */
     public function toArray($request)
     {
-        //$this->loadMissing('modules.lessons', 'user');
-
         return [
             'course_id' => $this->id,
             'category_id' => $this->category_id,
@@ -32,9 +30,10 @@ class CourseResource extends JsonResource
             'affiliationPercentage' => $this->affiliationPercentage,
             'discount' => $this->discount,
             'price' => $this->price,
-            'user' => UserResource::collection($this->whenLoaded('user')),
-            'modules' => ModuleResource::collection($this->whenLoaded('modules')),
             'product_type' => $this->product_type,
+            'producer' => new UserResource($this->whenLoaded('user')),
+            'modules' => ModuleResource::collection($this->whenLoaded('modules')),
+
         ];
     }
 }

@@ -13,11 +13,14 @@ class UpdateLessonDTO
         public string $description,
         public string $video,
         public bool $published,
+        public $file,
     ) {
     }
 
     public static function makeFromRequest(StoreUpdateLessonRequest  $request, string $id = null): self
     {
+        // Se o file estiver presente na requisição, obtenha o UploadedFile correspondente
+        $file = $request->hasFile('file') ? $request->file('file') : null;
 
         return new self(
             $id,
@@ -26,6 +29,7 @@ class UpdateLessonDTO
             $request->input('description'),
             $request->input('video'),
             $request->input('published'),
+            $file
         );
     }
 }
