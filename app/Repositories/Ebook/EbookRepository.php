@@ -52,6 +52,7 @@ class EbookRepository implements EbookRepositoryInterface
                     ->select(
                         'id',
                         'name',
+                        'url',
                         'user_id',
                         'category_id',
                         'image',

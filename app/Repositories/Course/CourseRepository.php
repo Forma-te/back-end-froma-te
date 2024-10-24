@@ -100,6 +100,7 @@ class CourseRepository implements CourseRepositoryInterface
                     ->select(
                         'id',
                         'name',
+                        'url',
                         'user_id',
                         'category_id',
                         'image',

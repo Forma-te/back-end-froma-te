@@ -51,6 +51,7 @@ class FileRepository implements FileRepositoryInterface
                     ->select(
                         'id',
                         'name',
+                        'url',
                         'user_id',
                         'category_id',
                         'image',
