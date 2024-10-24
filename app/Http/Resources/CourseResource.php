@@ -31,6 +31,7 @@ class CourseResource extends JsonResource
             'discount' => $this->discount,
             'price' => $this->price,
             'product_type' => $this->product_type,
+            'files' => ProductFileResource::collection($this->whenLoaded('files')),
             'producer' => new UserResource($this->whenLoaded('user')),
             'modules' => ModuleResource::collection($this->whenLoaded('modules')),
 

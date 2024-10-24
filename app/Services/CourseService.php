@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\Models\Product;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationInterface;
@@ -78,6 +79,16 @@ class CourseService
         return $this->repository->findById($id);
     }
 
+    public function getCourseById(string $id)
+    {
+        return $this->repository->getCourseById($id);
+    }
+
+    public function getCourseByUrl(GetCourseByUrlDTO $dto): ?Product
+    {
+        return $this->repository->getCourseByUrl($dto->url);
+    }
+
     public function update(UpdateCourseDTO $dto): ?Product
     {
         // Buscar a course existente
@@ -136,10 +147,5 @@ class CourseService
     public function getCoursesForAuthenticatedUser(string $id)
     {
         return $this->repository->getCoursesForAuthenticatedUser($id);
-    }
-
-    public function getCourseById(string $id)
-    {
-        return $this->repository->getCourseById($id);
     }
 }

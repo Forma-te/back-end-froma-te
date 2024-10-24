@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\DTO\File\CreateFileDTO;
 use App\DTO\File\UpdateFileDTO;
 use App\Http\Controllers\Controller;
@@ -67,38 +68,51 @@ class FileController extends Controller
 
     public function getFileById(string $id)
     {
-        $ebook = $this->fileService->findById($id);
+        $file = $this->fileService->getFileById($id);
 
-        if (!$ebook) {
-            return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
+        if (!$file) {
+            return $this->errorResponse('Ficheiro não encontrado.', Response::HTTP_NOT_FOUND);
         }
 
-        return new EbookResource($ebook);
+        return new EbookResource($file);
+    }
+
+    public function getFileByUrl(string $url)
+    {
+        $dto = new GetCourseByUrlDTO($url);
+
+        $file = $this->fileService->getFileByUrl($dto);
+
+        if (!$file) {
+            return $this->errorResponse('Ficheiro não encontrado.', Response::HTTP_NOT_FOUND);
+        }
+
+        return new EbookResource($file);
     }
 
     public function createFile(StoreUpdateFileRequest $request)
     {
         // Cria um novo curso a partir dos dados do request
-        $ebook = $this->fileService->new(
+        $file = $this->fileService->new(
             CreateFileDTO::makeFromRequest($request)
         );
 
-        return new EbookResource($ebook);
+        return new EbookResource($file);
     }
 
     public function updateFile(StoreUpdateFileRequest $request, int $id)
     {
-        $ebook = $this->fileService->update(
+        $file = $this->fileService->update(
             UpdateFileDTO::makeFromRequest($request, $id)
         );
 
-        if (!$ebook) {
+        if (!$file) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return new EbookResource($ebook);
+        return new EbookResource($file);
     }
 
     public function destroyFile(string $id)
@@ -129,9 +143,5 @@ class FileController extends Controller
         ], Response::HTTP_OK);
 
     }
-
-
-
-
 
 }

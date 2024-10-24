@@ -62,7 +62,7 @@ class LessonController extends Controller
      *         description="Invalid request data"
      *     ),
      *     @OA\Response(
-     *         response=500,
+     *         response=500,P
      *         description="Server error"
      *     )
      * )

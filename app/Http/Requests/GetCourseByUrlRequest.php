@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateFileLessonRequest extends FormRequest
+class GetCourseByUrlRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,12 @@ class StoreUpdateFileLessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lesson_id' => 'required',
-            'name' => 'sometimes|min:5|max:255',
-            'file' => 'nullable|file|mimes:pdf|max:10240',
+            'url' => 'required|string|max:255',
         ];
     }
 
-    public function messages()
+    public function getUrl(): string
     {
-        return [
-            'module_id.required' => 'O campo module_id é obrigatório.',
-            'file.required' => 'O arquivo deve ser do tipo PDF.',
-            'file.max' => 'O tamanho máximo da imagem é de 10MB.',
-        ];
+        return $this->input('url');
     }
 }

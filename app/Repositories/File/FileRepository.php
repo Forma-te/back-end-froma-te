@@ -112,6 +112,24 @@ class FileRepository implements FileRepositoryInterface
         return $this->entity->find($id);
     }
 
+    public function getFileById(string $id): object|null
+    {
+        return $this->entity
+                    ->userByAuth()
+                    ->where('product_type', 'file')
+                    ->with('user', 'files')
+                    ->find($id);
+    }
+
+    public function getFileByUrl(string $url): ?Product
+    {
+        return $this->entity
+                    ->where('url', $url)
+                    ->where('product_type', 'file')
+                    ->with('user', 'files')
+                    ->first();
+    }
+
     public function delete(string $id): void
     {
         try {

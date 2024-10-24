@@ -2,15 +2,17 @@
 
 namespace App\Repositories\ProductFile;
 
+use App\DTO\ProductFile\CreateDocFileDTO;
 use App\DTO\ProductFile\CreateFileCourseDTO;
 use App\DTO\ProductFile\CreateFileEbookDTO;
 use App\DTO\ProductFile\CreateImageEbookDTO;
-use App\Models\productFile;
+use App\DTO\ProductFile\CreateImageFileDTO;
+use App\Models\ProductFile;
 
 class ProductFileRepository implements ProductFileRepositoryInterface
 {
     public function __construct(
-        protected productFile $entity,
+        protected ProductFile $entity,
     ) {
     }
 
@@ -22,23 +24,72 @@ class ProductFileRepository implements ProductFileRepositoryInterface
                     ->first();
     }
 
-    public function createFileCourse(CreateFileCourseDTO $dto): ?productFile
+    public function createFileCourse(CreateFileCourseDTO $dto): ?ProductFile
     {
+        $existingCourseFile = $this->entity->where('product_id', $dto->product_id)->first();
+
+        // Se já existir, elimina o ficheiro
+        if ($existingCourseFile) {
+            $existingCourseFile->delete();
+        }
+
         return $this->entity->create($dto->toArray());
     }
 
-    public function delete(int $id): void
+    public function createImageEbook(CreateImageEbookDTO $dto): ?ProductFile
     {
-        $this->entity->where('id', $id)->delete();
-    }
+        $existingCourseFile = $this->entity->where('product_id', $dto->product_id)
+                                            ->where('type', 'ebookImage')
+                                            ->first();
 
-    public function createImageEbook(CreateImageEbookDTO $dto): ?productFile
-    {
+        // Se já existir, elimina o ficheiro
+        if ($existingCourseFile) {
+            $existingCourseFile->delete();
+        }
+
         return $this->entity->create($dto->toArray());
     }
 
-    public function createFileEbook(CreateFileEbookDTO $dto): ?productFile
+    public function createFileEbook(CreateFileEbookDTO $dto): ?ProductFile
     {
+        $existingCourseFile = $this->entity->where('product_id', $dto->product_id)
+                                            ->where('type', 'ebookFile')
+                                            ->first();
+
+        // Se já existir, elimina o ficheiro
+        if ($existingCourseFile) {
+            $existingCourseFile->delete();
+        }
+
         return $this->entity->create($dto->toArray());
+    }
+
+    public function createImageFile(CreateImageFileDTO $dto): ?ProductFile
+    {
+        $existingCourseFile = $this->entity->where('product_id', $dto->product_id)
+                                ->where('type', 'fileImage')
+                                ->first();
+
+        // Se já existir, elimina o ficheiro
+        if ($existingCourseFile) {
+            $existingCourseFile->delete();
+        }
+
+        return $this->entity->create($dto->toArray());
+    }
+
+    public function createDocFile(CreateDocFileDTO $dto): ?ProductFile
+    {
+        $existingCourseFile = $this->entity->where('product_id', $dto->product_id)
+                                ->where('type', 'docFile')
+                                ->first();
+
+        // Se já existir, elimina o ficheiro
+        if ($existingCourseFile) {
+            $existingCourseFile->delete();
+        }
+
+        return $this->entity->create($dto->toArray());
+
     }
 }

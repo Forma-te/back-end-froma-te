@@ -98,7 +98,7 @@ class EbookRepository implements EbookRepositoryInterface
 
     public function update(UpdateEbookDTO $dto): ?Product
     {
-        $ebook = $this->findById($dto->id);
+        $ebook = $this->getEbookById($dto->id);
 
         if ($ebook) {
             $ebook->update((array) $dto);
@@ -106,6 +106,24 @@ class EbookRepository implements EbookRepositoryInterface
         }
 
         return null; // Retorna null se o eBook não for encontrado
+    }
+
+    public function getEbookById(string $id): object|null
+    {
+        return $this->entity
+                    ->userByAuth()
+                    ->where('product_type', 'ebook')
+                    ->with('user', 'files')
+                    ->find($id);
+    }
+
+    public function getEbookByUrl(string $url): ?Product
+    {
+        return $this->entity
+                    ->where('url', $url)
+                    ->where('product_type', 'ebook')
+                    ->with('user', 'files')
+                    ->first();
     }
 
     public function findById(string $id): object|null

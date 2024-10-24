@@ -9,7 +9,7 @@ class CreateFileLessonDTO
     public function __construct(
         public string $lesson_id,
         public string $name,
-        public $file
+        public $file = null
     ) {
     }
 

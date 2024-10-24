@@ -20,7 +20,7 @@ class Product extends Model
     // Relacionamento com ficheiros
     public function files()
     {
-        return $this->hasMany(productFile::class);
+        return $this->hasMany(ProductFile::class);
     }
 
     /**

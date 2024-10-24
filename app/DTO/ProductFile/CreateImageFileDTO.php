@@ -2,31 +2,31 @@
 
 namespace App\DTO\ProductFile;
 
-use App\Http\Requests\StoreUpdateProductCourseImageRequest;
+use App\Http\Requests\StoreUpdateProductFileRequest;
 
-class CreateFileCourseDTO
+class CreateImageFileDTO
 {
     public function __construct(
         public string $product_id,
         public string $name,
         public $type,
-        public $image
+        public $image,
     ) {
     }
 
-    public static function makeFromRequest(StoreUpdateProductCourseImageRequest $request): self
+    public static function makeFromRequest(StoreUpdateProductFileRequest $request): self
     {
         $data = $request->all();
 
         $image = $request->hasFile('image') ? $request->file('image') : null;
 
-        $type = 'courseImage';
+        $type = 'FileImage';
 
         return new self(
             $data['product_id'],
             $data['name'],
             $type,
-            $image
+            $image,
         );
     }
 
@@ -36,7 +36,7 @@ class CreateFileCourseDTO
             'product_id' => $this->product_id,
             'name' => $this->name,
             'type' => $this->type,
-            'image' => $this->image
+            'image' => $this->image,
         ];
     }
 

@@ -22,4 +22,5 @@ interface CourseRepositoryInterface
     public function getCoursesForModuleCreation(): array;
     public function getCoursesForAuthenticatedUser(): array;
     public function getCourseById(string $id): object|null;
+    public function getCourseByUrl(string $url): ?Product;
 }

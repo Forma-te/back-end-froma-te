@@ -15,4 +15,6 @@ interface EbookRepositoryInterface
     public function new(CreateEbookDTO $dto): Product;
     public function update(UpdateEbookDTO $dto): ?Product;
     public function delete(string $id): void;
+    public function getEbookById(string $id): object|null;
+    public function getEbookByUrl(string $url): ?Product;
 }

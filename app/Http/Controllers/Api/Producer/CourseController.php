@@ -6,7 +6,9 @@ use App\Adapters\ApiAdapter;
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetCourseByUrlRequest;
 use App\Http\Requests\StoreUpdateCourseRequest;
 use App\Http\Requests\UpdatePublishedRequest;
 use App\Http\Resources\CourseResource;
@@ -18,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use OpenApi\Annotations as OA;
 
@@ -191,7 +194,20 @@ class CourseController extends Controller
         $course = $this->courseService->getCourseById($id);
 
         if (!$course) {
-            return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
+            return $this->errorResponse('Curso não encontrado.', Response::HTTP_NOT_FOUND);
+        }
+
+        return new CourseResource($course);
+    }
+
+    public function getCourseByUrl(string $url)
+    {
+        $dto = new GetCourseByUrlDTO($url);
+
+        $course = $this->courseService->getCourseByUrl($dto);
+
+        if (!$course) {
+            return $this->errorResponse('Curso não encontrado.', Response::HTTP_NOT_FOUND);
         }
 
         return new CourseResource($course);

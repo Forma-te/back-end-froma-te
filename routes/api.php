@@ -1,5 +1,6 @@
 <?php
 
+use App\DTO\GetCourseByUrlDTO;
 use App\Http\Controllers\Api\Producer\{
     BankController,
     CategoryController,
@@ -28,6 +29,7 @@ use App\Http\Controllers\Api\Member\{
     MemberController,
     SupportController
 };
+use App\Http\Requests\GetCourseByUrlRequest;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -63,10 +65,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/get-products', [CourseController::class, 'getProducts']);
     Route::get('/courses/producers', [CourseController::class, 'fetchAllCoursesByProducers']);
     Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
+
     Route::post('/course', [CourseController::class, 'createCourse']);
     Route::put('/course/{id}', [CourseController::class, 'updateCourse']);
     Route::put('/published/{id}', [CourseController::class, 'publishedCourse']);
     Route::delete('/course/{id}', [CourseController::class, 'destroyCourse']);
+
+    Route::get('/course/details/{url}', [CourseController::class, 'getCourseByUrl']);
 
     /**
     * Route file product
@@ -74,6 +79,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/product/image/course', [ProductFileController::class, 'store']);
     Route::post('/product/image/ebook', [ProductFileController::class, 'createImageEbook']);
     Route::post('/product/file/ebook', [ProductFileController::class, 'createFileEbook']);
+
+    Route::post('/product/image/file', [ProductFileController::class, 'createImageFile']);
+    Route::post('/product/file/doc', [ProductFileController::class, 'createDocFile']);
 
     /**
     * Route Modules
@@ -108,6 +116,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/ebook/{id}', [EbookController::class, 'updateEbook']);
     Route::delete('/ebook/{Id}', [EbookController::class, 'destroyEbook']);
 
+    Route::get('/ebook/details/{url}', [EbookController::class, 'getEbookByUrl']);
+
     /**
     * Route File
     */
@@ -117,6 +127,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/file', [FileController::class, 'createFile']);
     Route::put('/file/{id}', [FileController::class, 'updateFile']);
     Route::delete('/file/{id}', [FileController::class, 'destroyFile']);
+
+    Route::get('/file/details/{url}', [FileController::class, 'getFileByUrl']);
 
     /**
     * Route Ebook Content

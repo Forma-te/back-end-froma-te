@@ -32,8 +32,9 @@ class EbookResource extends JsonResource
             'price' => $this->price,
             'allowDownload' => $this->allow_download,
             'imagem' => $this->image,
-            'file' => $this->file,
             'product_type' => $this->product_type,
+            'files' => ProductFileResource::collection($this->whenLoaded('files')),
+            'producer' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\DTO\File\CreateFileDTO;
 use App\DTO\File\UpdateFileDTO;
 use App\Models\Product;
@@ -70,6 +71,16 @@ class FileService
     public function findById(string $id): object|null
     {
         return $this->repository->findById($id);
+    }
+
+    public function getFileById(string $id)
+    {
+        return $this->repository->getFileById($id);
+    }
+
+    public function getFileByUrl(GetCourseByUrlDTO $dto): ?Product
+    {
+        return $this->repository->getFileByUrl($dto->url);
     }
 
     public function update(UpdateFileDTO $dto): ?Product

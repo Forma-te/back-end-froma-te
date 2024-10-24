@@ -3,6 +3,7 @@
 namespace App\Repositories\Course;
 
 use App\DTO\Course\CreateCourseDTO;
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
 use App\Models\Product;
@@ -14,6 +15,7 @@ use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class CourseRepository implements CourseRepositoryInterface
 {
@@ -70,10 +72,21 @@ class CourseRepository implements CourseRepositoryInterface
     public function getCourseById(string $id): object|null
     {
         return $this->entity
+                    ->userByAuth()
                     ->where('product_type', 'course')
-                    ->with('modules.lessons', 'user')
+                    ->with('modules.lessons', 'user', 'files')
                     ->find($id);
 
+
+    }
+
+    public function getCourseByUrl(string $url): ?Product
+    {
+        return $this->entity
+                    ->where('url', $url)
+                    ->where('product_type', 'course')
+                    ->with('modules.lessons', 'user', 'files')
+                    ->first();
 
     }
 

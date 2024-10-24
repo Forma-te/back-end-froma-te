@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\DTO\Ebook\CreateEbookDTO;
 use App\DTO\Ebook\UpdateEbookDTO;
 use App\Models\Product;
@@ -71,6 +72,17 @@ class EbookService
     {
         return $this->repository->findById($id);
     }
+
+    public function getEbookById(string $id)
+    {
+        return $this->repository->getEbookById($id);
+    }
+
+    public function getEbookByUrl(GetCourseByUrlDTO $dto): ?Product
+    {
+        return $this->repository->getEbookByUrl($dto->url);
+    }
+
 
     public function update(UpdateEbookDTO $dto): ?Product
     {

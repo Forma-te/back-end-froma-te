@@ -15,4 +15,6 @@ interface FileRepositoryInterface
     public function new(CreateFileDTO $dto): Product;
     public function update(UpdateFileDTO $dto): ?Product;
     public function delete(string $id): void;
+    public function getFileById(string $id): object|null;
+    public function getFileByUrl(string $url): ?Product;
 }

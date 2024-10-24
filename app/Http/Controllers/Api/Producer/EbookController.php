@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
+use App\DTO\Course\GetCourseByUrlDTO;
 use App\DTO\Ebook\CreateEbookDTO;
 use App\DTO\Ebook\UpdateEbookDTO;
 use App\Http\Controllers\Controller;
@@ -169,13 +170,26 @@ class EbookController extends Controller
 
     public function getEbookById(string $id)
     {
-        $ebook = $this->ebookService->findById($id);
+        $ebook = $this->ebookService->getEbookById($id);
 
         if (!$ebook) {
             return $this->errorResponse('Resource not found', Response::HTTP_NOT_FOUND);
         }
 
         return new EbookResource($ebook);
+    }
+
+    public function getEbookByUrl(string $url)
+    {
+        $dto = new GetCourseByUrlDTO($url);
+
+        $course = $this->ebookService->getEbookByUrl($dto);
+
+        if (!$course) {
+            return $this->errorResponse('E-book não encontrado.', Response::HTTP_NOT_FOUND);
+        }
+
+        return new EbookResource($course);
     }
 
     /**

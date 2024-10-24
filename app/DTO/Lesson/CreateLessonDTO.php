@@ -12,8 +12,8 @@ class CreateLessonDTO
         public string $url,
         public string $description,
         public string $video,
-        public string $published,
-        public $file
+        public string|bool $published,
+        public $file = null
     ) {
     }
 
