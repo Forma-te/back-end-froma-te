@@ -13,6 +13,7 @@ interface ProductFileRepositoryInterface
 {
     public function findByProductId(int $productId, string $type): ?ProductFile;
     public function createFileCourse(CreateFileCourseDTO $dto): ?ProductFile;
+
     public function createImageEbook(CreateImageEbookDTO $dto): ?ProductFile;
     public function createFileEbook(CreateFileEbookDTO $dto): ?ProductFile;
 
