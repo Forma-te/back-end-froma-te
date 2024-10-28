@@ -235,11 +235,20 @@ class CartRepository implements CartRepositoryInterface
     public function viewCart(): array
     {
         $cart = $this->getOrCreateCart();
-        $cartItems = $cart->items;
+        $cartItems = $cart->items()->with([
+            'product' => function ($query) {
+
+                $query->select('id', 'price', 'discount');
+            },
+            'product.orderBumps' => function ($query) {
+
+                $query->select('id', 'product_id', 'offer_product_id', 'call_to_action', 'title', 'description');
+            }
+        ])->get();
 
         foreach ($cartItems as $item) {
             // Verifica o preço atual do produto
-            $product = $this->product::find($item->product_id);
+            $product = $item->product;
 
             if ($product) {
                 // Se o preço do produto mudou, atualiza no carrinho

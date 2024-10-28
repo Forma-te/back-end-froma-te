@@ -23,7 +23,7 @@ class StoreUpdateProductCourseImageRequest extends FormRequest
     {
         return [
            'product_id' => 'required|exists:products,id',
-           'image' => 'sometimes|image|mimes:png,jpg,jpeg|max:1024|dimensions:max_width=600,max_height=450',
+           'image' => 'sometimes|image|mimes:png,jpg,jpeg|max:1024|dimensions::width=600,height=450',
            'name' => 'sometimes|min:5|max:255',
         ];
     }
