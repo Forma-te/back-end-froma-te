@@ -83,7 +83,6 @@ class CartRepository implements CartRepositoryInterface
         return $this->cartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $data['product_id'],
-            'quantity' => $data['quantity'],
             'price' => $data['price']
         ]);
     }
@@ -100,7 +99,7 @@ class CartRepository implements CartRepositoryInterface
         $totalAmount = 0;
 
         foreach ($cart as $item) {
-            $totalAmount += $item['price'] * $item['quantity'];
+            $totalAmount += $item['price'];
         }
 
         $platformFee = $totalAmount * 0.10; // 10% de taxa
@@ -120,7 +119,6 @@ class CartRepository implements CartRepositoryInterface
             $this->orderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
                 'price' => $item['price']
             ]);
 
@@ -128,7 +126,7 @@ class CartRepository implements CartRepositoryInterface
             $product = $this->product::findOrFail($item['product_id']);
             $seller = $product->user;
             $balance = $this->userBalance::firstOrCreate(['user_id' => $seller->id]);
-            $balance->total_balance += ($item['price'] * $item['quantity']) * 0.90; // 90% para o vendedor
+            $balance->total_balance += $item['price'] * 0.90; // 90% para o vendedor
             $balance->save();
 
             // Calcular a percentagem da plataforma para o produto
@@ -238,7 +236,11 @@ class CartRepository implements CartRepositoryInterface
         $cartItems = $cart->items()->with([
             'product' => function ($query) {
 
-                $query->select('id', 'price', 'discount');
+                $query->select('id', 'name', 'price', 'discount', 'product_type');
+            },
+            'product.files' => function ($query) {
+
+                $query->select('id', 'product_id', 'file', 'image', 'type');
             },
             'product.orderBumps' => function ($query) {
 

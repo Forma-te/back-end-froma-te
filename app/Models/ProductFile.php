@@ -20,7 +20,7 @@ class ProductFile extends Model
     // Relacionamento com o model Product (Curso)
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class);
     }
 
     protected function getImageAttribute($value)

@@ -20,7 +20,7 @@ class CreateImageFileDTO
 
         $image = $request->hasFile('image') ? $request->file('image') : null;
 
-        $type = 'FileImage';
+        $type = 'fileImage';
 
         return new self(
             $data['product_id'],

@@ -53,7 +53,6 @@ class CartService
         // Adiciona o item ao carrinho
         return $this->repository->addToCart([
             'product_id' => $product->id,
-            'quantity' => $data['quantity'],
             'price' => $currentPrice
         ]);
     }

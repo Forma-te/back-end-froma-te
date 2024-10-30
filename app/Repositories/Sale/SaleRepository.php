@@ -32,6 +32,7 @@ class SaleRepository implements SaleRepositoryInterface
     {
         $query = $this->entity
                       ->newQuery()
+                      ->with('product.files')
                       ->join('products', 'products.id', '=', 'sales.product_id')
                       ->join('users', 'users.id', '=', 'sales.user_id')
                       ->select(
@@ -82,6 +83,7 @@ class SaleRepository implements SaleRepositoryInterface
     {
         $query = $this->entity
                     ->newQuery()
+                    ->with(['product.files'])
                     ->join('products', 'products.id', '=', 'sales.product_id')
                     ->join('users', 'users.id', '=', 'sales.user_id')
                     ->select(
@@ -97,7 +99,6 @@ class SaleRepository implements SaleRepositoryInterface
                         'sales.sale_price',
                         'products.id as course_id',
                         'products.url',
-                        DB::raw("CONCAT('https://forma-te-ebooks-bucket.s3.amazonaws.com/', products.image) as image_url"),
                         'users.name as user_name',
                         'users.phone_number',
                         'users.id as user_id',
@@ -126,7 +127,7 @@ class SaleRepository implements SaleRepositoryInterface
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
 
         // Retornar os resultados paginados usando o PaginationPresenter
-        return new PaginationPresenter($result);
+        return new PaginationPresenter($result); // Passando o objeto paginado diretamente
     }
 
     public function findById(string $id): ?object

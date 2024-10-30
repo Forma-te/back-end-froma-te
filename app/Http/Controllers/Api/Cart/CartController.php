@@ -23,7 +23,6 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
         ]);
 
         $cartItem = $this->cartService->addToCart($validated);
@@ -58,7 +57,6 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
         ]);
 
         $cartItem = $this->cartService->updateCart($request);
