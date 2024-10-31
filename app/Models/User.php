@@ -185,6 +185,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function trackingPixels()
+    {
+        return $this->hasOne(TrackingPixel::class);
+    }
+
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = strtolower($value);
