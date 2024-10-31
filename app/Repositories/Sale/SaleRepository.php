@@ -165,7 +165,6 @@ class SaleRepository implements SaleRepositoryInterface
             'transaction' => $dto->transaction,
             'date_expired' => $dto->date_expired,
             'status' => $dto->status,
-            'blocked' => $dto->blocked,
             'discount' => $product->discount,
             'sale_price' => $currentPrice,
             'sales_channel' => 'VP',

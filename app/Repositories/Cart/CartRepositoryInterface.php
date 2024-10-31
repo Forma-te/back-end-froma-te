@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Cart;
 
+use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Models\Cart;
 use Illuminate\Http\Request;
@@ -17,5 +18,5 @@ interface CartRepositoryInterface
     public function clearCart(): bool;
     public function syncSessionCart(Cart $cart): void;
     public function viewCart(): array;
-    public function checkout();
+    public function checkout(CreateNewSaleDTO $dto);
 }

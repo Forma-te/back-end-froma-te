@@ -40,6 +40,7 @@ Route::put('/update-user/{Id}', [UserController::class, 'updateUser'])->middlewa
 Route::get('/getMe', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
 
 /**
  * Reset Password
@@ -199,8 +200,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Subscription
     */
     Route::get('/subscription', [SubscriptionController::class, 'getSubscription']);
-
-    Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
 
     /**
     * Route Cart

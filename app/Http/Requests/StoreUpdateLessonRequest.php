@@ -35,8 +35,6 @@ class StoreUpdateLessonRequest extends FormRequest
      */
     public function rules(): array
     {
-        logger()->info('Dados da validação:', $this->all());
-
         $id = $this->route('id') ?? ''; // Obter o ID dos parâmetros da rota
 
         $rules = [

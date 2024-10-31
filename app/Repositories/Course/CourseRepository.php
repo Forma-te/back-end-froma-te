@@ -76,8 +76,6 @@ class CourseRepository implements CourseRepositoryInterface
                     ->where('product_type', 'course')
                     ->with('modules.lessons', 'user', 'files')
                     ->find($id);
-
-
     }
 
     public function getCourseByUrl(string $url): ?Product

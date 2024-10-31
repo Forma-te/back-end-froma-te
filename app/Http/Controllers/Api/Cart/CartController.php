@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\Cart;
 
+use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerDetailsRequest;
+use App\Http\Requests\StoreUpdateSaleRequest;
+use App\Http\Resources\SaleResource;
 use App\Http\Resources\UserResource;
 use App\Services\CartService;
 use Illuminate\Http\Request;
@@ -83,8 +86,12 @@ class CartController extends Controller
     }
 
     // Finaliza a compra e cria o pedido
-    public function checkout()
+    public function checkout(StoreUpdateSaleRequest $request)
     {
-        return $this->cartService->checkout();
+        $sale = $this->cartService->checkout(
+            CreateNewSaleDTO::makeFromRequest($request)
+        );
+
+        return new SaleResource($sale);
     }
 }

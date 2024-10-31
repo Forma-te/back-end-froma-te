@@ -26,12 +26,10 @@ class SaleToNewAndOldMembers
     /**
      * Create a new event instance.
      */
-    public function __construct(User $member, Product $product, $password, $bankUsers)
+    public function __construct(User $member, Product $product)
     {
         $this->member = $member;
         $this->product = $product;
-        $this->password = $password;
-        $this->bankUsers = $bankUsers;
     }
 
     /**

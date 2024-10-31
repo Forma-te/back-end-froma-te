@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Repositories\Cart\CartRepositoryInterface;
 use Illuminate\Http\Request;
@@ -78,8 +79,8 @@ class CartService
         $this->repository->syncSessionCart($cart);
     }
 
-    public function checkout()
+    public function checkout(CreateNewSaleDTO $dto)
     {
-        return $this->repository->checkout();
+        return $this->repository->checkout($dto);
     }
 }

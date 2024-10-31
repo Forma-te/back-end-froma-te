@@ -68,7 +68,4 @@ class SaleService
     {
         $this->repository->delete($id);
     }
-
-
-
 }

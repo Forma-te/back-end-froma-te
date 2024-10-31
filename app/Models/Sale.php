@@ -15,7 +15,7 @@ class Sale extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id', 'user_id', 'producer_id', 'email_member', 'payment_mode', 'transaction', 'blocked', 'status', 'date_created',
+        'product_id', 'user_id', 'producer_id', 'email_member', 'payment_mode', 'transaction', 'status', 'date_created',
         'date_expired', 'discount', 'sale_price', 'sales_channel', 'product_type'
     ];
 
