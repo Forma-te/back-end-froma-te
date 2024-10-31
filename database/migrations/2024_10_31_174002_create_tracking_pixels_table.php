@@ -11,16 +11,12 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::create('tracking_pixels', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // ID único
             $table->bigInteger('producer_id')->unsigned();
             $table->foreign('producer_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('facebook_pixel')->nullable();
-            $table->string('tiktok_pixel')->nullable();
-            $table->string('google_analytics_id')->nullable();
-            $table->string('google_ads_id')->nullable();
-            $table->string('linkedin_pixel')->nullable();
-            $table->string('twitter_pixel')->nullable();
-            $table->timestamps();
+            $table->string('pixel_type'); // Tipo do pixel (ex: 'facebook', 'google', etc.)
+            $table->string('pixel_value'); // Valor do pixel (código do pixel)
+            $table->timestamps(); // Campos de data de criação e atualização
         });
     }
 

@@ -13,17 +13,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * Class User.
- *
- * @author  Moises Bumba <moises@gmail.com>
- *
- * @OA\Schema(
- *     title="User model",
- *     description="User model",
- * )
- */
-
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -32,113 +21,6 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    /**
-     * @OA\Property(
-     *     format="int32",
-     *     title="User status",
-     * )
-     *
-     * @var int
-     */
-
-
-    /**
-     * @OA\Property(
-     *     title="name",
-     * )
-     *
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @OA\Property(
-     *     format="email",
-     *     title="Email",
-     * )
-     *
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     title="Password",
-     *     maximum=255
-     * )
-     *
-     * @var string
-     */
-    private $password;
-
-    /**
-     * @OA\Property(
-     *     format="msisdn",
-     *     title="Phone",
-     * )
-     *
-     * @var string
-     */
-    private $phone;
-
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     title="url",
-     *     maximum=255
-     * )
-     *
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     title="image",
-     *     maximum=255
-     * )
-     *
-     * @var string
-     */
-    private $image;
-
-
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     title="Bibliografia",
-     *     maximum=255
-     * )
-     *
-     * @var string
-     */
-    private $bibliography;
-
-
-    /**
-     * @OA\Property(
-     *     format="int64",
-     *     title="addresses",
-     *     maximum=255
-     * )
-     *
-     * @var string
-     */
-    private $addresses;
-
-    /**
-         * @OA\Property(
-         *     format="int64",
-         *     description="type",
-         *     title="type",
-         *     maximum=255
-         * )
-         *
-         * @var string
-         */
-    private $type;
 
     protected $fillable = [
         'name',
@@ -187,7 +69,7 @@ class User extends Authenticatable
 
     public function trackingPixels()
     {
-        return $this->hasOne(TrackingPixel::class);
+        return $this->hasMany(TrackingPixel::class, 'producer_id');
     }
 
     public function setEmailAttribute($value)

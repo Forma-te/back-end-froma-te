@@ -11,16 +11,12 @@ class TrackingPixel extends Model
 
     protected $fillable = [
         'producer_id',
-        'facebook_pixel',
-        'tiktok_pixel',
-        'google_analytics_id',
-        'google_ads_id',
-        'linkedin_pixel',
-        'twitter_pixel',
+        'pixel_type',
+        'pixel_value',
     ];
 
     public function producer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'producer_id');
     }
 }
