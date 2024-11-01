@@ -31,6 +31,7 @@ class CartRepository implements CartRepositoryInterface
         protected UserBalance $userBalance,
         protected PlatformBalances $platformBalances,
         protected UserRepository $userRepository,
+        protected CourseRepository $courseRepository,
     ) {
     }
 
@@ -101,18 +102,28 @@ class CartRepository implements CartRepositoryInterface
             return response()->json(['message' => 'Carrinho está vazio'], 400);
         }
 
+        // Calcula o valor total, a taxa da plataforma e o valor líquido
         $totalAmount = $this->calculateTotalAmount($cart);
         $platformFee = $totalAmount * 0.10; // 10% de taxa
         $netAmount = $totalAmount - $platformFee; // Valor líquido para o vendedor
 
         $member = $this->userRepository->findByEmail($dto->email_member);
-        $product = $this->product::findOrFail($dto->product_id);
 
-        $currentPrice = $this->calculateCurrentPrice($product);
+        $products = [];
+        foreach ($cart as $item) {
+            if (isset($item['product_id'])) {
+                $product = $this->courseRepository->findById($item['product_id']);
+                $products[] = $product;
+            }
+        }
 
-        $newSale = $this->createSale($dto, $member, $product, $currentPrice);
+        dd($products);
 
-        event(new SaleToNewAndOldMembers($member, $product));
+        $currentPrice = $this->calculateCurrentPrice($products[0]);
+
+        $newSale = $this->createSale($dto, $member, $products[0], $currentPrice);
+
+        event(new SaleToNewAndOldMembers($member, $products[0]));
 
         // Criar o pedido
         $order = $this->createOrder($totalAmount, $platformFee, $netAmount);
@@ -128,7 +139,11 @@ class CartRepository implements CartRepositoryInterface
         session()->forget('cart');
         $this->clearCart();
 
-        return response()->json(['order' => $newSale, 'message' => 'Compra finalizada com sucesso']);
+        return response()->json([
+            'order' => $order,
+            'newSale' => $newSale,
+            'message' => 'Compra finalizada com sucesso'
+        ]);
     }
 
     private function calculateTotalAmount($cart)
@@ -144,7 +159,7 @@ class CartRepository implements CartRepositoryInterface
     private function createSale(CreateNewSaleDTO $dto, $member, $product, $currentPrice)
     {
         return $this->sale::create([
-            'product_id' => $product->id,
+            'product_id' => $dto->product_id,
             'user_id' => $member->id,
             'producer_id' => $product->user_id,
             'email_member' => $dto->email_member,

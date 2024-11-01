@@ -88,10 +88,10 @@ class CartController extends Controller
     // Finaliza a compra e cria o pedido
     public function checkout(StoreUpdateSaleRequest $request)
     {
-        $sale = $this->cartService->checkout(
-            CreateNewSaleDTO::makeFromRequest($request)
-        );
+        // Recebe a resposta do serviço
+        $result = $this->cartService->checkout(CreateNewSaleDTO::makeFromRequest($request));
 
-        return new SaleResource($sale);
+        // Retorna a resposta em JSON
+        return response()->json($result);
     }
 }

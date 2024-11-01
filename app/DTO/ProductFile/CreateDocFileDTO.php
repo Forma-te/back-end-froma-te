@@ -2,6 +2,7 @@
 
 namespace App\DTO\ProductFile;
 
+use App\Http\Requests\StoreProductFileImageRequest;
 use App\Http\Requests\StoreUpdateProductDocFileRequest;
 
 class CreateDocFileDTO
@@ -14,7 +15,7 @@ class CreateDocFileDTO
     ) {
     }
 
-    public static function makeFromRequest(StoreUpdateProductDocFileRequest $request): self
+    public static function makeFromRequest(StoreProductFileImageRequest $request): self
     {
         $data = $request->all();
 

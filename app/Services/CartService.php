@@ -81,6 +81,19 @@ class CartService
 
     public function checkout(CreateNewSaleDTO $dto)
     {
-        return $this->repository->checkout($dto);
+        // Chama o método checkout do repositório
+        $result = $this->repository->checkout($dto);
+
+        // Verifica se o resultado é um array ou um objeto
+        if (is_array($result) && isset($result['sale']) && isset($result['order'])) {
+            return [
+                'sale' => $result['sale'],
+                'order' => $result['order'],
+                'message' => 'Compra finalizada com sucesso'
+            ];
+        }
+
+        // Se não houver resultados válidos, lança uma exceção ou retorna um erro
+        throw new \Exception('Erro ao processar a compra');
     }
 }

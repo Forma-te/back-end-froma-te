@@ -8,6 +8,7 @@ use App\DTO\ProductFile\CreateFileEbookDTO;
 use App\DTO\ProductFile\CreateImageEbookDTO;
 use App\DTO\ProductFile\CreateImageFileDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductFileImageRequest;
 use App\Http\Requests\StoreUpdateProductCourseImageRequest;
 use App\Http\Requests\StoreUpdateProductDocFileRequest;
 use App\Http\Requests\StoreUpdateProductFileRequest;
@@ -75,7 +76,7 @@ class ProductFileController extends Controller
         return response()->json(new ProductFileResource($productFile), Response::HTTP_CREATED);
     }
 
-    public function createImageFile(StoreUpdateProductFileRequest $request)
+    public function createImageFile(StoreProductFileImageRequest $request)
     {
         $productImage = $this->productFileService->createImageFile(
             CreateImageFileDTO::makeFromRequest($request)
@@ -93,7 +94,7 @@ class ProductFileController extends Controller
     }
 
 
-    public function createDocFile(StoreUpdateProductDocFileRequest $request)
+    public function createDocFile(StoreProductFileImageRequest $request)
     {
         $productFile = $this->productFileService->createDocFile(
             CreateDocFileDTO::makeFromRequest($request)

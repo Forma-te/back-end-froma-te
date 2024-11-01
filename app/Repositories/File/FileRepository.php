@@ -26,6 +26,7 @@ class FileRepository implements FileRepositoryInterface
         // Construir a consulta inicial com as relações necessárias e o tipo 'Ebook'
         $query = $this->entity
                     ->where('product_type', 'file')
+                    ->with('user', 'users', 'sales', 'files')
                     ->userByAuth();
 
         // Aplicar o filtro se fornecido
@@ -47,7 +48,7 @@ class FileRepository implements FileRepositoryInterface
         $query = $this->entity
                     ->where('product_type', 'file')
                     ->where('published', 1)
-                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name'])
+                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name', 'files'])
                     ->select(
                         'id',
                         'name',

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateProductFileRequest extends FormRequest
+class StoreProductFileImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class StoreUpdateProductFileRequest extends FormRequest
     {
         return [
            'product_id' => 'required|exists:products,id',
-           'image' => 'sometimes|image|mimes:png,jpg,jpeg|max:1024|dimensions:width=300,height=450',
-           'file' => 'sometimes|file|mimes:pdf|max:10240',
+           'image' => 'sometimes|image|mimes:png,jpg,jpeg|max:1024|dimensions:width=600,height=450',
+           'file' => 'sometimes|file|mimes:pdf,docx,xls,pptx,ps,ai,zip,rar|max:10240',
            'name' => 'required|min:5|max:255',
         ];
     }
@@ -33,14 +33,10 @@ class StoreUpdateProductFileRequest extends FormRequest
     {
         return [
             'product_id.exists' => 'O Curso selecionado é inválido.',
-            'image.image' => 'O ficheiro deve ser uma imagem.',
-            'image.mimes' => 'A imagem deve ser dos tipos: png, jpg, jpeg.',
-            'image.max' => 'A imagem não pode exceder 1MB.',
-            'image.dimensions' => 'A imagem deve ter as dimensões 600x450 pixels.',
-            'file.mimes' => 'O ficheiro deve ser do tipo: pdf.',
-            'file.max' => 'O tamanho máximo da imagem é de 10MB.',
-            'name.required' => 'O nome é obrigatório.',
+            'file.image' => 'O ficheiro deve ser uma imagem.',
+            'file.mimes' => 'O ficheiro deve ser dos tipos: docx, xls, pptx, ps, ai, zip, rar.',
+            'file.max' => 'O ficheiro não pode exceder 10MB.',
+            'file.dimensions' => 'A imagem deve ter no máximo 600x450 pixels.',
         ];
     }
-
 }
