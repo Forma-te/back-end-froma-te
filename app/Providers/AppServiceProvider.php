@@ -49,6 +49,8 @@ use App\Repositories\Plan\CartPlanRepository;
 use App\Repositories\Plan\CartPlanRepositoryInterface;
 use App\Repositories\ProductFile\ProductFileRepository;
 use App\Repositories\ProductFile\ProductFileRepositoryInterface;
+use App\Repositories\TrackingPixel\TrackingPixelRepository;
+use App\Repositories\TrackingPixel\TrackingPixelRepositoryInterface;
 use App\Repositories\User\{
     UserRepository,
     UserRepositoryInterface};
@@ -153,6 +155,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             ProductFileRepositoryInterface::class,
             ProductFileRepository::class
+        );
+
+        $this->app->singleton(
+            TrackingPixelRepositoryInterface::class,
+            TrackingPixelRepository::class
         );
     }
 

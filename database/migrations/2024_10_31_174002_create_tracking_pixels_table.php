@@ -14,6 +14,8 @@ return new class () extends Migration {
             $table->id(); // ID único
             $table->bigInteger('producer_id')->unsigned();
             $table->foreign('producer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->bigInteger('product_id')->unsigned();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('pixel_type'); // Tipo do pixel (ex: 'facebook', 'google', etc.)
             $table->string('pixel_value'); // Valor do pixel (código do pixel)
             $table->timestamps(); // Campos de data de criação e atualização

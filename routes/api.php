@@ -1,6 +1,5 @@
 <?php
 
-use App\DTO\GetCourseByUrlDTO;
 use App\Http\Controllers\Api\Producer\{
     BankController,
     CategoryController,
@@ -15,6 +14,7 @@ use App\Http\Controllers\Api\Producer\{
     ReplySupportController,
     SaleController,
     SubscriptionController,
+    TrackingPixelController,
     UserController
 };
 use App\Http\Controllers\Api\Auth\{
@@ -29,7 +29,6 @@ use App\Http\Controllers\Api\Member\{
     MemberController,
     SupportController
 };
-use App\Http\Requests\GetCourseByUrlRequest;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -225,6 +224,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     });
 
+    Route::prefix('tracking-pixels')->group(function () {
+        Route::get('/producer', [TrackingPixelController::class, 'index']); // Listar todos os pixels de um produtor
+        Route::get('/show/{id}', [TrackingPixelController::class, 'show']); // Obter um pixel específico pelo ID
+        Route::post('/', [TrackingPixelController::class, 'store']); // Criar um novo pixel
+        Route::put('/{id}', [TrackingPixelController::class, 'update']); // Atualizar um pixel existente
+        Route::delete('/{id}', [TrackingPixelController::class, 'destroy']); // Apagar um pixel específico
+    });
 
 });
 
