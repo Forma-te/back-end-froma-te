@@ -117,8 +117,6 @@ class CartRepository implements CartRepositoryInterface
             }
         }
 
-        dd($products);
-
         $currentPrice = $this->calculateCurrentPrice($products[0]);
 
         $newSale = $this->createSale($dto, $member, $products[0], $currentPrice);
