@@ -215,7 +215,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/update', [CartController::class, 'updateCart'])->name('cart.update');
 
         // Remover produto do carrinho
-        Route::delete('/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+        Route::delete('/remove/{product_id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
         // Sincronizar carrinho da sessão
         Route::post('/sync-session', [CartController::class, 'syncSessionCart'])->name('cart.syncSession');

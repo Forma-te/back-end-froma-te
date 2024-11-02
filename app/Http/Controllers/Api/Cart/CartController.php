@@ -9,6 +9,7 @@ use App\Http\Requests\StoreCustomerDetailsRequest;
 use App\Http\Requests\StoreUpdateSaleRequest;
 use App\Http\Resources\SaleResource;
 use App\Http\Resources\UserResource;
+use App\Models\Product;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 
@@ -67,13 +68,16 @@ class CartController extends Controller
     }
 
     // Remove um produto do carrinho
-    public function removeFromCart(Request $request)
+    public function removeFromCart($product_id)
     {
-        $validated = $request->validate([
-            'product_id' => 'required|exists:products,id'
-        ]);
+        // Verifica se o produto existe antes de tentar removê-lo
+        if (!Product::where('id', $product_id)->exists()) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
 
-        $this->cartService->removeFromCart($request);
+        // Chama o serviço para remover o produto do carrinho
+        $this->cartService->removeFromCart($product_id);
+
         return response()->json(['message' => 'Produto removido do carrinho']);
     }
 
@@ -93,5 +97,6 @@ class CartController extends Controller
 
         // Retorna a resposta em JSON
         return response()->json($result);
+
     }
 }

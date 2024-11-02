@@ -68,9 +68,9 @@ class CartService
         return $this->repository->updateCart($request);
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart($product_id)
     {
-        return $this->repository->removeFromCart($request);
+        return $this->repository->removeFromCart($product_id);
     }
 
     public function syncSessionCart()

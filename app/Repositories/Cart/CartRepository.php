@@ -223,7 +223,7 @@ class CartRepository implements CartRepositoryInterface
         return $this->cartItem::where('cart_id', $cart->id)->delete() > 0;
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart($product_id)
     {
         // Obter ou criar o carrinho
         $cart = $this->getOrCreateCart();
@@ -235,7 +235,7 @@ class CartRepository implements CartRepositoryInterface
 
         // Remover o item do carrinho
         $deleted = $this->cartItem::where('cart_id', $cart->id)
-            ->where('product_id', $request->product_id)
+            ->where('product_id', $product_id)
             ->delete();
 
         // Verificar se o item foi removido
