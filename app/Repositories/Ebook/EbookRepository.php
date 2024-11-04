@@ -59,6 +59,7 @@ class EbookRepository implements EbookRepositoryInterface
                         'total_hours',
                         'published',
                         'price',
+                        'affiliationPercentage',
                         'discount',
                         'product_type',
                         'created_at'

@@ -60,6 +60,7 @@ class FileRepository implements FileRepositoryInterface
                         'published',
                         'price',
                         'discount',
+                        'affiliationPercentage',
                         'product_type',
                         'created_at'
                     )

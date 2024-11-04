@@ -120,6 +120,7 @@ class CourseRepository implements CourseRepositoryInterface
                         'total_hours',
                         'published',
                         'price',
+                        'affiliationPercentage',
                         'discount',
                         'product_type',
                         'created_at'
