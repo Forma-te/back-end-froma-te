@@ -23,6 +23,7 @@ class StoreUpdateOrderBumpRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
+            'producer_id' => 'required|exists:users,id',
             'offer_product_id' => 'required|exists:products,id',
             'call_to_action' => 'required|min:5|max:255',
             'title' => 'required|min:5|max:255',

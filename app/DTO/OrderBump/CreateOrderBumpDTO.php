@@ -8,6 +8,7 @@ class CreateOrderBumpDTO
 {
     public function __construct(
         public string $product_id,
+        public string $producer_id,
         public string $offer_product_id,
         public string $call_to_action,
         public string $title,
@@ -22,6 +23,7 @@ class CreateOrderBumpDTO
 
         return new self(
             $data['product_id'],
+            $data['producer_id'],
             $data['offer_product_id'],
             $data['call_to_action'],
             $data['title'],
@@ -34,6 +36,7 @@ class CreateOrderBumpDTO
     {
         return [
             'product_id' => $this->product_id,
+            'user_id' => $this->producer_id,
             'offer_product_id' => $this->offer_product_id,
             'call_to_action' => $this->call_to_action,
             'title' => $this->title,

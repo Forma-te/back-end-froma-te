@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class OrderBump extends Model
 {
@@ -11,6 +12,7 @@ class OrderBump extends Model
 
     protected $fillable = [
         'product_id',
+        'user_id',
         'offer_product_id',
         'call_to_action',
         'title',
@@ -31,5 +33,10 @@ class OrderBump extends Model
     public function offerProduct()
     {
         return $this->belongsTo(Product::class, 'offer_product_id');
+    }
+
+    public static function scopeUserByAuth($query)
+    {
+        return $query->where('user_id', Auth::user()->id);
     }
 }

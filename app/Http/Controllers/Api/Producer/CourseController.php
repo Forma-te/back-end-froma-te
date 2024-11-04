@@ -13,6 +13,7 @@ use App\Http\Requests\StoreUpdateCourseRequest;
 use App\Http\Requests\UpdatePublishedRequest;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseStoreResource;
+use App\Http\Resources\ProductsResource;
 use App\Repositories\Course\CourseRepository;
 use App\Services\CourseService;
 use Exception;
@@ -30,7 +31,6 @@ class CourseController extends Controller
         protected CourseRepository $repository,
         protected CourseService $courseService
     ) {
-
     }
 
     /**
@@ -104,6 +104,13 @@ class CourseController extends Controller
         );
 
         return ApiAdapter::paginateToJson($course);
+    }
+
+    public function getAllProducts()
+    {
+        $products = $this->courseService->getAllProducts();
+
+        return ProductsResource::collection($products);
     }
 
     public function getProducts(Request $request)

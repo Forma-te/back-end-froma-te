@@ -63,6 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
     Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/get-products', [CourseController::class, 'getProducts']);
+    Route::get('/products', [CourseController::class, 'getAllProducts']);
     Route::get('/courses/producers', [CourseController::class, 'fetchAllCoursesByProducers']);
     Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
 
@@ -153,6 +154,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     * Route Order Bump
     */
     Route::post('/order-bump', [OrderBumpController::class, 'createOrderBump']);
+    Route::get('/order-bumps', [OrderBumpController::class, 'getOrderBump']);
     Route::put('/order-bump/{id}', [OrderBumpController::class, 'updateOrderBump']);
     Route::delete('/order-bump/{id}', [OrderBumpController::class, 'deleteOrderBump']);
 

@@ -20,6 +20,13 @@ class OrderBumpController extends Controller
     ) {
     }
 
+    public function getOrderBump()
+    {
+        $orderBump = $this->OrderBumpService->getAll();
+
+        return OrderBumpResource::collection($orderBump);
+    }
+
     public function createOrderBump(StoreUpdateOrderBumpRequest $request)
     {
         try {
@@ -65,6 +72,5 @@ class OrderBumpController extends Controller
         $this->OrderBumpService->delete($id);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
-
     }
 }

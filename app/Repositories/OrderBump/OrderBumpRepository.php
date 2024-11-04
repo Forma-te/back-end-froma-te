@@ -14,17 +14,11 @@ class OrderBumpRepository implements OrderBumpRepositoryInterface
     ) {
     }
 
-    public function getAll(string $filter = '')
+    public function getAll()
     {
-        $orderBump = $this->model
-                    ->where(function ($query) use ($filter) {
-                        if ($filter) {
-                            $query->orWhere('title', 'LIKE', "%{$filter}%");
-                        }
-                    })
-                      ->with('product')
-                      ->get();
-        return $orderBump;
+        return $this->model
+                    ->userByAuth()
+                    ->get();
     }
 
     public function findOne(string $id): ?stdClass

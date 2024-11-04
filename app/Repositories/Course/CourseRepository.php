@@ -69,6 +69,22 @@ class CourseRepository implements CourseRepositoryInterface
         return new PaginationPresenter($result);
     }
 
+    public function getAllProducts()
+    {
+        return $this->entity
+                    ->userByAuth()
+                    ->with('files')
+                    ->select(
+                        'id',
+                        'name',
+                        'user_id',
+                        'price',
+                        'discount',
+                        'product_type',
+                    )
+                    ->get();
+    }
+
     public function getCourseById(string $id): object|null
     {
         return $this->entity
@@ -101,7 +117,6 @@ class CourseRepository implements CourseRepositoryInterface
                         'url',
                         'user_id',
                         'category_id',
-                        'image',
                         'total_hours',
                         'published',
                         'price',

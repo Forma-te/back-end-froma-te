@@ -33,6 +33,11 @@ class CourseService
         );
     }
 
+    public function getAllProducts()
+    {
+        return $this->repository->getAllProducts();
+    }
+
     public function getProducts(
         int $page = 1,
         int $totalPerPage  = 15,

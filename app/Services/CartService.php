@@ -8,6 +8,7 @@ use App\Repositories\Cart\CartRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 
 class CartService
 {
@@ -84,16 +85,24 @@ class CartService
         // Chama o método checkout do repositório
         $result = $this->repository->checkout($dto);
 
-        // Verifica se o resultado é um array ou um objeto
+        // Tenta decifrar o JSON se for uma instância de JsonResponse
+        if ($result instanceof \Illuminate\Http\JsonResponse) {
+            $result = json_decode($result->getContent(), true);
+        }
+
+        // Verifica se o resultado é válido e extrai os dados
         if (is_array($result) && isset($result['sale']) && isset($result['order'])) {
             return [
-                'sale' => $result['sale'],
-                'order' => $result['order'],
+                'sale' => collect($result['sale'])->map(function ($sale) {
+                    return is_array($sale) ? $sale : $sale->toArray();
+                }),
+                'order' => $result['order'],                          // Certifique-se de que isso é um array
                 'message' => 'Compra finalizada com sucesso'
             ];
         }
 
-        // Se não houver resultados válidos, lança uma exceção ou retorna um erro
-        throw new \Exception('Erro ao processar a compra');
+        // Se não houver resultados válidos, lança uma exceção com mais contexto
+        throw new \Exception('Erro ao processar a compra: dados retornados do repositório são inválidos');
     }
+
 }

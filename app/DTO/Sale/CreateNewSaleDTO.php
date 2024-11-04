@@ -7,14 +7,13 @@ use App\Http\Requests\StoreUpdateSaleRequest;
 class CreateNewSaleDTO
 {
     public function __construct(
-        public string $product_id,
+        public string $cart_id,
         public ?string $user_id,
         public ?string $producer_id,
         public string $transaction,
         public string $email_member,
         public string $status,
         public string $date_created,
-        public string $date_expired,
     ) {
     }
     public static function makeFromRequest(StoreUpdateSaleRequest $request): self
@@ -27,14 +26,13 @@ class CreateNewSaleDTO
         $status = 'A';
 
         return new self(
-            $data['product_id'],
+            $data['cart_id'],
             $data['user_id'] ?? null,
             $data['producer_id'] ?? null,
             $transaction,
             $data['email_member'],
             $status,
             $date_created,
-            $data['date_expired']
         );
     }
 }

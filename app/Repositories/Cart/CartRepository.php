@@ -17,6 +17,7 @@ use App\Repositories\Course\CourseRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class CartRepository implements CartRepositoryInterface
@@ -95,74 +96,83 @@ class CartRepository implements CartRepositoryInterface
 
     public function checkout(CreateNewSaleDTO $dto)
     {
-        // Obtém o carrinho com os itens
+        // Valida o carrinho
         $cart = $this->viewCart();
-
         if (empty($cart)) {
             return response()->json(['message' => 'Carrinho está vazio'], 400);
         }
 
-        // Calcula o valor total, a taxa da plataforma e o valor líquido
-        $totalAmount = $this->calculateTotalAmount($cart);
-        $platformFee = $totalAmount * 0.10; // 10% de taxa
-        $netAmount = $totalAmount - $platformFee; // Valor líquido para o vendedor
-
         $member = $this->userRepository->findByEmail($dto->email_member);
+        $sales = [];
+        $totalAmount = $totalPlatformFee = $totalNetAmount = 0;
 
-        $products = [];
-        foreach ($cart as $item) {
-            if (isset($item['product_id'])) {
+        DB::beginTransaction();
+        try {
+            foreach ($cart as $item) {
+                if (!isset($item['product_id'])) {
+                    continue;
+                }
+
                 $product = $this->courseRepository->findById($item['product_id']);
-                $products[] = $product;
+                if (!$product) {
+                    continue; // Produto não encontrado, pule para o próximo
+                }
+
+                $currentPrice = $this->calculateCurrentPrice($product);
+                [$platformFee, $netAmount] = $this->calculateFees($currentPrice);
+
+                $newSale = $this->createSale($dto, $member, $product, $currentPrice);
+                $sales[] = $newSale;
+
+                $totalAmount += $currentPrice;
+                $totalPlatformFee += $platformFee;
+                $totalNetAmount += $netAmount;
+
+                $this->createPlatformBalance($item, $platformFee);
+                event(new SaleToNewAndOldMembers($member, $product));
             }
+
+            $order = $this->createOrder($totalAmount, $totalPlatformFee, $totalNetAmount);
+            foreach ($cart as $item) {
+                $this->createOrderItem($order->id, $item);
+                $this->updateSellerBalance($item);
+            }
+
+            session()->forget('cart');
+            $this->clearCart();
+
+            DB::commit();
+            return response()->json([
+                'order' => $order,
+                'sale' => $sales,
+                'message' => 'Compra finalizada com sucesso'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Erro ao finalizar a compra: ' . $e->getMessage()], 500);
         }
-
-        $currentPrice = $this->calculateCurrentPrice($products[0]);
-
-        $newSale = $this->createSale($dto, $member, $products[0], $currentPrice);
-
-        event(new SaleToNewAndOldMembers($member, $products[0]));
-
-        // Criar o pedido
-        $order = $this->createOrder($totalAmount, $platformFee, $netAmount);
-
-        // Criar itens do pedido e atualizar saldo do vendedor
-        foreach ($cart as $item) {
-            $this->createOrderItem($order->id, $item);
-            $this->updateSellerBalance($item);
-            $this->createPlatformBalance($item, $platformFee);
-        }
-
-        // Esvaziar o carrinho após a compra
-        session()->forget('cart');
-        $this->clearCart();
-
-        return response()->json([
-            'order' => $order,
-            'newSale' => $newSale,
-            'message' => 'Compra finalizada com sucesso'
-        ]);
     }
 
-    private function calculateTotalAmount($cart)
+    private function calculateFees(float $currentPrice): array
     {
-        return array_sum(array_column($cart, 'price'));
+        $platformFeePercentage = config('platform.fee_percentage', 10) / 100;
+        $platformFee = $currentPrice * $platformFeePercentage;
+        $netAmount = $currentPrice - $platformFee;
+
+        return [$platformFee, $netAmount];
     }
 
-    private function calculateCurrentPrice($product)
-    {
-        return $product->price - ($product->price * ($product->discount / 100));
-    }
+
 
     private function createSale(CreateNewSaleDTO $dto, $member, $product, $currentPrice)
     {
+
         return $this->sale::create([
-            'product_id' => $dto->product_id,
+            'product_id' => $product->id,
             'user_id' => $member->id,
             'producer_id' => $product->user_id,
             'email_member' => $dto->email_member,
             'transaction' => $dto->transaction,
-            'date_expired' => $dto->date_expired,
             'status' => $dto->status,
             'discount' => $product->discount,
             'sale_price' => $currentPrice,
@@ -172,6 +182,12 @@ class CartRepository implements CartRepositoryInterface
             'product_type' => $product->product_type,
         ]);
     }
+
+    private function calculateCurrentPrice($product)
+    {
+        return $product->price - ($product->price * ($product->discount / 100));
+    }
+
 
     private function createOrder($totalAmount, $platformFee, $netAmount)
     {
@@ -202,16 +218,16 @@ class CartRepository implements CartRepositoryInterface
         $balance->save();
     }
 
-    private function createPlatformBalance($item, $platformFee)
+    private function createPlatformBalance($item, $itemPlatformFee)
     {
-        $platformFeePerProduct = $item['price'] * 0.10; // 10% de taxa por produto
+        $productPercentage = 10;  // 10% de taxa por produto
 
         return $this->platformBalances::create([
             'product_id' => $item['product_id'],
             'product_value' => $item['price'],
-            'product_percentage' => $platformFeePerProduct,
-            'total_balance' => $platformFee,
-            'available_balance' => $platformFee,
+            'product_percentage' => $productPercentage,
+            'total_balance' => $itemPlatformFee,
+            'available_balance' => $itemPlatformFee,
             'pending_balance' => 0, // Ajustar conforme necessário
         ]);
     }
@@ -309,7 +325,7 @@ class CartRepository implements CartRepositoryInterface
             },
             'product.orderBumps' => function ($query) {
 
-                $query->select('id', 'product_id', 'offer_product_id', 'call_to_action', 'title', 'description');
+                $query->select('id', 'product_id', 'offer_product_id', 'call_to_action', 'title', 'description', 'show_image');
             }
         ])->get();
 

@@ -39,8 +39,7 @@ class StoreUpdateSaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'sometimes|required|file|mimes:csv,txt|max:2048',
-            'product_id' => 'required',
+            'cart_id' => 'required|exists:carts,id',
             'user_id' => 'nullable',
             'name' => 'sometimes|required',
             'producer_id' => 'nullable',
@@ -49,7 +48,6 @@ class StoreUpdateSaleRequest extends FormRequest
             'payment_mode' => 'nullable',
             'blocked' => 'nullable',
             'status' => 'nullable',
-            'date_expired' => 'required'
         ];
     }
 }

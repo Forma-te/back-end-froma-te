@@ -8,7 +8,7 @@ use stdClass;
 
 interface OrderBumpRepositoryInterface
 {
-    public function getAll(string $filter = '');
+    public function getAll();
     public function findOne(string $id): stdClass|null;
     public function create(CreateOrderBumpDTO $dto): stdClass;
     public function update(UpdateOrderBumpDTO $dto): stdClass|null;

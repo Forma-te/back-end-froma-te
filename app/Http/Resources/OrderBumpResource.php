@@ -15,7 +15,9 @@ class OrderBumpResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'product_id' => $this->product_id,
+            'producer_id' => $this->user_id,
             'offer_product_id' => $this->offer_product_id,
             'call_to_action' => $this->call_to_action,
             'title' => $this->title,
