@@ -9,7 +9,7 @@ class Affiliate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'course_id', 'status'];
+    protected $fillable = ['user_id', 'product_id', 'status'];
 
     public function user()
     {
@@ -21,9 +21,9 @@ class Affiliate extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function links()
+    public function affiliateLink()
     {
-        return $this->hasMany(AffiliateLink::class);
+        return $this->hasOne(AffiliateLink::class);
     }
 
     public function commissions()

@@ -89,6 +89,11 @@ class CourseService
         return $this->repository->getCourseById($id);
     }
 
+    public function getProductsById(string $id)
+    {
+        return $this->repository->getProductsById($id);
+    }
+
     public function getCourseByUrl(GetCourseByUrlDTO $dto): ?Product
     {
         return $this->repository->getCourseByUrl($dto->url);

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAffiliateRequest extends FormRequest
+class StoreCommissionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class StoreAffiliateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'user_id' => 'required|exists:users,id',
+            'affiliate_id' => 'required|exists:affiliates,id',
+            'amount' => 'required|exists:users,id',
         ];
     }
 }

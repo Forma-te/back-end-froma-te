@@ -13,6 +13,8 @@ use App\Models\OrderItem;
 use App\Models\PlatformBalances;
 use App\Models\Sale;
 use App\Models\UserBalance;
+use App\Repositories\Affiliate\AffiliateLinkRepository;
+use App\Repositories\Commission\CommissionRepository;
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
@@ -33,6 +35,8 @@ class CartRepository implements CartRepositoryInterface
         protected PlatformBalances $platformBalances,
         protected UserRepository $userRepository,
         protected CourseRepository $courseRepository,
+        protected AffiliateLinkRepository $affiliateLinkRepository,
+        protected CommissionRepository $commissionRepository
     ) {
     }
 
@@ -128,6 +132,12 @@ class CartRepository implements CartRepositoryInterface
                 $totalPlatformFee += $platformFee;
                 $totalNetAmount += $netAmount;
 
+                // // Verifica se existe um link de afiliação associado ao produto
+                // $affiliateLink = $this->affiliateLinkRepository->findByProductAndAffiliate($product->id, $dto->affiliate_id);
+                // if ($affiliateLink) {
+                //     $this->createCommission($affiliateLink, $currentPrice);
+                // }
+
                 $this->createPlatformBalance($item, $platformFee);
                 event(new SaleToNewAndOldMembers($member, $product));
             }
@@ -162,11 +172,8 @@ class CartRepository implements CartRepositoryInterface
         return [$platformFee, $netAmount];
     }
 
-
-
     private function createSale(CreateNewSaleDTO $dto, $member, $product, $currentPrice)
     {
-
         return $this->sale::create([
             'product_id' => $product->id,
             'user_id' => $member->id,
@@ -326,6 +333,9 @@ class CartRepository implements CartRepositoryInterface
             'product.orderBumps' => function ($query) {
 
                 $query->select('id', 'product_id', 'offer_product_id', 'call_to_action', 'title', 'description', 'show_image');
+            },
+            'product.orderBumps.offerProduct' => function ($query) {
+                $query->select('id', 'name', 'price');
             }
         ])->get();
 

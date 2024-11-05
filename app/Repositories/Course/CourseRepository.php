@@ -94,6 +94,12 @@ class CourseRepository implements CourseRepositoryInterface
                     ->find($id);
     }
 
+    public function getProductsById(string $id): object|null
+    {
+        return $this->entity
+                    ->find($id);
+    }
+
     public function getCourseByUrl(string $url): ?Product
     {
         return $this->entity

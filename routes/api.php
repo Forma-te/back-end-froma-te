@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Cart\{
     CartController
 };
 use App\Http\Controllers\Api\Member\{
+    AffiliateController,
     MemberController,
     SupportController
 };
@@ -66,6 +67,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/products', [CourseController::class, 'getAllProducts']);
     Route::get('/courses/producers', [CourseController::class, 'fetchAllCoursesByProducers']);
     Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
+
+    Route::get('/product/{productId}', [CourseController::class, 'getProductsById'])->name('product.show');
 
     Route::post('/course', [CourseController::class, 'createCourse']);
     Route::put('/course/{id}', [CourseController::class, 'updateCourse']);
@@ -235,6 +238,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/{id}', [TrackingPixelController::class, 'update']);
         Route::delete('/{id}', [TrackingPixelController::class, 'destroy']);
     });
+
+    Route::post('/affiliates', [AffiliateController::class, 'store']);
+    Route::get('/generate-affiliate-link/{productId}/{affiliateId}', [AffiliateController::class, 'generateLink']);
 
 });
 

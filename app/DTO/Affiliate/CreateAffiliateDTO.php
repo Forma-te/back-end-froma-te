@@ -12,6 +12,7 @@ class CreateAffiliateDTO
         public string $status,
     ) {
     }
+
     public static function makeFromRequest(StoreAffiliateRequest $request): self
     {
         $data = $request->all();
@@ -23,5 +24,14 @@ class CreateAffiliateDTO
             $data['user_id'],
             $status,
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'product_id' => $this->product_id,
+            'user_id' => $this->user_id,
+            'status' => $this->status,
+        ];
     }
 }

@@ -207,6 +207,17 @@ class CourseController extends Controller
         return new CourseResource($course);
     }
 
+    public function getProductsById(string $id)
+    {
+        $product = $this->courseService->getProductsById($id);
+
+        if (!$product) {
+            return $this->errorResponse('Produto não encontrado.', Response::HTTP_NOT_FOUND);
+        }
+
+        return new CourseResource($product);
+    }
+
     public function getCourseByUrl(string $url)
     {
         $dto = new GetCourseByUrlDTO($url);
