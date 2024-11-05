@@ -30,6 +30,13 @@ class OrderBumpRepository implements OrderBumpRepositoryInterface
         return (object) $orderBump->toArray();
     }
 
+    public function getOrderBumpByproductId(int $productId)
+    {
+        return $this->model
+                    ->where('product_id', $productId)
+                    ->get();
+    }
+
     public function create(CreateOrderBumpDTO $dto): stdClass
     {
         $orderBump = $this->model->create($dto->toArray());
@@ -52,6 +59,6 @@ class OrderBumpRepository implements OrderBumpRepositoryInterface
     public function delete(string $id): void
     {
         $this->model->findOrFail($id)->delete();
-        
+
     }
 }

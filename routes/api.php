@@ -155,6 +155,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
     Route::post('/order-bump', [OrderBumpController::class, 'createOrderBump']);
     Route::get('/order-bumps', [OrderBumpController::class, 'getOrderBump']);
+    Route::get('/order-bump/{productId}', [OrderBumpController::class, 'getOrderBumpByproductId']);
     Route::put('/order-bump/{id}', [OrderBumpController::class, 'updateOrderBump']);
     Route::delete('/order-bump/{id}', [OrderBumpController::class, 'deleteOrderBump']);
 
@@ -227,12 +228,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('tracking-pixels')->group(function () {
-        Route::get('/producer', [TrackingPixelController::class, 'index']); 
-        Route::get('/show/{id}', [TrackingPixelController::class, 'show']); 
+        Route::get('/producer', [TrackingPixelController::class, 'index']);
+        Route::get('/show/{id}', [TrackingPixelController::class, 'show']);
         Route::get('/producer/{producerId}', [TrackingPixelController::class, 'indexByProducer']);
-        Route::post('/', [TrackingPixelController::class, 'store']); 
-        Route::put('/{id}', [TrackingPixelController::class, 'update']); 
-        Route::delete('/{id}', [TrackingPixelController::class, 'destroy']); 
+        Route::post('/', [TrackingPixelController::class, 'store']);
+        Route::put('/{id}', [TrackingPixelController::class, 'update']);
+        Route::delete('/{id}', [TrackingPixelController::class, 'destroy']);
     });
 
 });

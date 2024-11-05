@@ -13,4 +13,5 @@ interface OrderBumpRepositoryInterface
     public function create(CreateOrderBumpDTO $dto): stdClass;
     public function update(UpdateOrderBumpDTO $dto): stdClass|null;
     public function delete(string $id): void;
+    public function getOrderBumpByproductId(int $productId);
 }

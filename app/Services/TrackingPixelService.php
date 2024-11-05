@@ -42,5 +42,4 @@ class TrackingPixelService
     {
         return $this->repository->findAllByProducerId($producerId);
     }
-
 }

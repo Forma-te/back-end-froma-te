@@ -27,6 +27,17 @@ class OrderBumpController extends Controller
         return OrderBumpResource::collection($orderBump);
     }
 
+    public function getOrderBumpByproductId(int $productId)
+    {
+        $orderBump = $this->OrderBumpService->getOrderBumpByproductId($productId);
+
+        if ($orderBump->isEmpty()) {
+            return response()->json(['message' => 'Nenhum Order Bump encontrado para este produtor'], 404);
+        }
+
+        return OrderBumpResource::collection($orderBump);
+    }
+
     public function createOrderBump(StoreUpdateOrderBumpRequest $request)
     {
         try {

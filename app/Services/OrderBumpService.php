@@ -26,6 +26,11 @@ class OrderBumpService
         return $this->repository->findOne($id);
     }
 
+    public function getOrderBumpByproductId(int $productId)
+    {
+        return $this->repository->getOrderBumpByproductId($productId);
+    }
+
     public function create(CreateOrderBumpDTO $dto): stdClass
     {
         // Verifica se o produto principal existe
