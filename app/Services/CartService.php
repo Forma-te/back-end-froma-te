@@ -8,9 +8,6 @@ use App\Repositories\Cart\CartRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 use App\Models\Product;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\JsonResponse;
-use Exception;
 use Illuminate\Support\Facades\Log;
 
 class CartService
@@ -85,50 +82,29 @@ class CartService
 
     public function checkout(CreateNewSaleDTO $dto)
     {
-        try {
-            // Chama o método checkout do repositório
-            $result = $this->repository->checkout($dto);
+        // Chama o método checkout do repositório
+        $result = $this->repository->checkout($dto);
 
-            // Tenta decifrar o JSON se for uma instância de JsonResponse
-            if ($result instanceof JsonResponse) {
-                $result = json_decode($result->getContent(), true);
-            }
+        dd($result);
 
-            // Verifica se o resultado é válido e extrai os dados
-            if (is_array($result) && isset($result['sale']) && isset($result['order'])) {
-                return [
-                    'sale' => collect($result['sale'])->map(function ($sale) {
-                        return is_array($sale) ? $sale : $sale->toArray();
-                    }),
-                    'order' => $result['order'],
-                    'message' => 'Compra finalizada com sucesso'
-                ];
-            }
-
-            // Registra detalhes do retorno inesperado para análise
-            Log::error('Erro no checkout: dados inválidos retornados pelo repositório.', [
-                'result' => $result
-            ]);
-
-            // Se não houver resultados válidos, lança uma exceção personalizada
-            throw new Exception('Erro ao processar a compra: dados retornados do repositório são inválidos');
-        } catch (QueryException $e) {
-            // Erros relacionados a consultas no banco de dados
-            report($e); // Registra o erro para análise posterior
-            return response()->json([
-                'error' => 'Erro ao processar a compra devido a um problema no banco de dados.',
-                'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-            ], 500);
-        } catch (Exception $e) {
-            // Captura outros erros
-            report($e); // Registra o erro para análise posterior
-            return response()->json([
-                'error' => 'Erro ao processar a compra.',
-                'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-            ], 500);
+        // Tenta decifrar o JSON se for uma instância de JsonResponse
+        if ($result instanceof \Illuminate\Http\JsonResponse) {
+            $result = json_decode($result->getContent(), true);
         }
+
+        // Verifica se o resultado é válido e extrai os dados
+        if (is_array($result) && isset($result['sale']) && isset($result['order'])) {
+            return [
+                'sale' => collect($result['sale'])->map(function ($sale) {
+                    return is_array($sale) ? $sale : $sale->toArray();
+                }),
+                'order' => $result['order'],
+                'message' => 'Compra finalizada com sucesso'
+            ];
+        }
+
+        // Se não houver resultados válidos, lança uma exceção com mais contexto
+        throw new \Exception('Erro ao processar a compra: dados retornados do repositório são inválidos');
     }
 
 }
