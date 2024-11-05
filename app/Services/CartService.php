@@ -11,6 +11,7 @@ use App\Models\Product;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class CartService
 {
@@ -103,6 +104,11 @@ class CartService
                     'message' => 'Compra finalizada com sucesso'
                 ];
             }
+
+            // Registra detalhes do retorno inesperado para análise
+            Log::error('Erro no checkout: dados inválidos retornados pelo repositório.', [
+                'result' => $result
+            ]);
 
             // Se não houver resultados válidos, lança uma exceção personalizada
             throw new Exception('Erro ao processar a compra: dados retornados do repositório são inválidos');
