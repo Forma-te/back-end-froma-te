@@ -8,7 +8,8 @@ use App\Repositories\Cart\CartRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Models\CartItem;
 use App\Models\Product;
-use Illuminate\Support\Facades\Log;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class CartService
 {
@@ -85,10 +86,8 @@ class CartService
         // Chama o método checkout do repositório
         $result = $this->repository->checkout($dto);
 
-        dd($result);
-
         // Tenta decifrar o JSON se for uma instância de JsonResponse
-        if ($result instanceof \Illuminate\Http\JsonResponse) {
+        if ($result instanceof JsonResponse) {
             $result = json_decode($result->getContent(), true);
         }
 
@@ -104,7 +103,7 @@ class CartService
         }
 
         // Se não houver resultados válidos, lança uma exceção com mais contexto
-        throw new \Exception('Erro ao processar a compra: dados retornados do repositório são inválidos');
+        throw new Exception('Erro ao processar a compra: dados retornados do repositório são inválidos');
     }
 
 }
