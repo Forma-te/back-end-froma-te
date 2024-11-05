@@ -42,11 +42,19 @@ class TrackingPixelRepository implements TrackingPixelRepositoryInterface
         return $this->entity->find($id);
     }
 
-    public function findAllByProducerId()
+    public function findAllByProducer()
     {
         return $this->entity
                     ->with('producer')
                     ->producerByAuth()
                     ->get();
     }
+
+    public function findAllByProducerId(int $producerId)
+    {
+        return $this->entity
+                    ->where('producer_id', $producerId)
+                    ->get();
+    }
+
 }

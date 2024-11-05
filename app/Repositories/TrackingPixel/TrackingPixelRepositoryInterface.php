@@ -12,5 +12,6 @@ interface TrackingPixelRepositoryInterface
     public function update(UpdateTrackingPixelDTO $dto): ?TrackingPixel;
     public function delete(int $id): bool;
     public function findById(int $id): ?TrackingPixel;
-    public function findAllByProducerId();
+    public function findAllByProducer();
+    public function findAllByProducerId(int $producerId);
 }

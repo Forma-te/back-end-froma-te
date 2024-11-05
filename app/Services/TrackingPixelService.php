@@ -33,8 +33,14 @@ class TrackingPixelService
         return $this->repository->findById($id);
     }
 
-    public function getAllPixelsByProducerId()
+    public function getAllPixelsByProducer()
     {
-        return $this->repository->findAllByProducerId();
+        return $this->repository->findAllByProducer();
     }
+
+    public function getAllPixelsByProducerId(int $producerId)
+    {
+        return $this->repository->findAllByProducerId($producerId);
+    }
+
 }

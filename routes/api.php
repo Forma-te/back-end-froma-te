@@ -227,11 +227,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('tracking-pixels')->group(function () {
-        Route::get('/producer', [TrackingPixelController::class, 'index']); // Listar todos os pixels de um produtor
-        Route::get('/show/{id}', [TrackingPixelController::class, 'show']); // Obter um pixel específico pelo ID
-        Route::post('/', [TrackingPixelController::class, 'store']); // Criar um novo pixel
-        Route::put('/{id}', [TrackingPixelController::class, 'update']); // Atualizar um pixel existente
-        Route::delete('/{id}', [TrackingPixelController::class, 'destroy']); // Apagar um pixel específico
+        Route::get('/producer', [TrackingPixelController::class, 'index']); 
+        Route::get('/show/{id}', [TrackingPixelController::class, 'show']); 
+        Route::get('/producer/{producerId}', [TrackingPixelController::class, 'indexByProducer']);
+        Route::post('/', [TrackingPixelController::class, 'store']); 
+        Route::put('/{id}', [TrackingPixelController::class, 'update']); 
+        Route::delete('/{id}', [TrackingPixelController::class, 'destroy']); 
     });
 
 });

@@ -65,7 +65,18 @@ class TrackingPixelController extends Controller
 
     public function index()
     {
-        $pixels = $this->trackingPixelService->getAllPixelsByProducerId();
+        $pixels = $this->trackingPixelService->getAllPixelsByProducer();
+
+        return TrackingPixelResource::collection($pixels);
+    }
+
+    public function indexByProducer(int $producerId)
+    {
+        $pixels = $this->trackingPixelService->getAllPixelsByProducerId($producerId);
+
+        if ($pixels->isEmpty()) {
+            return response()->json(['message' => 'Nenhum pixel encontrado para este produtor'], 404);
+        }
 
         return TrackingPixelResource::collection($pixels);
     }
