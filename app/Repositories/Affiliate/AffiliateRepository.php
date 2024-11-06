@@ -17,6 +17,23 @@ class AffiliateRepository implements AffiliateRepositoryInterface
 
     public function createAffiliate(CreateAffiliateDTO $dto)
     {
+        $existingAffiliateItem = $this->entity::where('user_id', $dto->user_id)
+                                    ->where('product_url', $dto->product_url)
+                                    ->first();
+
+        if ($existingAffiliateItem) {
+            return $existingAffiliateItem;
+        }
+
         return $this->entity->create($dto->toArray());
+    }
+
+    public function getAffiliates(): object|null
+    {
+        return $this->entity
+                    ->userByAuth()
+                    ->with('user', 'product')
+                    ->get();
+
     }
 }

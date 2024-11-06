@@ -42,6 +42,8 @@ Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
 
+Route::get('/product/{productUtl}', [CourseController::class, 'getProductsByUrl'])->name('product.show');
+
 /**
  * Reset Password
  */
@@ -67,8 +69,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/products', [CourseController::class, 'getAllProducts']);
     Route::get('/courses/producers', [CourseController::class, 'fetchAllCoursesByProducers']);
     Route::get('/course/{courseId}', [CourseController::class, 'getCourseById']);
-
-    Route::get('/product/{productId}', [CourseController::class, 'getProductsById'])->name('product.show');
 
     Route::post('/course', [CourseController::class, 'createCourse']);
     Route::put('/course/{id}', [CourseController::class, 'updateCourse']);
@@ -239,8 +239,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/{id}', [TrackingPixelController::class, 'destroy']);
     });
 
-    Route::post('/affiliates', [AffiliateController::class, 'store']);
-    Route::get('/generate-affiliate-link/{productId}/{affiliateId}', [AffiliateController::class, 'generateLink']);
+    /**
+    * Route affiliate
+    */
+    Route::post('/affiliate', [AffiliateController::class, 'store']);
+    Route::get('/generate-affiliate-link/{productUtl}/{affiliateId}', [AffiliateController::class, 'generateLink']);
+    Route::get('/affiliates', [AffiliateController::class, 'getAffiliates']);
 
 });
 

@@ -12,6 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('affiliate_links', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('affiliate_id')->constrained('affiliates')->onDelete('cascade');
             $table->string('unique_code')->unique();
             $table->timestamps();

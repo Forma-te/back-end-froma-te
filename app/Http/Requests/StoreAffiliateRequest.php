@@ -23,6 +23,7 @@ class StoreAffiliateRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
+            'product_url' => 'required|exists:products,url',
             'user_id' => 'required|exists:users,id',
         ];
     }

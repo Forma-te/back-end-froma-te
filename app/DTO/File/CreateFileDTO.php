@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUpdateFileRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class CreateFileDTO
 {
@@ -34,7 +35,7 @@ class CreateFileDTO
     {
         $data = $request->all();
 
-        $url = sprintf('%08X', mt_rand(0, 0xFFFFFFF));
+        $url = Str::uuid()->toString();
         $codigo = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
 
         $user = Auth::user();

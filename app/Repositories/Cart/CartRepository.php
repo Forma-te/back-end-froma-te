@@ -132,7 +132,7 @@ class CartRepository implements CartRepositoryInterface
                 $totalPlatformFee += $platformFee;
                 $totalNetAmount += $netAmount;
 
-                // // Verifica se existe um link de afiliação associado ao produto
+                // Verifica se existe um link de afiliação associado ao produto
                 // $affiliateLink = $this->affiliateLinkRepository->findByProductAndAffiliate($product->id, $dto->affiliate_id);
                 // if ($affiliateLink) {
                 //     $this->createCommission($affiliateLink, $currentPrice);
@@ -194,7 +194,6 @@ class CartRepository implements CartRepositoryInterface
     {
         return $product->price - ($product->price * ($product->discount / 100));
     }
-
 
     private function createOrder($totalAmount, $platformFee, $netAmount)
     {
@@ -318,7 +317,7 @@ class CartRepository implements CartRepositoryInterface
         }
     }
 
-    public function viewCart(): array
+    public function viewCart()
     {
         $cart = $this->getOrCreateCart();
         $cartItems = $cart->items()->with([
@@ -328,15 +327,20 @@ class CartRepository implements CartRepositoryInterface
             },
             'product.files' => function ($query) {
 
-                $query->select('id', 'product_id', 'file', 'image', 'type');
+                $query->select('id', 'product_id', 'image', 'type');
             },
             'product.orderBumps' => function ($query) {
 
                 $query->select('id', 'product_id', 'offer_product_id', 'call_to_action', 'title', 'description', 'show_image');
             },
             'product.orderBumps.offerProduct' => function ($query) {
+
                 $query->select('id', 'name', 'price');
-            }
+
+            },'product.orderBumps.offerProduct.files' => function ($query) {
+
+                $query->select('id', 'product_id', 'image', 'type');
+            },
         ])->get();
 
         foreach ($cartItems as $item) {

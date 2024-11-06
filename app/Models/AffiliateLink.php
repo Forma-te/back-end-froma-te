@@ -9,7 +9,7 @@ class AffiliateLink extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['affiliate_id', 'unique_code'];
+    protected $fillable = ['affiliate_id', 'user_id', 'unique_code'];
 
     /**
       * Relacionamento com o modelo Affiliate.

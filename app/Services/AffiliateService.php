@@ -20,18 +20,19 @@ class AffiliateService
 
     public function createAffiliate(CreateAffiliateDTO $dto)
     {
+
         $affiliate = $this->affiliateRepository->createAffiliate($dto);
 
-        $affiliateLink = $this->affiliateLinkRepository->createAffiliateLink($affiliate);
-
-        // Gera o link de afiliação para o produto associado
-        $productId = $dto->product_id; // Supondo que o DTO tem o ID do produto
-        $link = $this->affiliateLinkRepository->generateAffiliateLink($productId, $affiliate->id);
+        $affiliateLink = $this->affiliateLinkRepository->createAffiliateLink($dto, $affiliate);
 
         return [
             'affiliate' => $affiliate,
-            'affiliate_link' => $affiliateLink,
-            'generated_link' => $link
+            'affiliate_link' => $affiliateLink
         ];
+    }
+
+    public function getAffiliates()
+    {
+        return $this->affiliateRepository->getAffiliates();
     }
 }

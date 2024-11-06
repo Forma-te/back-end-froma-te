@@ -2,17 +2,27 @@
 
 namespace App\Repositories\Affiliate;
 
+use App\DTO\Affiliate\CreateAffiliateDTO;
 use App\Models\Affiliate;
 use App\Models\AffiliateLink;
 use Illuminate\Support\Str;
 
 class AffiliateLinkRepository implements AffiliateLinkRepositoryInterface
 {
-    public function createAffiliateLink(Affiliate $affiliate): AffiliateLink
+    public function createAffiliateLink(CreateAffiliateDTO $dto, Affiliate $affiliate): AffiliateLink
     {
+        // Verifica se o ID do afiliado é igual ao affiliate_id
+        $existingAffiliateLink = AffiliateLink::where('user_id', $dto->user_id) ->first();
+
+        if ($existingAffiliateLink) {
+            return $existingAffiliateLink;
+        }
+
+
         // Cria o link único de afiliação
         return AffiliateLink::create([
             'affiliate_id' => $affiliate->id,
+            'user_id' => $dto->user_id,
             'unique_code' => Str::uuid()->toString() // Gera um UUID único para o link
         ]);
     }
@@ -24,9 +34,9 @@ class AffiliateLinkRepository implements AffiliateLinkRepositoryInterface
                             ->first();
     }
 
-    public function generateAffiliateLink(int $productId, Affiliate $affiliate): string
+    public function generateAffiliateLink(string $productUrl, Affiliate $affiliate): string
     {
-        return route('product.show', ['productId' => $productId]) . '?ref=' . $affiliate->affiliateLink->unique_code;
+        return route('product.show', ['productUtl' => $productUrl]) . '?ref=' . $affiliate->affiliateLink->unique_code;
     }
 
 }

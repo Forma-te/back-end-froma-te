@@ -17,6 +17,6 @@ interface CartRepositoryInterface
     public function removeFromCart($product_id);
     public function clearCart(): bool;
     public function syncSessionCart(Cart $cart): void;
-    public function viewCart(): array;
+    public function viewCart();
     public function checkout(CreateNewSaleDTO $dto);
 }

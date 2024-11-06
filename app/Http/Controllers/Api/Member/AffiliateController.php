@@ -56,4 +56,13 @@ class AffiliateController extends Controller
             'affiliate_link' => $link,
         ]);
     }
+
+    public function getAffiliates()
+    {
+        $affiliates = $this->affiliateService->getAffiliates();
+
+        return response()->json([
+            'data' => $affiliates ?? [],
+        ]);
+    }
 }
