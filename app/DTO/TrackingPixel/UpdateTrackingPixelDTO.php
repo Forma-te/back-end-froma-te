@@ -8,10 +8,10 @@ class UpdateTrackingPixelDTO
 {
     public function __construct(
         public int $id,
-        public int $producerId,
-        public int $productId,
-        public string $pixelType,
-        public string $pixelValue,
+        public int $producer_id,
+        public int $product_id,
+        public string $pixel_type,
+        public string $pixel_value,
     ) {
     }
     public static function makeFromRequest(TrackingPixelRequest $request, $id = null): self
@@ -20,8 +20,8 @@ class UpdateTrackingPixelDTO
             $id ?? $request->id,
             $request->producer_id,
             $request->product_id,
-            $request->pixelType,
-            $request->pixelValue,
+            $request->pixel_type,
+            $request->pixel_value,
         );
     }
 
@@ -29,10 +29,10 @@ class UpdateTrackingPixelDTO
     {
         return [
             'id' => $this->id,
-            'producer_id' => $this->producerId,
-            'product_id' => $this->productId,
-            'pixel_type' => $this->pixelType,
-            'pixel_value' => $this->pixelValue,
+            'producer_id' => $this->producer_id,
+            'product_id' => $this->product_id,
+            'pixel_type' => $this->pixel_type,
+            'pixel_value' => $this->pixel_value,
         ];
     }
 }
