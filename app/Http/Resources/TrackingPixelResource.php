@@ -17,6 +17,7 @@ class TrackingPixelResource extends JsonResource
         return [
             'id' => $this->id,
             'producer_id' => $this->producer_id,
+            'product_id' => $this->product_id,
             'pixel_type' => $this->pixel_type,
             'pixel_value' => $this->pixel_value,
         ];

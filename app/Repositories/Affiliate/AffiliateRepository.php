@@ -3,6 +3,7 @@
 namespace App\Repositories\Affiliate;
 
 use App\DTO\Affiliate\CreateAffiliateDTO;
+use App\DTO\Affiliate\SaleAffiliateDTO;
 use App\Models\Affiliate;
 
 class AffiliateRepository implements AffiliateRepositoryInterface
@@ -34,6 +35,11 @@ class AffiliateRepository implements AffiliateRepositoryInterface
                     ->userByAuth()
                     ->with('user', 'product')
                     ->get();
+
+    }
+
+    public function saleAffiliate(SaleAffiliateDTO $dto)
+    {
 
     }
 }
