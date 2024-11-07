@@ -230,14 +230,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     });
 
-    Route::prefix('tracking-pixels')->group(function () {
-        Route::get('/producer', [TrackingPixelController::class, 'index']);
-        Route::get('/show/{id}', [TrackingPixelController::class, 'show']);
-        Route::get('/producer/{producerId}', [TrackingPixelController::class, 'indexByProducer']);
-        Route::post('/', [TrackingPixelController::class, 'store']);
-        Route::put('/{id}', [TrackingPixelController::class, 'update']);
-        Route::delete('/{id}', [TrackingPixelController::class, 'destroy']);
-    });
+    Route::get('/tracking-pixels/producer', [TrackingPixelController::class, 'index']);
+    Route::get('/tracking-pixel/show/{id}', [TrackingPixelController::class, 'show']);
+    Route::get('/tracking-pixel/producer/{producerId}', [TrackingPixelController::class, 'indexByProducer']);
+    Route::post('/tracking-pixels', [TrackingPixelController::class, 'store']);
+    Route::put('/tracking-pixel/{id}', [TrackingPixelController::class, 'update']);
+    Route::delete('/tracking-pixel/{id}', [TrackingPixelController::class, 'destroy']);
 
     /**
     * Route affiliate
