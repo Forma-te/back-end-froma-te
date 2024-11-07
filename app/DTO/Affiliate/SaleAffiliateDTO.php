@@ -2,21 +2,22 @@
 
 namespace App\DTO\Affiliate;
 
-use App\Http\Requests\StoreUpdateSaleRequest;
+use App\Http\Requests\SaleAffiliateRequest;
 
 class SaleAffiliateDTO
 {
     public function __construct(
-        public string $product_id,
-        public ?string $user_id,
-        public ?string $producer_id,
-        public string $transaction,
+        public string $product_url,
+        public string $ref,
+        public string $user_id,
         public string $email_member,
+        public string $transaction,
+        public string $sales_channel,
         public string $status,
         public string $date_created,
     ) {
     }
-    public static function makeFromRequest(StoreUpdateSaleRequest $request): self
+    public static function makeFromRequest(SaleAffiliateRequest $request): self
     {
         $data = $request->all();
 
@@ -24,13 +25,15 @@ class SaleAffiliateDTO
         $date_created = now();
 
         $status = 'A';
+        $sales_channel = 'VA';
 
         return new self(
-            $data['cart_id'],
-            $data['user_id'] ?? null,
-            $data['producer_id'] ?? null,
-            $transaction,
+            $data['product_url'],
+            $data['ref'],
+            $data['user_id'],
             $data['email_member'],
+            $transaction,
+            $sales_channel,
             $status,
             $date_created,
         );

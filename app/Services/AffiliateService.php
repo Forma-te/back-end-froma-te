@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Affiliate\CreateAffiliateDTO;
+use App\DTO\Affiliate\SaleAffiliateDTO;
 use App\Repositories\Affiliate\AffiliateLinkRepository;
 use App\Repositories\Affiliate\AffiliateRepository;
 
@@ -20,7 +21,6 @@ class AffiliateService
 
     public function createAffiliate(CreateAffiliateDTO $dto)
     {
-
         $affiliate = $this->affiliateRepository->createAffiliate($dto);
 
         $affiliateLink = $this->affiliateLinkRepository->createAffiliateLink($dto, $affiliate);
@@ -31,8 +31,18 @@ class AffiliateService
         ];
     }
 
+    public function fetchProductDataAffiliate(string $product_url)
+    {
+        return $this->affiliateRepository->fetchProductDataAffiliate($product_url);
+    }
+
     public function getAffiliates()
     {
         return $this->affiliateRepository->getAffiliates();
+    }
+
+    public function saleAffiliate(SaleAffiliateDTO $dto)
+    {
+        return $this->affiliateRepository->saleAffiliate($dto);
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Member;
 
 use App\DTO\Affiliate\CreateAffiliateDTO;
+use App\DTO\Affiliate\SaleAffiliateDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaleAffiliateRequest;
 use App\Http\Requests\StoreAffiliateRequest;
 use App\Models\Affiliate;
 use App\Models\Product;
@@ -57,6 +59,16 @@ class AffiliateController extends Controller
         ]);
     }
 
+    public function fetchProductDataAffiliate(string $product_url)
+    {
+        $product = $this->affiliateService->fetchProductDataAffiliate($product_url);
+
+        return response()->json([
+            'data' => $product ?? [],
+        ]);
+    }
+
+
     public function getAffiliates()
     {
         $affiliates = $this->affiliateService->getAffiliates();
@@ -64,5 +76,12 @@ class AffiliateController extends Controller
         return response()->json([
             'data' => $affiliates ?? [],
         ]);
+    }
+
+    public function saleAffiliate(SaleAffiliateRequest $request)
+    {
+        $SaleAffiliate = $this->affiliateService->saleAffiliate(SaleAffiliateDTO::makeFromRequest($request));
+
+        return response()->json($SaleAffiliate);
     }
 }

@@ -32,7 +32,6 @@ class UserRepository implements UserRepositoryInterface
 
     public function getAllProducers(string $filter = null, int $page = 1, int $totalPerPage = 15)
     {
-
         $producers = $this->model
                         ->with('coursesProducer', 'student')
                         ->whereHas('sales', function ($query) {

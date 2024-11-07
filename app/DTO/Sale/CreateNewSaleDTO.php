@@ -13,6 +13,7 @@ class CreateNewSaleDTO
         public string $transaction,
         public string $email_member,
         public string $status,
+        public string $sales_channel,
         public string $date_created,
     ) {
     }
@@ -24,6 +25,7 @@ class CreateNewSaleDTO
         $date_created = now();
 
         $status = 'A';
+        $sales_channel = 'VP';
 
         return new self(
             $data['cart_id'],
@@ -32,6 +34,7 @@ class CreateNewSaleDTO
             $transaction,
             $data['email_member'],
             $status,
+            $sales_channel,
             $date_created,
         );
     }

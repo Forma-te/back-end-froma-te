@@ -18,7 +18,6 @@ class AffiliateLinkRepository implements AffiliateLinkRepositoryInterface
             return $existingAffiliateLink;
         }
 
-
         // Cria o link único de afiliação
         return AffiliateLink::create([
             'affiliate_id' => $affiliate->id,
@@ -32,6 +31,11 @@ class AffiliateLinkRepository implements AffiliateLinkRepositoryInterface
         return AffiliateLink::where('product_id', $productId)
                             ->where('affiliate_id', $affiliateId)
                             ->first();
+    }
+
+    public function findByReference(string $affiliateRef)
+    {
+        return AffiliateLink::where('unique_code', $affiliateRef)->first();
     }
 
     public function generateAffiliateLink(string $productUrl, Affiliate $affiliate): string

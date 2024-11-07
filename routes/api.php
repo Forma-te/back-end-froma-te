@@ -43,6 +43,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
 
 Route::get('/product/{productUtl}', [CourseController::class, 'getProductsByUrl'])->name('product.show');
+Route::post('/sell-product', [AffiliateController::class, 'saleAffiliate']);
 
 /**
  * Reset Password

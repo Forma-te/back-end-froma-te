@@ -10,4 +10,5 @@ interface AffiliateRepositoryInterface
     public function createAffiliate(CreateAffiliateDTO $dto);
     public function getAffiliates(): object|null;
     public function saleAffiliate(SaleAffiliateDTO $dto);
+    public function fetchProductDataAffiliate(string $product_url);
 }

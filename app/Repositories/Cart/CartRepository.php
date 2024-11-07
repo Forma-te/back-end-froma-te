@@ -183,7 +183,7 @@ class CartRepository implements CartRepositoryInterface
             'status' => $dto->status,
             'discount' => $product->discount,
             'sale_price' => $currentPrice,
-            'sales_channel' => 'VP',
+            'sales_channel' => $dto->sales_channel,
             'payment_mode' => 'Banco',
             'date_created' => $dto->date_created,
             'product_type' => $product->product_type,
