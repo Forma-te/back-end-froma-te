@@ -132,12 +132,6 @@ class CartRepository implements CartRepositoryInterface
                 $totalPlatformFee += $platformFee;
                 $totalNetAmount += $netAmount;
 
-                // Verifica se existe um link de afiliação associado ao produto
-                // $affiliateLink = $this->affiliateLinkRepository->findByProductAndAffiliate($product->id, $dto->affiliate_id);
-                // if ($affiliateLink) {
-                //     $this->createCommission($affiliateLink, $currentPrice);
-                // }
-
                 $this->createPlatformBalance($item, $platformFee);
                 event(new SaleToNewAndOldMembers($member, $product));
             }

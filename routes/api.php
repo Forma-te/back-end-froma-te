@@ -42,7 +42,7 @@ Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
 
-Route::get('/product/{productUtl}', [CourseController::class, 'getProductsByUrl'])->name('product.show');
+Route::get('/produto/{productUtl}', [CourseController::class, 'getProductsByUrl'])->name('product.show');
 Route::post('/sell-product', [AffiliateController::class, 'saleAffiliate']);
 
 /**
@@ -244,6 +244,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/affiliate', [AffiliateController::class, 'store']);
     Route::get('/generate-affiliate-link/{productUtl}/{affiliateId}', [AffiliateController::class, 'generateLink']);
     Route::get('/affiliates', [AffiliateController::class, 'getAffiliates']);
+    Route::delete('/affiliate/{id}', [AffiliateController::class, 'destroyAffiliate']);
 
 });
 

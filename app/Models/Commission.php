@@ -9,7 +9,7 @@ class Commission extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['affiliate_id', 'affiliate_link_id', 'amount', 'status'];
+    protected $fillable = ['affiliate_link_id', 'amount', 'status'];
 
     /**
      * Relacionamento com o modelo Affiliate.

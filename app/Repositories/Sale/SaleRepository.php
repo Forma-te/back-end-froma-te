@@ -38,6 +38,7 @@ class SaleRepository implements SaleRepositoryInterface
                       ->select(
                           'sales.transaction',
                           'sales.payment_mode',
+                          'sales.sales_channel',
                           'sales.status',
                           'sales.date_created',
                           'sales.date_expired',
@@ -89,6 +90,7 @@ class SaleRepository implements SaleRepositoryInterface
                     ->select(
                         'sales.transaction',
                         'sales.payment_mode',
+                        'sales.sales_channel',
                         'sales.status',
                         'sales.date_created',
                         'sales.date_expired',

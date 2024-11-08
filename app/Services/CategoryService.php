@@ -52,5 +52,4 @@ class CategoryService
     {
         $this->repository->delete($id);
     }
-
 }

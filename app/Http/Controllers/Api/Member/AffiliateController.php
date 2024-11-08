@@ -8,11 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleAffiliateRequest;
 use App\Http\Requests\StoreAffiliateRequest;
 use App\Models\Affiliate;
-use App\Models\Product;
 use App\Repositories\Affiliate\AffiliateLinkRepository;
 use App\Services\AffiliateService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AffiliateController extends Controller
 {
@@ -68,7 +68,6 @@ class AffiliateController extends Controller
         ]);
     }
 
-
     public function getAffiliates()
     {
         $affiliates = $this->affiliateService->getAffiliates();
@@ -80,8 +79,20 @@ class AffiliateController extends Controller
 
     public function saleAffiliate(SaleAffiliateRequest $request)
     {
-        $SaleAffiliate = $this->affiliateService->saleAffiliate(SaleAffiliateDTO::makeFromRequest($request));
+        $saleAffiliate = $this->affiliateService->saleAffiliate(SaleAffiliateDTO::makeFromRequest($request));
 
-        return response()->json($SaleAffiliate);
+        return response()->json($saleAffiliate);
+    }
+
+    public function destroyAffiliate(string $id)
+    {
+        if (!$this->affiliateService->findById($id)) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+        $this->affiliateService->delete($id);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

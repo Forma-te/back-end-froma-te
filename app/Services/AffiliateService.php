@@ -31,6 +31,11 @@ class AffiliateService
         ];
     }
 
+    public function findById(string $id): object|null
+    {
+        return $this->affiliateRepository->findById($id);
+    }
+
     public function fetchProductDataAffiliate(string $product_url)
     {
         return $this->affiliateRepository->fetchProductDataAffiliate($product_url);
@@ -44,5 +49,10 @@ class AffiliateService
     public function saleAffiliate(SaleAffiliateDTO $dto)
     {
         return $this->affiliateRepository->saleAffiliate($dto);
+    }
+
+    public function delete(string $id): void
+    {
+        $this->affiliateRepository->delete($id);
     }
 }

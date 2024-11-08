@@ -8,5 +8,5 @@ use App\Models\AffiliateLink;
 
 interface AffiliateLinkRepositoryInterface
 {
-    public function createAffiliateLink(CreateAffiliateDTO $dto, Affiliate $affiliate): AffiliateLink;
+    public function createAffiliateLink(CreateAffiliateDTO $dto, $userId);
 }

@@ -67,6 +67,18 @@ class User extends Authenticatable
         ];
     }
 
+    // Relacionamento com os links de afiliação
+    public function affiliateLinks()
+    {
+        return $this->hasMany(AffiliateLink::class);
+    }
+
+    // Relacionamento com as afiliações
+    public function affiliates()
+    {
+        return $this->hasMany(Affiliate::class);
+    }
+
     public function trackingPixels()
     {
         return $this->hasMany(TrackingPixel::class, 'producer_id');

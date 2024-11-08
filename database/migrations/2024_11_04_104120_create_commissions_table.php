@@ -12,9 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('commissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('affiliate_id')->constrained('affiliates')->onDelete('cascade');
+            $table->foreignId('affiliate_link_id')->constrained('affiliate_links')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->string('status')->default('pending'); // pending, paid
+            $table->string('status')->default('pending');
+            $table->json('affiliate_info')->nullable(); // Informações adicionais sobre o afiliado
             $table->timestamps();
         });
     }

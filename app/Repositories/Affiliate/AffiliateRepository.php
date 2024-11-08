@@ -15,6 +15,7 @@ use App\Models\UserBalance;
 use App\Repositories\Cart\CartRepository;
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class AffiliateRepository implements AffiliateRepositoryInterface
@@ -39,22 +40,45 @@ class AffiliateRepository implements AffiliateRepositoryInterface
 
     public function createAffiliate(CreateAffiliateDTO $dto)
     {
+        // Primeiro, verifica se a afiliação já existe
         $existingAffiliateItem = $this->entity::where('user_id', $dto->user_id)
-                                    ->where('product_url', $dto->product_url)
-                                    ->first();
+        ->where('product_url', $dto->product_url)
+        ->first();
 
+        // Se a afiliação já existir, retorna o item existente
         if ($existingAffiliateItem) {
             return $existingAffiliateItem;
         }
 
-        return $this->entity->create($dto->toArray());
+        // Cria o link de afiliação
+        $affiliateLink = $this->affiliateLinkRepository->createAffiliateLink($dto, $dto->user_id);
+
+        // Agora, cria a afiliação com o affiliate_link_id preenchido
+        $affiliate = $this->entity->create(array_merge($dto->toArray(), [
+        'affiliate_link_id' => $affiliateLink->id // Atribui o affiliate_link_id
+        ]));
+
+        return $affiliate;
+    }
+
+    public function findByUserAndProduct($userId, $productId)
+    {
+        return $this->entity::where('user_id', $userId)
+                            ->where('product_id', $productId)
+                            ->first();
+    }
+
+
+    public function findById(string $id): object|null
+    {
+        return $this->entity->find($id);
     }
 
     public function getAffiliates(): object|null
     {
         return $this->entity
                     ->userByAuth()
-                    ->with('user', 'product')
+                    ->with('user', 'product', 'affiliateLink')
                     ->get();
 
     }
@@ -86,6 +110,7 @@ class AffiliateRepository implements AffiliateRepositoryInterface
             'product_type' => $product->product_type,
         ]);
     }
+
     public function saleAffiliate(SaleAffiliateDTO $dto)
     {
         $member = $this->userRepository->findById($dto->user_id);
@@ -100,13 +125,13 @@ class AffiliateRepository implements AffiliateRepositoryInterface
             }
 
             $linkAffiliate = $dto->ref;
-            $affiliate = $this->affiliateLinkRepository->findByReference($linkAffiliate);
+            $affiliateLink  = $this->affiliateLinkRepository->findByReference($linkAffiliate);
 
-            if (!$affiliate) {
+            if (!$affiliateLink) {
                 return response()->json(['message' => 'Afiliado não encontrado para a referência fornecida'], 404);
             }
 
-            $affiliateId = $affiliate->affiliate_id;
+            $affiliateLinkId  = $affiliateLink->id;
 
             // Calcula o preço atual do produto com desconto, se aplicável
             $currentPrice = $this->calculateCurrentPrice($product);
@@ -124,12 +149,14 @@ class AffiliateRepository implements AffiliateRepositoryInterface
             $affiliationPercentage = $product->affiliationPercentage ?? 0; // Exemplo: 10% de comissão
             $commissionAmount = $currentPrice * ($affiliationPercentage / 100);
 
-            // Registrar a comissão na tabela `commissions`
-            $this->createCommission($affiliateId, $commissionAmount);
-
+            // Registrar a comissão apenas se o affiliateLinkId for válido
+            if ($affiliateLinkId) {
+                $this->createCommission($affiliateLinkId, $commissionAmount);
+            }
 
             // Cria o saldo da plataforma com base na comissão do produto
             $this->createPlatformBalance($product, $platformFee);
+
             // Dispara um evento de venda para membros novos e antigos
             event(new SaleToNewAndOldMembers($member, $product));
 
@@ -158,15 +185,18 @@ class AffiliateRepository implements AffiliateRepositoryInterface
         }
     }
 
-    private function createCommission($affiliateId, $commissionAmount)
+    private function createCommission($affiliateLinkId, $commissionAmount)
     {
+        if (!$affiliateLinkId || !$commissionAmount) {
+            return;
+        }
+
         $this->commission::create([
-            'affiliate_id' => $affiliateId,
+            'affiliate_link_id' => $affiliateLinkId,
             'amount' => $commissionAmount,
             'status' => 'pending',
         ]);
     }
-
 
     private function calculateFees(float $currentPrice): array
     {
@@ -243,4 +273,10 @@ class AffiliateRepository implements AffiliateRepositoryInterface
         $balance->total_balance += $price * 0.90;
         $balance->save();
     }
+
+    public function delete(string $id): void
+    {
+        $this->entity->findOrFail($id)->delete();
+    }
+
 }

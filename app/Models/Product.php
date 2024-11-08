@@ -17,6 +17,12 @@ class Product extends Model
         'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allow_download', 'product_type'
     ];
 
+    // Relacionamento com afiliações
+    public function affiliates()
+    {
+        return $this->hasMany(Affiliate::class);
+    }
+
     // Relacionamento com ficheiros
     public function files()
     {
