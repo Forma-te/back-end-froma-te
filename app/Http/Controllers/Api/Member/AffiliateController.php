@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleAffiliateRequest;
 use App\Http\Requests\StoreAffiliateRequest;
 use App\Models\Affiliate;
+use App\Models\AffiliateLink;
 use App\Repositories\Affiliate\AffiliateLinkRepository;
+use App\Repositories\Course\CourseRepository;
 use App\Services\AffiliateService;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,7 +20,8 @@ class AffiliateController extends Controller
 {
     public function __construct(
         protected AffiliateService $affiliateService,
-        protected AffiliateLinkRepository $affiliateLinkRepository
+        protected AffiliateLinkRepository $affiliateLinkRepository,
+        protected CourseRepository $courseRepository
     ) {
     }
 
@@ -94,5 +97,32 @@ class AffiliateController extends Controller
         $this->affiliateService->delete($id);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function getAffiliateLink($productUrl, $refCode)
+    {
+        // Verifica se o código de referência (unique_code) existe em AffiliateLink
+        $affiliateLink = AffiliateLink::where('unique_code', $refCode)->first();
+
+        if (!$affiliateLink) {
+            return response()->json(['message' => 'Código de referência inválido.'], 404);
+        }
+
+        // Verifica se existe uma afiliação associada ao productUrl e ao código de referência, com status 'active'
+        $affiliate = Affiliate::where('product_url', $productUrl)
+            ->where('affiliate_link_id', $affiliateLink->id)
+            ->where('status', 'active')
+            ->first();
+
+        if (!$affiliate) {
+            return response()->json(['message' => 'Afiliação não encontrada ou inativa para este produto.'], 404);
+        }
+
+        // Se as validações passarem, gera o link de afiliação
+        $link = route('product.show', ['productUtl' => $productUrl]) . '?ref=' . $refCode;
+
+        return response()->json([
+            'affiliate_link' => $link
+        ]);
     }
 }

@@ -245,6 +245,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/generate-affiliate-link/{productUtl}/{affiliateId}', [AffiliateController::class, 'generateLink']);
     Route::get('/affiliates', [AffiliateController::class, 'getAffiliates']);
     Route::delete('/affiliate/{id}', [AffiliateController::class, 'destroyAffiliate']);
+    Route::get('/affiliate-link/{productUrl}/{refCode}', [AffiliateController::class, 'getAffiliateLink']);
+
 
 });
 
