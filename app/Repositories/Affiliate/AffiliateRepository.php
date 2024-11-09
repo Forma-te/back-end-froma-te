@@ -78,7 +78,7 @@ class AffiliateRepository implements AffiliateRepositoryInterface
     {
         return $this->entity
                     ->userByAuth()
-                    ->with('user', 'product', 'affiliateLink')
+                    ->with('user', 'product.files', 'affiliateLink')
                     ->get();
 
     }

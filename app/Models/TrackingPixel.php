@@ -27,4 +27,9 @@ class TrackingPixel extends Model
         return $query->where('producer_id', Auth::user()->id);
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
 }

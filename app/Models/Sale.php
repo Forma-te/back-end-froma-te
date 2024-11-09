@@ -26,6 +26,11 @@ class Sale extends Model
         'P' => 'Pendente'
     ];
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
     public function setEmailMemberAttribute($value)
     {
         $this->attributes['email_member'] = strtolower($value);
@@ -65,12 +70,7 @@ class Sale extends Model
                     ->course;
     }
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function member()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

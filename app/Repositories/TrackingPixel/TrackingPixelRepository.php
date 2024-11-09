@@ -53,8 +53,9 @@ class TrackingPixelRepository implements TrackingPixelRepositoryInterface
     public function findAllByProducerId(int $producerId)
     {
         return $this->entity
-                    ->where('producer_id', $producerId)
-                    ->get();
+                ->with('product.files')
+                ->where('producer_id', $producerId)
+                ->get();
     }
 
 }

@@ -20,6 +20,7 @@ class SaleStatusResource extends JsonResource
         return collect($this->resource)
             ->merge([
                 'status' => $statusLabel,
+
             ]);
     }
 }

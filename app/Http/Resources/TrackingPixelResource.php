@@ -20,6 +20,7 @@ class TrackingPixelResource extends JsonResource
             'product_id' => $this->product_id,
             'pixel_type' => $this->pixel_type,
             'pixel_value' => $this->pixel_value,
+            'product' => $this->product ? new ProductsResource($this->product) : null,
         ];
     }
 }

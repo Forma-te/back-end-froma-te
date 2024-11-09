@@ -17,6 +17,11 @@ class Product extends Model
         'price', 'acceptsMcxPayment', 'acceptsRefPayment', 'affiliationPercentage', 'discount', 'allow_download', 'product_type'
     ];
 
+    public function trackingPixels()
+    {
+        return $this->hasMany(TrackingPixel::class, 'product_id');
+    }
+
     // Relacionamento com afiliações
     public function affiliates()
     {
