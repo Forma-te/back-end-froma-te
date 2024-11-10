@@ -8,7 +8,6 @@ class CreateAffiliateDTO
 {
     public function __construct(
         public string $product_url,
-        public string $product_id,
         public ?string $user_id,
         public string $status,
     ) {
@@ -22,7 +21,6 @@ class CreateAffiliateDTO
 
         return new self(
             $data['product_url'],
-            $data['product_id'],
             $data['user_id'],
             $status,
         );
@@ -32,7 +30,6 @@ class CreateAffiliateDTO
     {
         return [
             'product_url' => $this->product_url,
-            'product_id' => $this->product_id,
             'user_id' => $this->user_id,
             'status' => $this->status,
         ];

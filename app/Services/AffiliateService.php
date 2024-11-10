@@ -41,9 +41,14 @@ class AffiliateService
         return $this->affiliateRepository->fetchProductDataAffiliate($product_url);
     }
 
-    public function getAffiliates()
+    public function myAffiliations()
     {
-        return $this->affiliateRepository->getAffiliates();
+        return $this->affiliateRepository->myAffiliations();
+    }
+
+    public function myAffiliates(): object|null
+    {
+        return $this->affiliateRepository->myAffiliates();
     }
 
     public function saleAffiliate(SaleAffiliateDTO $dto)

@@ -3,8 +3,6 @@
 namespace App\DTO\User;
 
 use App\Http\Requests\StoreCustomerDetailsRequest;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class CreateCustomerDetailsDTO
 {
@@ -19,9 +17,10 @@ class CreateCustomerDetailsDTO
     {
         $data = $request->all();
 
-        $password = generatePassword();
+        // Gera uma senha apenas se não estiver definida no pedido
+        $password = $data['password'] ?? generatePassword();
 
-        Log::info('Senha gerada (hash):', ['password_hash' => ($password)]);
+        // Log::info('Senha gerada (hash):', ['password_hash' => ($password)]);
 
         return new self(
             $data['name'],

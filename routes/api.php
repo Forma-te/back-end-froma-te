@@ -40,7 +40,7 @@ Route::put('/update-user/{Id}', [UserController::class, 'updateUser'])->middlewa
 Route::get('/getMe', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('/member/verificar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
+Route::post('/member/encontrar-ou-criar', [CartController::class, 'validateOrCreateCustomer']);
 
 Route::get('/produto/{productUtl}', [CourseController::class, 'getProductsByUrl'])->name('product.show');
 Route::post('/sell-product', [AffiliateController::class, 'saleAffiliate']);
@@ -243,7 +243,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
     Route::post('/affiliate', [AffiliateController::class, 'store']);
     Route::get('/generate-affiliate-link/{productUtl}/{affiliateId}', [AffiliateController::class, 'generateLink']);
-    Route::get('/affiliates', [AffiliateController::class, 'getAffiliates']);
+    Route::get('/affiliations', [AffiliateController::class, 'myAffiliations']);
+    Route::get('/affiliates', [AffiliateController::class, 'myAffiliates']);
     Route::delete('/affiliate/{id}', [AffiliateController::class, 'destroyAffiliate']);
     Route::get('/affiliate-link/{productUrl}/{refCode}', [AffiliateController::class, 'getAffiliateLink']);
 

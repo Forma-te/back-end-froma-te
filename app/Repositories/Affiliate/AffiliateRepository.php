@@ -42,20 +42,22 @@ class AffiliateRepository implements AffiliateRepositoryInterface
     {
         // Primeiro, verifica se a afiliação já existe
         $existingAffiliateItem = $this->entity::where('user_id', $dto->user_id)
-        ->where('product_url', $dto->product_url)
-        ->first();
+                                    ->where('product_url', $dto->product_url)
+                                    ->first();
 
         // Se a afiliação já existir, retorna o item existente
         if ($existingAffiliateItem) {
             return $existingAffiliateItem;
         }
 
+        $product = $this->courseRepository->getProductsByUrl($dto->product_url);
+
         // Cria o link de afiliação
         $affiliateLink = $this->affiliateLinkRepository->createAffiliateLink($dto, $dto->user_id);
 
-        // Agora, cria a afiliação com o affiliate_link_id preenchido
         $affiliate = $this->entity->create(array_merge($dto->toArray(), [
-        'affiliate_link_id' => $affiliateLink->id // Atribui o affiliate_link_id
+                    'affiliate_link_id' => $affiliateLink->id,
+                    'product_id' => $product->id
         ]));
 
         return $affiliate;
@@ -74,13 +76,21 @@ class AffiliateRepository implements AffiliateRepositoryInterface
         return $this->entity->find($id);
     }
 
-    public function getAffiliates(): object|null
+    public function myAffiliations(): object|null
     {
         return $this->entity
                     ->userByAuth()
-                    ->with('user', 'product.files', 'affiliateLink')
+                    ->with('producer', 'product.files', 'affiliateLink')
                     ->get();
 
+    }
+
+    public function myAffiliates(): object|null
+    {
+        return $this->entity
+                    ->producerByAuth()
+                    ->with('user', 'product.files', 'affiliateLink')
+                    ->get();
     }
 
     public function fetchProductDataAffiliate(string $product_url)

@@ -22,9 +22,8 @@ class StoreAffiliateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id',
             'product_url' => 'required|exists:products,url',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id'
         ];
     }
 }

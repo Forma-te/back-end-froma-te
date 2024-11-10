@@ -7,6 +7,7 @@ use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -80,6 +81,28 @@ class UserRepository implements UserRepositoryInterface
             'phone_number' => $dto->phone_number,
             'password' => $dto->password,
         ]);
+    }
+
+    public function updateCustomerDetails(int $userId, array $data): ?User
+    {
+        try {
+            // Encontra o utilizador pelo ID
+            $user = $this->model->find($userId);
+
+            if (!$user) {
+                Log::warning("Utilizador com ID $userId não encontrado para atualização.");
+                return null;
+            }
+
+            // Atualiza os dados do utilizador
+            $user->update($data);
+
+            return $user;
+        } catch (\Exception $e) {
+            // Regista o erro e retorna null
+            Log::error("Erro ao atualizar detalhes do utilizador", ['error' => $e->getMessage()]);
+            return null;
+        }
     }
 
     public function update(UpdateUserDTO $dto): ?User

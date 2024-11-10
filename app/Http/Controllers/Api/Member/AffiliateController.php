@@ -71,9 +71,23 @@ class AffiliateController extends Controller
         ]);
     }
 
-    public function getAffiliates()
+    private function errorResponse($message, $statusCode)
     {
-        $affiliates = $this->affiliateService->getAffiliates();
+        return response()->json(['error' => $message], $statusCode);
+    }
+
+    public function myAffiliations()
+    {
+        $affiliations = $this->affiliateService->myAffiliations();
+
+        return response()->json([
+            'data' => $affiliations ?? [],
+        ]);
+    }
+
+    public function myAffiliates()
+    {
+        $affiliates = $this->affiliateService->myAffiliates();
 
         return response()->json([
             'data' => $affiliates ?? [],
@@ -110,9 +124,9 @@ class AffiliateController extends Controller
 
         // Verifica se existe uma afiliação associada ao productUrl e ao código de referência, com status 'active'
         $affiliate = Affiliate::where('product_url', $productUrl)
-            ->where('affiliate_link_id', $affiliateLink->id)
-            ->where('status', 'active')
-            ->first();
+                              ->where('affiliate_link_id', $affiliateLink->id)
+                              ->where('status', 'active')
+                              ->first();
 
         if (!$affiliate) {
             return response()->json(['message' => 'Afiliação não encontrada ou inativa para este produto.'], 404);

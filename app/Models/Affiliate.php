@@ -11,11 +11,16 @@ class Affiliate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'affiliate_link_id', 'product_id', 'product_url', 'status'];
+    protected $fillable = ['user_id', 'affiliate_link_id', 'producer_id', 'product_id', 'product_url', 'status'];
 
     public static function scopeUserByAuth($query)
     {
         return $query->where('user_id', Auth::user()->id);
+    }
+
+    public static function scopeProducerByAuth($query)
+    {
+        return $query->where('producer_id', Auth::user()->id);
     }
 
 
@@ -25,15 +30,18 @@ class Affiliate extends Model
         return $this->belongsTo(AffiliateLink::class);
     }
 
-    // Relacionamento com o usuário (afiliado)
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function producer()
+    {
+        return $this->belongsTo(User::class, 'producer_id'); // Define o produtor como o dono
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    // Relacionamento com o produto
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
     }
 }

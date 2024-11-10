@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Sale;
 
-use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
 use App\DTO\User\CreateUserDTO;
@@ -14,9 +13,7 @@ use App\Repositories\Course\CourseRepository;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\DB;
 
 class SaleRepository implements SaleRepositoryInterface
 {

@@ -13,6 +13,7 @@ return new class () extends Migration {
         Schema::create('affiliates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('producer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('affiliate_link_id')->constrained('affiliate_links')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->string('product_url');

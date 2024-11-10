@@ -17,10 +17,12 @@ use App\Repositories\Affiliate\AffiliateLinkRepository;
 use App\Repositories\Commission\CommissionRepository;
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\User\UserRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class CartRepository implements CartRepositoryInterface
 {
@@ -55,27 +57,42 @@ class CartRepository implements CartRepositoryInterface
 
     public function validateOrCreateCustomer(CreateCustomerDetailsDTO $dto)
     {
-        $existingUser  = $this->userRepository->findByEmail($dto->email);
+        try {
+            // Tenta encontrar o utilizador pelo email
+            $existingUser = $this->userRepository->findByEmail($dto->email);
 
-        // Se o utilizador já existir, apenas retorna o utilizador
-        if ($existingUser !== null) {
-            return $existingUser;
+            if ($existingUser !== null) {
+                // Se o utilizador já existir, atualiza os dados em falta
+                $updatedData = [
+                    'name' => $dto->name ?? $existingUser->name,
+                    'phone_number' => $dto->phone_number ?? $existingUser->phone_number
+                ];
+
+                // Atualiza o utilizador com os dados em falta e retorna o utilizador atualizado
+                $updatedUser = $this->userRepository->updateCustomerDetails($existingUser->id, $updatedData);
+                return $updatedUser;
+            }
+
+            // Caso o utilizador não exista, cria um novo
+            $userDto = new CreateCustomerDetailsDTO(
+                $dto->name,
+                $dto->email,
+                $dto->phone_number,
+                Hash::make($dto->password)  // Encripta a password
+            );
+
+            // Cria o novo utilizador no repositório
+            $newUser = $this->userRepository->createCustomerDetails($userDto);
+
+            return $newUser;
+
+        } catch (Exception $e) {
+            // Regista o erro e lança uma exceção personalizada
+            Log::error('Erro ao validar ou criar utilizador', ['error' => $e->getMessage()]);
+            throw new \RuntimeException('Ocorreu um erro ao validar ou criar o utilizador');
         }
-
-        // Caso o utilizador não exista, cria um novo
-        $userDto = new CreateCustomerDetailsDTO(
-            $dto->name,
-            $dto->email,
-            $dto->phone_number,
-            Hash::make($dto->password),  // Encripta a password
-        );
-
-        // Cria o novo utilizador no repositório
-        $newUser  = $this->userRepository->createCustomerDetails($userDto);
-
-        // Retorna o novo utilizador criado
-        return $newUser;
     }
+
 
     public function addToCart(array $data)
     {
