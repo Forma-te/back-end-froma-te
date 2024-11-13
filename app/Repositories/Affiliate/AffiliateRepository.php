@@ -57,7 +57,8 @@ class AffiliateRepository implements AffiliateRepositoryInterface
 
         $affiliate = $this->entity->create(array_merge($dto->toArray(), [
                     'affiliate_link_id' => $affiliateLink->id,
-                    'product_id' => $product->id
+                    'product_id' => $product->id,
+                    'producer_id' => $product->user_id
         ]));
 
         return $affiliate;
