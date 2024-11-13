@@ -62,20 +62,6 @@ class AffiliateController extends Controller
         ]);
     }
 
-    public function fetchProductDataAffiliate(string $product_url)
-    {
-        $product = $this->affiliateService->fetchProductDataAffiliate($product_url);
-
-        return response()->json([
-            'data' => $product ?? [],
-        ]);
-    }
-
-    private function errorResponse($message, $statusCode)
-    {
-        return response()->json(['error' => $message], $statusCode);
-    }
-
     public function myAffiliations()
     {
         $affiliations = $this->affiliateService->myAffiliations();

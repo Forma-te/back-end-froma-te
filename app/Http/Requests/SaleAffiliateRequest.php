@@ -23,8 +23,7 @@ class SaleAffiliateRequest extends FormRequest
     {
         return [
             'product_url' => 'required',
-            'ref' => 'required',
-            'user_id' => 'required',
+            'ref' => 'required'
         ];
     }
 }

@@ -9,7 +9,6 @@ class SaleAffiliateDTO
     public function __construct(
         public string $product_url,
         public string $ref,
-        public string $user_id,
         public string $email_member,
         public string $transaction,
         public string $sales_channel,
@@ -30,7 +29,6 @@ class SaleAffiliateDTO
         return new self(
             $data['product_url'],
             $data['ref'],
-            $data['user_id'],
             $data['email_member'],
             $transaction,
             $sales_channel,

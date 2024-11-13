@@ -94,37 +94,10 @@ class AffiliateRepository implements AffiliateRepositoryInterface
                     ->get();
     }
 
-    public function fetchProductDataAffiliate(string $product_url)
-    {
-        $product = $this->courseRepository->getProductsByUrl($product_url);
-
-        if (!$product) {
-            return response()->json(['message' => 'Produto não encontrado.'], 404);
-        }
-
-        return response()->json([
-            'course_id' => $product->course_id,
-            'category_id' => $product->category_id,
-            'user_id' => $product->user_id,
-            'name' => $product->name,
-            'url' => $product->url,
-            'description' => $product->description,
-            'code' => $product->code,
-            'total_hours' => $product->total_hours,
-            'published' => $product->published,
-            'free' => $product->free,
-            'acceptsMcxPayment' => $product->acceptsMcxPayment,
-            'acceptsRefPayment' => $product->acceptsRefPayment,
-            'affiliationPercentage' => $product->affiliationPercentage,
-            'discount' => $product->discount,
-            'price' => $product->price,
-            'product_type' => $product->product_type,
-        ]);
-    }
-
     public function saleAffiliate(SaleAffiliateDTO $dto)
     {
-        $member = $this->userRepository->findById($dto->user_id);
+        //$member = $this->userRepository->findById($dto->user_id);
+        $member = $this->userRepository->findByEmail($dto->email_member);
         $totalAmount = $totalPlatformFee = $totalNetAmount = 0;
 
         DB::beginTransaction();

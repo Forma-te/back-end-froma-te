@@ -36,10 +36,6 @@ class AffiliateService
         return $this->affiliateRepository->findById($id);
     }
 
-    public function fetchProductDataAffiliate(string $product_url)
-    {
-        return $this->affiliateRepository->fetchProductDataAffiliate($product_url);
-    }
 
     public function myAffiliations()
     {

@@ -11,6 +11,6 @@ interface AffiliateRepositoryInterface
     public function myAffiliations(): object|null;
     public function myAffiliates(): object|null;
     public function saleAffiliate(SaleAffiliateDTO $dto);
-    public function fetchProductDataAffiliate(string $product_url);
+    //public function fetchProductDataAffiliate(string $product_url);
     public function delete(string $id): void;
 }
