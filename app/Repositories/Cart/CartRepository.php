@@ -5,6 +5,7 @@ namespace App\Repositories\Cart;
 use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Events\SaleToNewAndOldMembers;
+use App\Events\ValidateOrCreateCustomer;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -70,10 +71,11 @@ class CartRepository implements CartRepositoryInterface
 
                 // Atualiza o utilizador com os dados em falta e retorna o utilizador atualizado
                 $updatedUser = $this->userRepository->updateCustomerDetails($existingUser->id, $updatedData);
-                return $updatedUser;
+                return $updatedUser; // Retorna e evita disparar o evento
             }
 
             // Caso o utilizador não exista, cria um novo
+            $password = $dto->password;
             $userDto = new CreateCustomerDetailsDTO(
                 $dto->name,
                 $dto->email,
@@ -83,6 +85,9 @@ class CartRepository implements CartRepositoryInterface
 
             // Cria o novo utilizador no repositório
             $newUser = $this->userRepository->createCustomerDetails($userDto);
+
+            $member = $newUser;
+            event(new ValidateOrCreateCustomer($member, $password));
 
             return $newUser;
 

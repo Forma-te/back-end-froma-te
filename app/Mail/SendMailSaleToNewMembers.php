@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Course;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,19 +18,15 @@ class SendMailSaleToNewMembers extends Mailable implements ShouldQueue
     use SerializesModels;
 
     public $member;
-    public $course;
     public $password;
-    public $bankUsers;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $member, Course $course, $password, $bankUsers)
+    public function __construct(User $member, $password)
     {
         $this->member = $member;
-        $this->course = $course;
         $this->password = $password;
-        $this->bankUsers = $bankUsers;
     }
 
     /**
@@ -38,7 +35,7 @@ class SendMailSaleToNewMembers extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "{$this->member->name} o seu produto está agora disponível!",
+            subject: "{$this->member->name} Dados de acesso!",
         );
     }
 

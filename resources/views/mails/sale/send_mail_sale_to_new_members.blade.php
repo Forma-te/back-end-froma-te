@@ -1,8 +1,8 @@
 <x-mail::message>
 # Olá, {{ $member->name }}<br>
-Boas notícias! O produto {{$course->name}}, está disponível.
+Bem-vindo a Forma-te.
 
-# Dados de acesso:<br>
+# Seus dados de acesso a Forma-te:<br>
 Usuário: {{$member->email}}<br>
 Senha: {{$password}}
 
