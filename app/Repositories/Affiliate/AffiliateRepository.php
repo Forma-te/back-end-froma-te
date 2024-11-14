@@ -17,6 +17,7 @@ use App\Repositories\Course\CourseRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AffiliateRepository implements AffiliateRepositoryInterface
 {
@@ -168,6 +169,7 @@ class AffiliateRepository implements AffiliateRepositoryInterface
             return response()->json(['message' => 'Erro ao finalizar a compra: ' . $e->getMessage()], 500);
         }
     }
+
 
     private function createCommission($affiliateLinkId, $commissionAmount)
     {

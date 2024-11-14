@@ -98,6 +98,7 @@ class CourseRepository implements CourseRepositoryInterface
     {
         return $this->entity
                     ->where('url', $url)
+                    ->with('user', 'files')
                     ->first();
     }
 
