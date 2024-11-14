@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Course;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,17 +18,15 @@ class SendMailSaleToOldMembers extends Mailable implements ShouldQueue
     use SerializesModels;
 
     public $member;
-    public $course;
-    public $bankUsers;
+    public $product;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $member, Course $course, $bankUsers)
+    public function __construct(User $member, Product $product)
     {
         $this->member = $member;
-        $this->course = $course;
-        $this->bankUsers = $bankUsers;
+        $this->product = $product;
     }
 
     /**

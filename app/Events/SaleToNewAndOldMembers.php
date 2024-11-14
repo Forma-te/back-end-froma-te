@@ -20,7 +20,6 @@ class SaleToNewAndOldMembers
 
     public $member;
     public $product;
-    public $password;
 
     /**
      * Create a new event instance.
