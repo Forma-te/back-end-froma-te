@@ -69,9 +69,14 @@ class CartRepository implements CartRepositoryInterface
                     'phone_number' => $dto->phone_number ?? $existingUser->phone_number
                 ];
 
-                // Atualiza o utilizador com os dados em falta e retorna o utilizador atualizado
+                // Atualiza o utilizador com os dados em falta
                 $updatedUser = $this->userRepository->updateCustomerDetails($existingUser->id, $updatedData);
-                return $updatedUser; // Retorna e evita disparar o evento
+
+                // Retorna os dados do utilizador atualizado e uma flag indicando que ele já existia
+                return [
+                    'user' => $updatedUser,
+                    'exists' => true
+                ];
             }
 
             // Caso o utilizador não exista, cria um novo
@@ -83,13 +88,20 @@ class CartRepository implements CartRepositoryInterface
                 Hash::make($dto->password)  // Encripta a password
             );
 
+
             // Cria o novo utilizador no repositório
             $newUser = $this->userRepository->createCustomerDetails($userDto);
 
             $member = $newUser;
+
+            // Dispara o evento para o novo utilizador
             event(new ValidateOrCreateCustomer($member, $password));
 
-            return $newUser;
+            // Retorna os dados do novo utilizador e uma flag indicando que ele foi criado
+            return [
+                'user' => $newUser,
+                'exists' => false
+            ];
 
         } catch (Exception $e) {
             // Regista o erro e lança uma exceção personalizada
