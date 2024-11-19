@@ -20,8 +20,6 @@ class CreateCustomerDetailsDTO
         // Gera uma senha apenas se não estiver definida no pedido
         $password = $data['password'] ?? generatePassword();
 
-        // Log::info('Senha gerada (hash):', ['password_hash' => ($password)]);
-
         return new self(
             $data['name'],
             $data['email'],

@@ -54,7 +54,7 @@ class CartController extends Controller
         );
 
         return response()->json([
-            'user' => new UserResource($result['user']),
+            'data' => new UserResource($result['user']),
             'exists' => $result['exists'],
         ]);
     }

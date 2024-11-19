@@ -88,7 +88,6 @@ class CartRepository implements CartRepositoryInterface
                 Hash::make($dto->password)  // Encripta a password
             );
 
-
             // Cria o novo utilizador no repositório
             $newUser = $this->userRepository->createCustomerDetails($userDto);
 
