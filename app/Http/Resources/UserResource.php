@@ -18,8 +18,20 @@ class UserResource extends JsonResource
             'identify' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'profile_photo_path' => $this->profile_photo_path,
+            'bibliography' => $this->bibliography,
             'phone_number' => $this->phone_number,
-            'bibliography' => $this->bibliography
+            'bi' => $this->bi,
+            'titular' => $this->titular,
+            'account_number' => $this->account_number,
+            'whatsapp' => $this->whatsapp,
+            'iban' => $this->iban,
+            'foreign_iban' => $this->foreign_iban,
+            'wise' => $this->wise,
+            'paypal' => $this->paypal,
+            'user_facebook' => $this->user_facebook,
+            'user_instagram' => $this->user_instagram,
+            'proof_path' => $this->proof_path
         ];
     }
 }

@@ -10,10 +10,19 @@ class UpdateUserDTO
         public string $id,
         public string $name,
         public string $email,
-        public string $bibliography,
         public string $phone_number,
-        public string $bi,
-        public $image
+        //public string $bi,
+        public string $titular,
+        public string $account_number,
+        public string $whatsapp,
+        public string $iban,
+        public string $foreign_iban,
+        public string $wise,
+        public string $paypal,
+        public string $user_facebook,
+        public string $user_instagram,
+        public $proof_path,
+        public $profile_photo_path
     ) {
     }
 
@@ -21,16 +30,27 @@ class UpdateUserDTO
     {
         $data = $request->all();
 
-        $image = $request->hasFile('image') ? $request->file('image') : null;
+        $proof_path = $request->hasFile('proof_path') ? $request->file('proof_path') : null;
+
+        $profile_photo_path = $request->hasFile('profile_photo_path') ? $request->file('profile_photo_path') : null;
 
         return new self(
             $id ?? $request->id,
             $data['name'],
             $data['email'],
-            $data['bibliography'],
             $data['phone_number'],
-            $data['bi'],
-            $image
+            //$data['bi'],
+            $data['titular'],
+            $data['account_number'],
+            $data['whatsapp'],
+            $data['iban'],
+            $data['foreign_iban'],
+            $data['wise'],
+            $data['paypal'],
+            $data['user_facebook'],
+            $data['user_instagram'],
+            $proof_path,
+            $profile_photo_path
         );
     }
 

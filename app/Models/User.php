@@ -21,16 +21,25 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-
     protected $fillable = [
         'name',
         'email',
         'password',
         'url',
-        'image',
+        'profile_photo_path',
         'bibliography',
         'phone_number',
-        'bi'
+        'bi',
+        'titular',
+        'account_number',
+        'whatsapp',
+        'iban',
+        'foreign_iban',
+        'wise',
+        'paypal',
+        'user_facebook',
+        'user_whatsapp',
+        'proof_path'
     ];
 
     /**
@@ -94,11 +103,14 @@ class User extends Authenticatable
         $this->attributes['name'] = ucwords(strtolower($value));
     }
 
-    protected function image(): Attribute
+    protected function getProfilePhotoPathAttribute($value)
     {
-        return Attribute::make(
-            get: fn ($value) => $value ? Storage::url($value) : null,
-        );
+        return $value ? Storage::url($value) : null;
+    }
+
+    protected function getProofPathAttribute($value)
+    {
+        return $value ? Storage::url($value) : null;
     }
 
     public function sales()

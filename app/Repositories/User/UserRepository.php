@@ -4,6 +4,7 @@ namespace App\Repositories\User;
 
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateBibliographyUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
@@ -31,19 +32,19 @@ class UserRepository implements UserRepositoryInterface
         return $users;
     }
 
-    public function getAllProducers(string $filter = null, int $page = 1, int $totalPerPage = 15)
+    public function getAllProducers(string $filter = null, int $page = 1, int $totalPerPage = 10)
     {
         $producers = $this->model
-                        ->with('coursesProducer', 'student')
-                        ->whereHas('sales', function ($query) {
-                            $query->where('status', 'A');
-                        })
-                        ->where(function ($query) use ($filter) {
-                            if ($filter) {
-                                $query->where('name', 'like', "%{$filter}%");
-                            }
-                        })
-                        ->paginate($totalPerPage, ['*'], 'page', $page);
+                ->with('coursesProducer', 'student')
+                ->whereHas('sales', function ($query) {
+                    $query->where('status', 'A');
+                })
+                ->where(function ($query) use ($filter) {
+                    if ($filter) {
+                        $query->where('name', 'like', "%{$filter}%");
+                    }
+                })
+                ->paginate($totalPerPage, ['*'], 'page', $page);
 
         return $producers;
     }
@@ -115,6 +116,19 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return null;
+    }
+
+    public function updateBibliographyUser(UpdateBibliographyUserDTO $dto): ?User
+    {
+        $bibliography = $this->model->find($dto->id);
+
+        if ($bibliography) {
+            $bibliography->update((array) $dto);
+            return $bibliography;
+        }
+
+        return null;
+
     }
 
     public function delete(string $id): bool

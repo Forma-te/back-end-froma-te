@@ -26,7 +26,7 @@ class CourseRepository implements CourseRepositoryInterface
         $this->entity = $model;
     }
 
-    public function paginate(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
+    public function paginate(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
@@ -48,7 +48,7 @@ class CourseRepository implements CourseRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function getProducts(int $page = 1, int $totalPerPage  = 15, string $filter = null): PaginationInterface
+    public function getProducts(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity
@@ -112,7 +112,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     }
 
-    public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 15, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface
+    public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 10, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface
     {
         // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
         $query = $this->entity

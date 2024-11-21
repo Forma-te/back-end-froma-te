@@ -99,7 +99,7 @@ class CourseController extends Controller
     {
         $course = $this->courseService->paginate(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 20),
+            totalPerPage: $request->get('per_page', 10),
             filter: $request->filter,
         );
 
@@ -117,13 +117,12 @@ class CourseController extends Controller
     {
         $course = $this->courseService->getProducts(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 20),
+            totalPerPage: $request->get('per_page', 10),
             filter: $request->filter,
         );
 
         return ApiAdapter::paginateToJson($course);
     }
-
 
     public function fetchAllCoursesByProducers(Request $request)
     {

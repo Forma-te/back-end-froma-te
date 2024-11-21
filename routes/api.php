@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Route;
  * Auth
  */
 Route::post('/register', [UserController::class, 'registerUser']);
-Route::put('/update-user/{Id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum');
+Route::put('/update-user/{id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum');
 Route::get('/getMe', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -52,6 +52,8 @@ Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'
 Route::post('/reset-password', [ResetPasswordController::class, 'resetSenha'])->middleware('guest');
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::put('/users/{userId}/bibliography', [UserController::class, 'updateBibliographyUser']);
 
     /**
     * Route categories

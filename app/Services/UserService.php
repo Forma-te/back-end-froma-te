@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\DTO\User\CreateUserDTO;
+use App\DTO\User\UpdateBibliographyUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
-use App\Repositories\PaginationInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -71,25 +71,45 @@ class UserService
     {
         $user = $this->repository->findById($dto->id);
 
-        if ($dto->image instanceof UploadedFile) {
-            if ($user && $user->file) {
-                $this->uploadFile->removeFile($user->image);
-            }
-            $image = $dto->image;
-            $customImageName = Str::of($dto->id)->slug('-') . '.' . $image->getClientOriginalExtension();
-            $uploadedFilePath = $this->uploadFile->storeAs($dto->image, 'usersImage', $customImageName);
+        $dto->profile_photo_path = $this->processFileUpload(
+            $dto->profile_photo_path,
+            $user?->profile_photo_path,
+            'usersImage',
+            $dto->name
+        );
 
-            $dto->image = $uploadedFilePath;
-        } else {
-            unset($dto->image);
-        }
+        $dto->proof_path = $this->processFileUpload(
+            $dto->proof_path,
+            $user?->proof_path,
+            'usersFile',
+            $dto->name
+        );
+
         return $this->repository->update($dto);
+    }
+
+    private function processFileUpload(?UploadedFile $file, ?string $existingFilePath, string $folder, string $name): ?string
+    {
+        if ($file) {
+            if ($existingFilePath) {
+                $this->uploadFile->removeFile($existingFilePath);
+            }
+
+            $customFileName = Str::of($name)->slug('-') . '.' . $file->getClientOriginalExtension();
+            return $this->uploadFile->storeAs($file, $folder, $customFileName);
+        }
+
+        return $existingFilePath;
+    }
+
+    public function updateBibliographyUser(UpdateBibliographyUserDTO $dto): ?User
+    {
+        return $this->repository->updateBibliographyUser($dto);
     }
 
     public function delete(string $id): bool
     {
         return $this->repository->delete($id);
     }
-
 
 }
