@@ -63,6 +63,7 @@ class StoreUpdateUserRequest extends FormRequest
                 },
             ],
             'email' => "required|string|email|max:255|unique:users,email,{$id},id",
+            'bank' => 'nullable|string',
             'password' => 'sometimes|string|min:8|confirmed',
             'password_confirmation' => 'sometimes|required_with:password|string|min:8',
             'bibliography' => 'nullable|string',
