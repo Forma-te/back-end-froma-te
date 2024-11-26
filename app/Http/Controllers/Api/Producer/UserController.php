@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api\Producer;
 
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateBibliographyUserDTO;
+use App\DTO\User\UpdatePasswordUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateUserRequest;
 use App\Http\Requests\UpdateBibliographyRequest;
+use App\Http\Requests\UpdatePasswordUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Response;
@@ -45,6 +47,21 @@ class UserController extends Controller
         }
 
         return new UserResource($bibliography);
+    }
+
+    public function UpdatePasswordUser(UpdatePasswordUserRequest $request, string $id)
+    {
+        $passwordUser = $this->userService->UpdatePasswordUser(
+            UpdatePasswordUserDTO::makeFromRequest($request, $id)
+        );
+
+        if (!$passwordUser) {
+            return response()->json([
+                'error' => 'User not found or password could not be updated.'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new UserResource($passwordUser);
     }
 
     public function updateUser(StoreUpdateUserRequest $request, string $id)

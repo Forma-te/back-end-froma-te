@@ -4,12 +4,11 @@ namespace App\Services;
 
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateBibliographyUserDTO;
+use App\DTO\User\UpdatePasswordUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
-use stdClass;
 use Illuminate\Support\Str;
 
 class UserService
@@ -105,6 +104,11 @@ class UserService
     public function updateBibliographyUser(UpdateBibliographyUserDTO $dto): ?User
     {
         return $this->repository->updateBibliographyUser($dto);
+    }
+
+    public function UpdatePasswordUser(UpdatePasswordUserDTO $dto)
+    {
+        return $this->repository->UpdatePasswordUser($dto);
     }
 
     public function delete(string $id): bool

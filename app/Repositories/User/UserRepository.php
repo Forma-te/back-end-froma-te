@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateBibliographyUserDTO;
+use App\DTO\User\UpdatePasswordUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
@@ -129,6 +130,18 @@ class UserRepository implements UserRepositoryInterface
 
         return null;
 
+    }
+
+    public function UpdatePasswordUser(UpdatePasswordUserDTO $dto): ?User
+    {
+        $passwordUser = $this->model->find($dto->id);
+
+        if ($passwordUser) {
+            $passwordUser->update((array) $dto);
+            return $passwordUser;
+        }
+
+        return null;
     }
 
     public function delete(string $id): bool
