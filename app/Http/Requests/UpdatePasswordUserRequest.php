@@ -30,7 +30,7 @@ class UpdatePasswordUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-           'password.required' => 'A palavra-passe é obrigatória.',
+            'password.required' => 'A palavra-passe é obrigatória.',
             'password.string' => 'A palavra-passe deve ser uma sequência de caracteres.',
             'password.min' => 'A palavra-passe deve ter pelo menos :min caracteres.',
             'password.confirmed' => 'A confirmação da palavra-passe não corresponde.',
