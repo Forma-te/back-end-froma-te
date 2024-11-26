@@ -22,8 +22,8 @@ class UpdateUserDTO
         public string $paypal,
         public string $user_facebook,
         public string $user_instagram,
-        public $proof_path,
-        public $profile_photo_path
+        public $proof_path = null,
+        public $profile_photo_path = null
     ) {
     }
 

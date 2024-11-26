@@ -93,7 +93,7 @@ class SaleRepository implements SaleRepositoryInterface
 
     public function findById(string $id): ?object
     {
-        return $this->entity->with('member', 'producer')->find($id);
+        return $this->entity->with('user', 'producer')->find($id);
     }
 
     // public function createNewSale(CreateNewSaleDTO $dto)

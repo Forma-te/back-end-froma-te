@@ -78,7 +78,7 @@ class StoreUpdateUserRequest extends FormRequest
             'foreign_iban' => 'nullable|string|regex:/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/',
             'wise' => 'nullable|string|email|max:255',
             'paypal' => 'nullable|string|email|max:255',
-            'proof_path' => 'nullable|file|mimes:pdf,jpeg,png|max:5120', // Limite de 5 MB para comprovativos
+            'proof_path' => 'nullable|file|mimes:pdf|max:10240', // Limite de 5 MB para comprovativos
             'user_facebook' => 'nullable|string|url|max:255',
             'user_instagram' => 'nullable|string|url|max:255',
         ];
@@ -107,9 +107,9 @@ class StoreUpdateUserRequest extends FormRequest
             'profile_photo_path.mimes' => 'A foto de perfil deve estar no formato jpeg, png, jpg ou gif.',
             'profile_photo_path.max' => 'O tamanho da foto de perfil não pode exceder 2 MB.',
 
-            'proof_path.file' => 'O comprovativo deve ser um ficheiro válido.',
-            'proof_path.mimes' => 'O comprovativo deve estar nos formatos pdf, jpeg ou png.',
-            'proof_path.max' => 'O comprovativo não pode exceder 5 MB.',
+            //'proof_path.required' => 'O comprovativo deve ser um ficheiro válido.',
+            'proof_path.mimes' => 'O comprovativo deve estar nos formatos pdf',
+            'proof_path.max' => 'O comprovativo não pode exceder 10 MB.',
 
             'titular.max' => 'O nome do titular não pode exceder 255 caracteres.',
 
