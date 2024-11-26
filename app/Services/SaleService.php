@@ -20,39 +20,41 @@ class SaleService
         int $page = 1,
         int $totalPerPage  = 10,
         string $status = '',
+        string $channel = '',
         string $filter = null
     ): PaginationInterface {
         return $this->repository->getMyStudents(
             page: $page,
             totalPerPage: $totalPerPage,
             status: $status,
+            channel: $channel,
             filter: $filter,
         );
     }
 
-    public function getMembersByStatus(
-        int $page = 1,
-        int $totalPerPage  = 15,
-        string $status = '',
-        string $filter = null
-    ): PaginationInterface {
-        return $this->repository->getMembersByStatus(
-            page: $page,
-            totalPerPage: $totalPerPage,
-            status: $status,
-            filter: $filter
-        );
-    }
+    // public function getMembersByStatus(
+    //     int $page = 1,
+    //     int $totalPerPage  = 15,
+    //     string $status = '',
+    //     string $filter = null
+    // ): PaginationInterface {
+    //     return $this->repository->getMembersByStatus(
+    //         page: $page,
+    //         totalPerPage: $totalPerPage,
+    //         status: $status,
+    //         filter: $filter
+    //     );
+    // }
 
     public function findById(string $id): object|null
     {
         return $this->repository->findById($id);
     }
 
-    public function createNewSale(CreateNewSaleDTO $dto)
-    {
-        return $this->repository->createNewSale($dto);
-    }
+    // public function createNewSale(CreateNewSaleDTO $dto)
+    // {
+    //     return $this->repository->createNewSale($dto);
+    // }
 
     public function csvImportMember(ImportCsvDTO $dto)
     {

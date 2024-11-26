@@ -3,7 +3,6 @@
 namespace App\Repositories\Course;
 
 use App\DTO\Course\CreateCourseDTO;
-use App\DTO\Course\GetCourseByUrlDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
 use App\Models\Product;

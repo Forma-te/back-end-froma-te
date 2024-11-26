@@ -132,30 +132,30 @@ class SaleController extends Controller
      * )
      */
 
-    public function getMembersByStatus(Request $request)
-    {
-        try {
+    // public function getMembersByStatus(Request $request)
+    // {
+    //     try {
 
-            $sales = $this->saleService->getMembersByStatus(
-                page: $request->get('page', 1),
-                totalPerPage: $request->get('per_page', 10),
-                status: (string) $request->get('status', ''),
-                filter: $request->get('filter', '')
-            );
+    //         $sales = $this->saleService->getMembersByStatus(
+    //             page: $request->get('page', 1),
+    //             totalPerPage: $request->get('per_page', 10),
+    //             status: (string) $request->get('status', ''),
+    //             filter: $request->get('filter', '')
+    //         );
 
-            $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
+    //         $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
 
-            return response()->json(
-                SaleAdapters::paginateToJson($sales, $statusOptions),
-                Response::HTTP_OK
-            );
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to retrieve sales:' . $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
+    //         return response()->json(
+    //             SaleAdapters::paginateToJson($sales, $statusOptions),
+    //             Response::HTTP_OK
+    //         );
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Failed to retrieve sales:' . $e->getMessage(),
+    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     /**
      * @OA\Get(
@@ -227,6 +227,7 @@ class SaleController extends Controller
                 page: $request->get('page', 1),
                 totalPerPage: $request->get('per_page', 10),
                 status: (string) $request->get('status', ''),
+                channel: (string) $request->get('channel', ''),
                 filter: $request->get('filter', '')
             );
 
@@ -344,14 +345,14 @@ class SaleController extends Controller
      * )
      */
 
-    public function newSale(StoreUpdateSaleRequest $request)
-    {
-        $sale = $this->saleService->createNewSale(
-            CreateNewSaleDTO::makeFromRequest($request)
-        );
+    // public function newSale(StoreUpdateSaleRequest $request)
+    // {
+    //     $sale = $this->saleService->createNewSale(
+    //         CreateNewSaleDTO::makeFromRequest($request)
+    //     );
 
-        return new SaleResource($sale);
-    }
+    //     return new SaleResource($sale);
+    // }
 
     public function csvImportMember(CsvImportRequest $request)
     {

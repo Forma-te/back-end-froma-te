@@ -14,6 +14,7 @@ use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Gate;
+use InvalidArgumentException;
 
 class SaleRepository implements SaleRepositoryInterface
 {
@@ -25,25 +26,34 @@ class SaleRepository implements SaleRepositoryInterface
     ) {
     }
 
-    public function getMyStudents(int $page = 1, int $totalPerPage  = 10, string $status = '', string $filter = null): PaginationInterface
+    public function getMyStudents(int $page = 1, int $totalPerPage  = 10, string $status = '', string $channel = '', string $filter = null): PaginationInterface
     {
         $query = $this->entity
                       ->userByAuth()
-                      ->with('product.files', 'user', 'producer');
+                      ->with('product.files', 'user');
 
         // Aplicar filtro por status
         if ($status) {
             $statusEnum = SaleEnum::tryFrom($status);
+
             if ($statusEnum) {
                 $query->where('sales.status', $statusEnum->name);
             }
         }
 
-        // Aplicar o filtro se fornecido
+        // Aplicar filtro por status
+        if ($channel) {
+            $statusEnum = SaleEnum::tryFrom($channel);
+
+            if ($statusEnum) {
+                $query->where('sales.sales_channel', $statusEnum->name);
+            }
+        }
+
+
         if ($filter) {
             $query->where(function ($query) use ($filter) {
-                $query->where('users.name', 'like', "%{$filter}%")
-                  ->orWhere('users.name', 'like', "%{$filter}%");
+                $query->where('users.name', 'like', "%{$filter}%");
             });
         }
 
