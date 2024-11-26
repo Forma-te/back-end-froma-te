@@ -21,6 +21,9 @@ class SaleService
         int $totalPerPage  = 10,
         string $status = '',
         string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
         string $filter = null
     ): PaginationInterface {
         return $this->repository->getMyStudents(
@@ -28,6 +31,9 @@ class SaleService
             totalPerPage: $totalPerPage,
             status: $status,
             channel: $channel,
+            type: $type,
+            startDate: $startDate,
+            endDate: $endDate,
             filter: $filter,
         );
     }

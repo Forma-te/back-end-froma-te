@@ -5,6 +5,7 @@ namespace App\Repositories\Course;
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Course\CourseRepositoryInterface;
@@ -18,11 +19,10 @@ use Illuminate\Support\Facades\Log;
 
 class CourseRepository implements CourseRepositoryInterface
 {
-    protected $entity;
-
-    public function __construct(Product $model)
-    {
-        $this->entity = $model;
+    public function __construct(
+        protected Product $entity,
+        protected Category $category
+    ) {
     }
 
     public function paginate(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface
@@ -117,7 +117,7 @@ class CourseRepository implements CourseRepositoryInterface
         $query = $this->entity
                     ->where('product_type', 'course')
                     ->where('published', 1)
-                    ->with(['user:id,name,email,profile_photo_path', 'category:id,name', 'files'])
+                    ->with(['user:id,name,email,profile_photo_path', 'files'])
                     ->select(
                         'id',
                         'name',

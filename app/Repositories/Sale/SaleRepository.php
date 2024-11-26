@@ -5,7 +5,9 @@ namespace App\Repositories\Sale;
 use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
 use App\DTO\User\CreateUserDTO;
+use App\Enum\ProductTypeEnum;
 use App\Enum\SaleEnum;
+use App\Enum\SalesChannelEnum;
 use App\Events\SaleToNewAndOldMembers;
 use App\Models\Sale;
 use App\Repositories\Bank\BankRepository;
@@ -26,8 +28,16 @@ class SaleRepository implements SaleRepositoryInterface
     ) {
     }
 
-    public function getMyStudents(int $page = 1, int $totalPerPage  = 10, string $status = '', string $channel = '', string $filter = null): PaginationInterface
-    {
+    public function getMyStudents(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null
+    ): PaginationInterface {
         $query = $this->entity
                       ->userByAuth()
                       ->with('product.files', 'user');
@@ -43,16 +53,34 @@ class SaleRepository implements SaleRepositoryInterface
 
         // Aplicar filtro por status
         if ($channel) {
-            $statusEnum = SaleEnum::tryFrom($channel);
+            $statusEnum = SalesChannelEnum::tryFrom($channel);
 
             if ($statusEnum) {
                 $query->where('sales.sales_channel', $statusEnum->name);
             }
         }
 
+        // Aplicar filtro por status
+        if ($type) {
+            $statusEnum = ProductTypeEnum::tryFrom($type);
 
+            if ($statusEnum) {
+                $query->where('sales.product_type', $statusEnum->name);
+            }
+        }
+
+        // Filtro por intervalo de datas (se start_date e end_date forem fornecidos)
+        if ($startDate && $endDate) {
+            $query->whereBetween('sales.date_created', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('sales.date_created', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('sales.date_created', '<=', $endDate);
+        }
+
+        // Filtro pelo nome do usuário
         if ($filter) {
-            $query->where(function ($query) use ($filter) {
+            $query->whereHas('user', function ($query) use ($filter) {
                 $query->where('users.name', 'like', "%{$filter}%");
             });
         }

@@ -14,7 +14,9 @@ use App\Http\Requests\UpdatePublishedRequest;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseStoreResource;
 use App\Http\Resources\ProductsResource;
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Course\CourseRepository;
+use App\Services\CategoryService;
 use App\Services\CourseService;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,7 +31,8 @@ class CourseController extends Controller
 {
     public function __construct(
         protected CourseRepository $repository,
-        protected CourseService $courseService
+        protected CourseService $courseService,
+        protected CategoryService $categoryService
     ) {
     }
 
@@ -128,10 +131,12 @@ class CourseController extends Controller
     {
         // Obter os parâmetros da requisição
         $page = $request->get('page', 1);
-        $totalPerPage = $request->get('per_page', 20);
+        $totalPerPage = $request->get('per_page', 10);
         $filter = $request->get('filter');
-        $producerName = $request->get('producer_name');
-        $categoryName = $request->get('category_name');
+        $producerName = $request->get('producer');
+        $categoryName = $request->get('category');
+
+        $categories = $this->categoryService->getAll();
 
         // Construir a chave de cache com base nos parâmetros
         $cacheKey = "products.page_{$page}.per_page_{$totalPerPage}.filter_{$filter}.producer_{$producerName}.category_{$categoryName}";
@@ -148,7 +153,7 @@ class CourseController extends Controller
         });
 
         // Retornar a resposta no formato paginado usando o ApiAdapter
-        return ApiAdapter::paginateToJson($courses);
+        return ApiAdapter::paginateToJson($courses, $categories);
     }
 
     private function errorResponse($message, $statusCode)

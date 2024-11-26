@@ -22,7 +22,7 @@ class SaleAdapters
      */
 
 
-    public static function paginateToJson(PaginationInterface $data, $statusOptions): array
+    public static function paginateToJson(PaginationInterface $data, $statusOptions, $channelOptions, $productTypeEnum): array
     {
         return [
             'data' => SaleStatusResource::collection($data->items())->toArray(request()), // Convert collection to array
@@ -35,6 +35,8 @@ class SaleAdapters
                 'previous_page' => $data->getNumberPreviousPage() ?? null, // Obtém o número da página anterior
             ],
             'status_options' => $statusOptions,
+            'channel_options' => $channelOptions,
+            'type_options' => $productTypeEnum,
         ];
     }
 }

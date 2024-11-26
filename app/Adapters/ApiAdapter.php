@@ -22,7 +22,8 @@ class ApiAdapter
      */
 
     public static function paginateToJson(
-        PaginationInterface  $data
+        PaginationInterface  $data,
+        array $categories = null
     ) {
         return DefaultResource::collection($data->items())
             ->additional([
@@ -35,5 +36,12 @@ class ApiAdapter
                     'previous_page' => $data->getNumberPreviousPage() ?? null, // Obtém o número da página anterior
                 ]
             ]);
+
+        // Adicionar categorias à resposta, se disponíveis
+        if (!empty($categories)) {
+            $response->additional(['categories' => $categories]);
+        }
+
+        return $response;
     }
 }

@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
 use App\Adapters\SaleAdapters;
-use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
+use App\Enum\ProductTypeEnum;
 use App\Enum\SaleEnum;
+use App\Enum\SalesChannelEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CsvImportRequest;
 use App\Http\Requests\StoreUpdateSaleRequest;
@@ -223,18 +224,38 @@ class SaleController extends Controller
     public function getMyMembers(Request $request)
     {
         try {
+
+            $defaultPerPage = 10; // Número de registos por página padrão
+            $maxPerPage = 100;    // Limite máximo permitido
+
+            // Obter o valor do parâmetro per_page da requisição
+            $totalPerPage = (int) $request->get('per_page', $defaultPerPage);
+
+            // Validar o valor recebido
+            if ($totalPerPage <= 0 || $totalPerPage > $maxPerPage) {
+                $totalPerPage = $defaultPerPage;
+            }
+
+
             $sales = $this->saleService->getMyStudents(
                 page: $request->get('page', 1),
-                totalPerPage: $request->get('per_page', 10),
+                totalPerPage: $totalPerPage,
                 status: (string) $request->get('status', ''),
                 channel: (string) $request->get('channel', ''),
+                type: (string) $request->get('type', ''),
+                startDate : (string) $request->get('startDate', ''),
+                endDate : (string) $request->get('endDate ', ''),
                 filter: $request->get('filter', '')
             );
 
             $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
 
+            $channelOptions = array_map(fn ($enum) => $enum->value, SalesChannelEnum::cases());
+
+            $productTypeEnum = array_map(fn ($enum) => $enum->value, ProductTypeEnum::cases());
+
             return response()->json(
-                SaleAdapters::paginateToJson($sales, $statusOptions),
+                SaleAdapters::paginateToJson($sales, $statusOptions, $channelOptions, $productTypeEnum),
                 Response::HTTP_OK
             );
         } catch (\Exception $e) {

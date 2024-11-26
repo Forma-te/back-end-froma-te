@@ -61,4 +61,9 @@ class Category extends Model
             'elegant_font' => 'required|min:3|max:100',
         ];
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
