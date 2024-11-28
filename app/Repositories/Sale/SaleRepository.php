@@ -15,6 +15,7 @@ use App\Repositories\Course\CourseRepository;
 use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
@@ -67,6 +68,14 @@ class SaleRepository implements SaleRepositoryInterface
             if ($statusEnum) {
                 $query->where('sales.product_type', $statusEnum->name);
             }
+        }
+
+        // Converter datas para o formato americano (yyyy-mm-dd)
+        if ($startDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $startDate)->format('Y-m-d');
+        }
+        if ($endDate) {
+            $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->format('Y-m-d');
         }
 
         // Filtro por intervalo de datas (se start_date e end_date forem fornecidos)
