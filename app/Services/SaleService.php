@@ -38,6 +38,51 @@ class SaleService
         );
     }
 
+    public function getMySales(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getMySales(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            status: $status,
+            channel: $channel,
+            type: $type,
+            startDate: $startDate,
+            endDate: $endDate,
+            filter: $filter,
+        );
+    }
+
+    public function getMySalesAffiliates(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->repository->getMySalesAffiliates(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            status: $status,
+            channel: $channel,
+            type: $type,
+            startDate: $startDate,
+            endDate: $endDate,
+            filter: $filter,
+        );
+    }
+
+
     // public function getMembersByStatus(
     //     int $page = 1,
     //     int $totalPerPage  = 15,

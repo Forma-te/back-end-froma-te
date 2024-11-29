@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
+use App\Adapters\MemberAdapters;
 use App\Adapters\SaleAdapters;
 use App\DTO\Sale\ImportCsvDTO;
 use App\DTO\Sale\UpdateNewSaleDTO;
@@ -255,6 +256,50 @@ class SaleController extends Controller
             $productTypeEnum = array_map(fn ($enum) => $enum->value, ProductTypeEnum::cases());
 
             return response()->json(
+                MemberAdapters::paginateToJson($sales, $statusOptions, $channelOptions, $productTypeEnum),
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve sales:' . $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getMySales(Request $request)
+    {
+        try {
+
+            $defaultPerPage = 10; // Número de registos por página padrão
+            $maxPerPage = 100;    // Limite máximo permitido
+
+            // Obter o valor do parâmetro per_page da requisição
+            $totalPerPage = (int) $request->get('per_page', $defaultPerPage);
+
+            // Validar o valor recebido
+            if ($totalPerPage <= 0 || $totalPerPage > $maxPerPage) {
+                $totalPerPage = $defaultPerPage;
+            }
+
+            $sales = $this->saleService->getMySales(
+                page: $request->get('page', 1),
+                totalPerPage: $totalPerPage,
+                status: (string) $request->get('status', ''),
+                channel: (string) $request->get('channel', ''),
+                type: (string) $request->get('type', ''),
+                startDate : (string) $request->get('startDate', ''),
+                endDate : (string) $request->get('endDate ', ''),
+                filter: $request->get('filter', '')
+            );
+
+            $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
+
+            $channelOptions = array_map(fn ($enum) => $enum->value, SalesChannelEnum::cases());
+
+            $productTypeEnum = array_map(fn ($enum) => $enum->value, ProductTypeEnum::cases());
+
+            return response()->json(
                 SaleAdapters::paginateToJson($sales, $statusOptions, $channelOptions, $productTypeEnum),
                 Response::HTTP_OK
             );
@@ -266,6 +311,53 @@ class SaleController extends Controller
         }
 
     }
+
+    public function getMySalesAffiliates(Request $request)
+    {
+        try {
+
+            $defaultPerPage = 10; // Número de registos por página padrão
+            $maxPerPage = 100;    // Limite máximo permitido
+
+            // Obter o valor do parâmetro per_page da requisição
+            $totalPerPage = (int) $request->get('per_page', $defaultPerPage);
+
+            // Validar o valor recebido
+            if ($totalPerPage <= 0 || $totalPerPage > $maxPerPage) {
+                $totalPerPage = $defaultPerPage;
+            }
+
+            $sales = $this->saleService->getMySalesAffiliates(
+                page: $request->get('page', 1),
+                totalPerPage: $totalPerPage,
+                status: (string) $request->get('status', ''),
+                channel: (string) $request->get('channel', ''),
+                type: (string) $request->get('type', ''),
+                startDate : (string) $request->get('startDate', ''),
+                endDate : (string) $request->get('endDate ', ''),
+                filter: $request->get('filter', '')
+            );
+
+            $statusOptions = array_map(fn ($enum) => $enum->value, SaleEnum::cases());
+
+            $channelOptions = array_map(fn ($enum) => $enum->value, SalesChannelEnum::cases());
+
+            $productTypeEnum = array_map(fn ($enum) => $enum->value, ProductTypeEnum::cases());
+
+            return response()->json(
+                SaleAdapters::paginateToJson($sales, $statusOptions, $channelOptions, $productTypeEnum),
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve sales:' . $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
 
     private function errorResponse($message, $statusCode)
     {

@@ -100,6 +100,146 @@ class SaleRepository implements SaleRepositoryInterface
         return new PaginationPresenter($result);
     }
 
+    public function getMySales(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null
+    ): PaginationInterface {
+        $query = $this->entity
+                      ->userByAuth()
+                      ->with('product.files', 'user');
+
+        // Aplicar filtro por status
+        if ($status) {
+            $statusEnum = SaleEnum::tryFrom($status);
+
+            if ($statusEnum) {
+                $query->where('sales.status', $statusEnum->name);
+            }
+        }
+
+        // Aplicar filtro por status
+        if ($channel) {
+            $statusEnum = SalesChannelEnum::tryFrom($channel);
+
+            if ($statusEnum) {
+                $query->where('sales.sales_channel', $statusEnum->name);
+            }
+        }
+
+        // Aplicar filtro por status
+        if ($type) {
+            $statusEnum = ProductTypeEnum::tryFrom($type);
+
+            if ($statusEnum) {
+                $query->where('sales.product_type', $statusEnum->name);
+            }
+        }
+
+        // Converter datas para o formato americano (yyyy-mm-dd)
+        if ($startDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $startDate)->format('Y-m-d');
+        }
+
+        // Filtro por intervalo de datas (se start_date e end_date forem fornecidos)
+        if ($startDate && $endDate) {
+            $query->whereBetween('sales.date_created', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('sales.date_created', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('sales.date_created', '<=', $endDate);
+        }
+
+        // Filtro pelo nome do usuário
+        if ($filter) {
+            $query->whereHas('user', function ($query) use ($filter) {
+                $query->where('users.name', 'like', "%{$filter}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
+    }
+
+    public function getMySalesAffiliates(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null
+    ): PaginationInterface {
+        $query = $this->entity
+                      ->userByAuth()
+                      ->where('sales_channel', 'VA')
+                      ->with('product.files', 'user');
+
+        // Aplicar filtro por status
+        if ($status) {
+            $statusEnum = SaleEnum::tryFrom($status);
+
+            if ($statusEnum) {
+                $query->where('sales.status', $statusEnum->name);
+            }
+        }
+
+        // Aplicar filtro por status
+        if ($channel) {
+            $statusEnum = SalesChannelEnum::tryFrom($channel);
+
+            if ($statusEnum) {
+                $query->where('sales.sales_channel', $statusEnum->name);
+            }
+        }
+
+        // Aplicar filtro por status
+        if ($type) {
+            $statusEnum = ProductTypeEnum::tryFrom($type);
+
+            if ($statusEnum) {
+                $query->where('sales.product_type', $statusEnum->name);
+            }
+        }
+
+        // Converter datas para o formato americano (yyyy-mm-dd)
+        if ($startDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $startDate)->format('Y-m-d');
+        }
+
+        // Filtro por intervalo de datas (se start_date e end_date forem fornecidos)
+        if ($startDate && $endDate) {
+            $query->whereBetween('sales.date_created', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('sales.date_created', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('sales.date_created', '<=', $endDate);
+        }
+
+        // Filtro pelo nome do usuário
+        if ($filter) {
+            $query->whereHas('user', function ($query) use ($filter) {
+                $query->where('users.name', 'like', "%{$filter}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
+    }
+
+
+
+
     public function findById(string $id): ?object
     {
         return $this->entity->with('user', 'producer')->find($id);

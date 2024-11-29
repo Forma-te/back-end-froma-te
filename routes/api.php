@@ -177,6 +177,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     */
     //Route::get('/members-status', [SaleController::class, 'getMembersByStatus']);
     Route::get('/members', [SaleController::class, 'getMyMembers']);
+    Route::get('/sales', [SaleController::class, 'getMySales']);
+    Route::get('/sales-affiliates', [SaleController::class, 'getMySalesAffiliates']);
     Route::get('/sale/{Id}', [SaleController::class, 'getSaleById']);
     Route::post('/sales', [SaleController::class, 'newSale']);
     Route::put('/sales/{id}', [SaleController::class, 'updateSale']);

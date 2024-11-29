@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'phone_number' => $this->phone_number,
             'bi' => $this->bi,
             'titular' => $this->titular,
+            'bank' => $this->bank,
             'account_number' => $this->account_number,
             'whatsapp' => $this->whatsapp,
             'iban' => $this->iban,

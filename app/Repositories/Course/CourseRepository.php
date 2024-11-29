@@ -15,7 +15,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 
 class CourseRepository implements CourseRepositoryInterface
 {
@@ -47,24 +46,51 @@ class CourseRepository implements CourseRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function getProducts(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface
+    public function getProducts(int $page = 1, int $totalPerPage = 10, string $filter = null): PaginationInterface
     {
-        // Construir a consulta inicial com as relações necessárias e o tipo 'CURSO'
+        // Inicializa a consulta com as relações necessárias
         $query = $this->entity
-                      ->with('user', 'users', 'sales', 'files')
+                      ->with(['files'])
+                      ->select(
+                          'id',
+                          'name',
+                          'price',
+                          'product_type',
+                      )
                       ->userByAuth();
 
-        // Aplicar o filtro se fornecido
+        // Adiciona o filtro de busca, se fornecido
         if ($filter) {
-            $query->where(function ($query) use ($filter) {
-                $query->where('name', 'like', "%{$filter}%");
-            });
+            $query->where('name', 'like', "%{$filter}%"); // Filtro simples por nome
         }
 
-        // Paginar os resultados
+        // Realiza a paginação com os parâmetros fornecidos
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
 
-        // Retornar os resultados paginados usando o PaginationPresenter
+        // Processa cada produto para adicionar os cálculos necessários
+        $products = $result->getCollection()->map(function ($product) {
+            // Calcula o total de membros
+            $totalMembers = $product->users->count();
+
+            // Calcula o preço de venda (considera o primeiro valor de sales)
+            $salePrice = $product->sales->first()->sale_price ?? 0;
+
+            // Calcula a receita total
+            $totalRevenue = $totalMembers * $salePrice;
+
+            // Adiciona os cálculos no array de dados do produto
+            return [
+                'product' => $product,  // Aqui não chamamos toArray(), pois estamos manipulando diretamente o produto
+                'total_members' => $totalMembers,
+                'sale_price' => $salePrice,
+                'total_revenue' => $totalRevenue,
+            ];
+        });
+
+        // Substitui a coleção original com os produtos processados
+        $result->setCollection($products);
+
+        // Retorna os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
 

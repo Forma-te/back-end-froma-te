@@ -15,12 +15,24 @@ class SaleStatusResource extends JsonResource
      */
     public function toArray(Request $request)
     {
-        $statusLabel = statusEnum::tryFrom($this->status)?->label() ?? 'Desconhecido';
+        $user = collect($this->user);
+        $product = collect($this->product);
 
-        return collect($this->resource)
-            ->merge([
-                'status' => $statusLabel,
-
-            ]);
+        return collect([
+            'id' => $this->id,
+            'member' => $user->get('name'),
+            'phone_number' => $user->get('phone_number'),
+            'email_member' => $this->email_member,
+            'product_name' => $product->get('name'),
+            'product_type' => $this->product_type,
+            'status' => $this->status,
+            'sales_channel' => $this->sales_channel,
+            'payment_mode' => $this->payment_mode,
+            'date_created' => $this->date_created,
+            'transaction' => $this->transaction,
+            'price' => $product->get('price'),
+            'sale_price' => $this->sale_price,
+            'files' => $product->get('files'),
+        ])->toArray();
     }
 }

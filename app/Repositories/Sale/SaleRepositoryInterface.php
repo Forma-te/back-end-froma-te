@@ -21,6 +21,28 @@ interface SaleRepositoryInterface
         string $filter = null,
     ): PaginationInterface;
 
+    public function getMySales(
+        int $page = 1,
+        int $totalPerPage = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null,
+    ): PaginationInterface;
+
+    public function getMySalesAffiliates(
+        int $page = 1,
+        int $totalPerPage = 10,
+        string $status = '',
+        string $channel = '',
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null,
+    ): PaginationInterface;
+
     //public function getMembersByStatus(int $page = 1, int $totalPerPage  = 10, string $status = '', string $filter = null): PaginationInterface;
     public function findById(string $id): object|null;
     //public function createNewSale(CreateNewSaleDTO $dto);

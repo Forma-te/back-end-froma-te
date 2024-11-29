@@ -78,7 +78,7 @@ class StoreUpdateUserRequest extends FormRequest
             'foreign_iban' => 'nullable|string|regex:/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/',
             'wise' => 'nullable|string|email|max:255',
             'paypal' => 'nullable|string|email|max:255',
-            'proof_path' => 'sometimes|file|mimes:pdf|max:10240',
+            'proof_path' => 'nullable|file|mimes:pdf|max:10240',
             'user_facebook' => 'nullable|string|url|max:255',
             'user_instagram' => 'nullable|string|url|max:255',
         ];
