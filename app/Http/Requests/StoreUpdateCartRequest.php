@@ -21,7 +21,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * )
  */
 
-class StoreUpdateSaleRequest extends FormRequest
+class StoreUpdateCartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -39,8 +39,14 @@ class StoreUpdateSaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date_expired' => 'required',
-            'date_created' => 'required',
+            'cart_id' => 'required|exists:carts,id',
+            'user_id' => 'nullable',
+            'name' => 'sometimes|required',
+            'producer_id' => 'nullable',
+            'transaction' => 'nullable',
+            'email_member' => 'required|email',
+            'payment_mode' => 'nullable',
+            'blocked' => 'nullable',
             'status' => 'nullable',
         ];
     }

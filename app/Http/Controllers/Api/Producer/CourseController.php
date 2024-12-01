@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Api\Producer;
 
 use App\Adapters\ApiAdapter;
+use App\Adapters\ProductsAdapter;
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
 use App\DTO\Course\GetCourseByUrlDTO;
+use App\Enum\ProductTypeEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GetCourseByUrlRequest;
 use App\Http\Requests\StoreUpdateCourseRequest;
 use App\Http\Requests\UpdatePublishedRequest;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CourseStoreResource;
 use App\Http\Resources\ProductsResource;
-use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Course\CourseRepository;
 use App\Services\CategoryService;
 use App\Services\CourseService;
@@ -23,7 +23,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use OpenApi\Annotations as OA;
 
@@ -118,13 +117,28 @@ class CourseController extends Controller
 
     public function getProducts(Request $request)
     {
+        $defaultPerPage = 10; // Número de registos por página padrão
+        $maxPerPage = 100;    // Limite máximo permitido
+
+        $totalPerPage = (int) $request->get('per_page', $defaultPerPage);
+
+        // Validar o valor recebido
+        if ($totalPerPage <= 0 || $totalPerPage > $maxPerPage) {
+            $totalPerPage = $defaultPerPage;
+        }
+
         $course = $this->courseService->getProducts(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 10),
-            filter: $request->filter,
+            totalPerPage: $totalPerPage,
+            type: (string) $request->get('type', ''),
+            startDate : (string) $request->get('startDate', ''),
+            endDate : (string) $request->get('endDate ', ''),
+            filter: $request->get('filter', '')
         );
 
-        return ApiAdapter::paginateToJson($course);
+        $productTypeEnum = array_map(fn ($enum) => $enum->value, ProductTypeEnum::cases());
+
+        return ProductsAdapter::paginateToJson($course, $productTypeEnum);
     }
 
     public function fetchAllCoursesByProducers(Request $request)

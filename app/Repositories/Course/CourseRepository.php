@@ -5,12 +5,14 @@ namespace App\Repositories\Course;
 use App\DTO\Course\CreateCourseDTO;
 use App\DTO\Course\UpdateCourseDTO;
 use App\DTO\Course\UpdatePublishedDTO;
+use App\Enum\ProductTypeEnum;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\PaginationPresenter;
 use App\Repositories\PaginationInterface;
+use Carbon\Carbon;
 use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -46,31 +48,59 @@ class CourseRepository implements CourseRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function getProducts(int $page = 1, int $totalPerPage = 10, string $filter = null): PaginationInterface
-    {
+    public function getProducts(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null
+    ): PaginationInterface {
         // Inicializa a consulta com as relações necessárias
         $query = $this->entity
                       ->with(['files'])
-                      ->select(
-                          'id',
-                          'name',
-                          'price',
-                          'product_type',
-                      )
                       ->userByAuth();
 
-        // Adiciona o filtro de busca, se fornecido
-        if ($filter) {
-            $query->where('name', 'like', "%{$filter}%"); // Filtro simples por nome
+        // Aplicar filtro por status
+        if ($type) {
+            $statusEnum = ProductTypeEnum::tryFrom($type);
+
+            if ($statusEnum) {
+                $query->where('product_type', $statusEnum->name);
+            }
         }
+
+        // Converter datas para o formato americano (yyyy-mm-dd)
+        if ($startDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $startDate)->format('Y-m-d');
+        }
+
+        // Filtro por intervalo de datas (se start_date e end_date forem fornecidos)
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('created_at', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('created_at', '<=', $endDate);
+        }
+
+        // Filtro pelo nome do usuário
+        if ($filter) {
+            $query->where('name', 'like', "%{$filter}%");
+        };
 
         // Realiza a paginação com os parâmetros fornecidos
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
 
+        $totalUsers = 0;
+
         // Processa cada produto para adicionar os cálculos necessários
-        $products = $result->getCollection()->map(function ($product) {
+        $products = $result->getCollection()->map(function ($product) use (&$totalUsers) {
             // Calcula o total de membros
             $totalMembers = $product->users->count();
+
+            // Soma o total de utilizadores
+            $totalUsers += $totalMembers;
 
             // Calcula o preço de venda (considera o primeiro valor de sales)
             $salePrice = $product->sales->first()->sale_price ?? 0;
@@ -78,9 +108,24 @@ class CourseRepository implements CourseRepositoryInterface
             // Calcula a receita total
             $totalRevenue = $totalMembers * $salePrice;
 
-            // Adiciona os cálculos no array de dados do produto
-            return [
-                'product' => $product,  // Aqui não chamamos toArray(), pois estamos manipulando diretamente o produto
+            // Filtra e categoriza imagens por tipo
+            $files = $product->files
+                            ->filter(fn ($file) => in_array($file->type, ['ebookImage', 'courseImage', 'fileImage']))
+                            ->map(fn ($file) => [
+                                'id' => $file->id,
+                                'type' => $file->type,
+                                'image' => $file->image,
+                            ])
+                            ->values()
+                            ->toArray();
+
+            return (object) [
+                'product_id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'product_type' => $product->product_type,
+                'created_at' => $product->created_at,
+                'files' => $files,
                 'total_members' => $totalMembers,
                 'sale_price' => $salePrice,
                 'total_revenue' => $totalRevenue,
@@ -89,6 +134,8 @@ class CourseRepository implements CourseRepositoryInterface
 
         // Substitui a coleção original com os produtos processados
         $result->setCollection($products);
+
+        $result->total_users = $totalUsers;
 
         // Retorna os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);

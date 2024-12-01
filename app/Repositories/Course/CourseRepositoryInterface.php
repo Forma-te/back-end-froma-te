@@ -12,7 +12,15 @@ use stdClass;
 interface CourseRepositoryInterface
 {
     public function paginate(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface;
-    public function getProducts(int $page = 1, int $totalPerPage  = 10, string $filter = null): PaginationInterface;
+    public function getProducts(
+        int $page = 1,
+        int $totalPerPage = 10,
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
+        string $filter = null,
+    ): PaginationInterface;
+
     public function getAllProducts();
     public function fetchAllCoursesByProducers(int $page = 1, int $totalPerPage  = 10, string $filter = null, $producerName = null, string $categoryName = null): PaginationInterface;
     public function findById(string $id): object|null;

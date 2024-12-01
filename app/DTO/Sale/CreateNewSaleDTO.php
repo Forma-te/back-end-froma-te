@@ -2,7 +2,7 @@
 
 namespace App\DTO\Sale;
 
-use App\Http\Requests\StoreUpdateSaleRequest;
+use App\Http\Requests\StoreUpdateCartRequest;
 
 class CreateNewSaleDTO
 {
@@ -17,7 +17,7 @@ class CreateNewSaleDTO
         public string $date_created,
     ) {
     }
-    public static function makeFromRequest(StoreUpdateSaleRequest $request): self
+    public static function makeFromRequest(StoreUpdateCartRequest $request): self
     {
         $data = $request->all();
 

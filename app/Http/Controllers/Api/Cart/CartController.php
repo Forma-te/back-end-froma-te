@@ -6,8 +6,7 @@ use App\DTO\Sale\CreateNewSaleDTO;
 use App\DTO\User\CreateCustomerDetailsDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerDetailsRequest;
-use App\Http\Requests\StoreUpdateSaleRequest;
-use App\Http\Resources\SaleResource;
+use App\Http\Requests\StoreUpdateCartRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Product;
 use App\Services\CartService;
@@ -93,7 +92,7 @@ class CartController extends Controller
     }
 
     // Finaliza a compra e cria o pedido
-    public function checkout(StoreUpdateSaleRequest $request)
+    public function checkout(StoreUpdateCartRequest $request)
     {
         // Recebe a resposta do serviço
         $result = $this->cartService->checkout(CreateNewSaleDTO::makeFromRequest($request));

@@ -40,12 +40,18 @@ class CourseService
 
     public function getProducts(
         int $page = 1,
-        int $totalPerPage  = 15,
+        int $totalPerPage  = 10,
+        string $type = '',
+        string $startDate = null,
+        string $endDate = null,
         string $filter = null
     ): PaginationInterface {
         return $this->repository->getProducts(
             page: $page,
             totalPerPage: $totalPerPage,
+            type: $type,
+            startDate: $startDate,
+            endDate: $endDate,
             filter: $filter,
         );
     }
