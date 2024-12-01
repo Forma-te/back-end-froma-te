@@ -24,7 +24,6 @@ class CreateProductsTable extends Migration
             $table->string('url', 255)->unique();
             $table->text('description')->nullable();
             $table->text('spotlight')->nullable();
-            $table->string('image', 225)->nullable();
             $table->string('file', 225)->nullable();
             $table->boolean('allow_download')->default('0');
             $table->string('product_type', 225)->nullable();

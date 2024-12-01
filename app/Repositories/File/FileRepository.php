@@ -55,7 +55,6 @@ class FileRepository implements FileRepositoryInterface
                         'url',
                         'user_id',
                         'category_id',
-                        'image',
                         'total_hours',
                         'published',
                         'price',

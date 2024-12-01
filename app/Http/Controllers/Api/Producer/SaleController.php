@@ -237,7 +237,6 @@ class SaleController extends Controller
                 $totalPerPage = $defaultPerPage;
             }
 
-
             $sales = $this->saleService->getMyStudents(
                 page: $request->get('page', 1),
                 totalPerPage: $totalPerPage,
