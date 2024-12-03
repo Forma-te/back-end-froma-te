@@ -74,6 +74,7 @@ class SaleRepository implements SaleRepositoryInterface
         if ($startDate) {
             $startDate = Carbon::createFromFormat('d/m/Y', $startDate)->format('Y-m-d');
         }
+
         if ($endDate) {
             $endDate = Carbon::createFromFormat('d/m/Y', $endDate)->format('Y-m-d');
         }
@@ -96,6 +97,7 @@ class SaleRepository implements SaleRepositoryInterface
 
         // Paginar os resultados
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
@@ -233,12 +235,10 @@ class SaleRepository implements SaleRepositoryInterface
 
         // Paginar os resultados
         $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
         // Retornar os resultados paginados usando o PaginationPresenter
         return new PaginationPresenter($result);
     }
-
-
-
 
     public function findById(string $id): ?object
     {

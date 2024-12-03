@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api\Member;
 
+use App\Adapters\AffiliateAdapters;
 use App\DTO\Affiliate\CreateAffiliateDTO;
 use App\DTO\Affiliate\SaleAffiliateDTO;
+use App\Enum\ProductTypeEnum;
+use App\Enum\SaleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleAffiliateRequest;
 use App\Http\Requests\StoreAffiliateRequest;
@@ -62,22 +65,52 @@ class AffiliateController extends Controller
         ]);
     }
 
-    public function myAffiliations()
+    public function myAffiliations(Request $request)
     {
-        $affiliations = $this->affiliateService->myAffiliations();
+        $defaultPerPage = 10;
+        $maxPerPage = 100;
+
+        // Obter o valor do parâmetro per_page da requisição
+        $totalPerPage = (int) $request->get('per_page', $defaultPerPage);
+
+        // Validar o valor recebido
+        if ($totalPerPage <= 0 || $totalPerPage > $maxPerPage) {
+            $totalPerPage = $defaultPerPage;
+        }
+
+        $affiliations = $this->affiliateService->myAffiliations(
+            page: $request->get('page', 1),
+            totalPerPage: $totalPerPage,
+            filter: $request->get('filter', '')
+        );
 
         return response()->json([
-            'data' => $affiliations ?? [],
+            AffiliateAdapters::paginateToJson($affiliations),
         ]);
     }
 
-    public function myAffiliates()
+    public function myAffiliates(Request $request)
     {
-        $affiliates = $this->affiliateService->myAffiliates();
+        $defaultPerPage = 10;
+        $maxPerPage = 100;
 
-        return response()->json([
-            'data' => $affiliates ?? [],
-        ]);
+        // Obter o valor do parâmetro per_page da requisição
+        $totalPerPage = (int) $request->get('per_page', $defaultPerPage);
+
+        // Validar o valor recebido
+        if ($totalPerPage <= 0 || $totalPerPage > $maxPerPage) {
+            $totalPerPage = $defaultPerPage;
+        }
+
+        $affiliates = $this->affiliateService->myAffiliates(
+            page: $request->get('page', 1),
+            totalPerPage: $totalPerPage,
+            filter: $request->get('filter', '')
+        );
+
+        return response()->json(
+            AffiliateAdapters::paginateToJson($affiliates),
+        );
     }
 
     public function saleAffiliate(SaleAffiliateRequest $request)

@@ -21,7 +21,13 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    // Adiciona um produto ao carrinho
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
+
     public function addToCart(Request $request)
     {
         $validated = $request->validate([
@@ -36,7 +42,11 @@ class CartController extends Controller
         ]);
     }
 
-    // Exibe o carrinho atual do utilizador
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function viewCart()
     {
         $cart = $this->cartService->viewCart();
@@ -46,6 +56,12 @@ class CartController extends Controller
         ]);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param StoreCustomerDetailsRequest $request
+     * @return void
+     */
     public function validateOrCreateCustomer(StoreCustomerDetailsRequest $request)
     {
         $result  = $this->cartService->validateOrCreateCustomer(
@@ -58,7 +74,12 @@ class CartController extends Controller
         ]);
     }
 
-    // Atualiza a quantidade de um produto no carrinho
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function updateCart(Request $request)
     {
         $validated = $request->validate([
@@ -69,7 +90,12 @@ class CartController extends Controller
         return response()->json(['message' => 'Carrinho atualizado', 'cartItem' => $cartItem]);
     }
 
-    // Remove um produto do carrinho
+    /**
+     * Undocumented function
+     *
+     * @param [type] $product_id
+     * @return void
+     */
     public function removeFromCart($product_id)
     {
         // Verifica se o produto existe antes de tentar removê-lo
@@ -83,7 +109,11 @@ class CartController extends Controller
         return response()->json(['message' => 'Produto removido do carrinho']);
     }
 
-    // Sincroniza o carrinho da sessão com o utilizador autenticado
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function syncSessionCart()
     {
         $cart = $this->cartService->getOrCreateCart();
@@ -91,7 +121,12 @@ class CartController extends Controller
         return response()->json(['message' => 'Carrinho sincronizado']);
     }
 
-    // Finaliza a compra e cria o pedido
+    /**
+     * Undocumented function
+     *
+     * @param StoreUpdateCartRequest $request
+     * @return void
+     */
     public function checkout(StoreUpdateCartRequest $request)
     {
         // Recebe a resposta do serviço

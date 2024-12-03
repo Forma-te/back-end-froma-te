@@ -3,6 +3,7 @@
 namespace App\DTO\Sale;
 
 use App\Http\Requests\StoreUpdateSaleRequest;
+use Carbon\Carbon;
 
 class UpdateNewSaleDTO
 {
@@ -20,8 +21,19 @@ class UpdateNewSaleDTO
         return new self(
             $id ?? $request->id,
             $data['status'],
-            $data['date_created'],
-            $data['date_expired']
+            self::formatDate($data['date_created']),
+            self::formatDate($data['date_expired'])
         );
+    }
+
+    /**
+    * Formata a data para o formato 'Y-m-d'.
+    *
+    * @param string $date
+    * @return string
+    */
+    private static function formatDate(string $date): string
+    {
+        return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
     }
 }

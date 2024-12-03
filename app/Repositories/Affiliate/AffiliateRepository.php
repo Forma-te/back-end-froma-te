@@ -4,6 +4,9 @@ namespace App\Repositories\Affiliate;
 
 use App\DTO\Affiliate\CreateAffiliateDTO;
 use App\DTO\Affiliate\SaleAffiliateDTO;
+use App\Enum\ProductTypeEnum;
+use App\Enum\SaleEnum;
+use App\Enum\SalesChannelEnum;
 use App\Events\SaleToNewAndOldMembers;
 use App\Models\Affiliate;
 use App\Models\Commission;
@@ -14,7 +17,10 @@ use App\Models\Sale;
 use App\Models\UserBalance;
 use App\Repositories\Cart\CartRepository;
 use App\Repositories\Course\CourseRepository;
+use App\Repositories\PaginationInterface;
+use App\Repositories\PaginationPresenter;
 use App\Repositories\User\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -78,21 +84,52 @@ class AffiliateRepository implements AffiliateRepositoryInterface
         return $this->entity->find($id);
     }
 
-    public function myAffiliations(): object|null
-    {
-        return $this->entity
+    public function myAffiliations(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $filter = null
+    ): PaginationInterface {
+
+        $query = $this->entity
                     ->userByAuth()
-                    ->with('producer', 'product.files', 'affiliateLink')
-                    ->get();
+                    ->with('producer', 'product.files', 'affiliateLink');
+
+        // Filtro pelo nome do usuário
+        if ($filter) {
+            $query->whereHas('producer', function ($query) use ($filter) {
+                $query->where('producer.name', 'like', "%{$filter}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
 
     }
 
-    public function myAffiliates(): object|null
-    {
-        return $this->entity
+    public function myAffiliates(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $filter = null
+    ): PaginationInterface {
+
+        $query = $this->entity
                     ->producerByAuth()
-                    ->with('user', 'product.files', 'affiliateLink')
-                    ->get();
+                    ->with('user', 'product.files', 'affiliateLink');
+
+        // Filtro pelo nome do usuário
+        if ($filter) {
+            $query->whereHas('user', function ($query) use ($filter) {
+                $query->where('users.name', 'like', "%{$filter}%");
+            });
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
     }
 
     public function saleAffiliate(SaleAffiliateDTO $dto)

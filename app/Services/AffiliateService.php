@@ -6,6 +6,7 @@ use App\DTO\Affiliate\CreateAffiliateDTO;
 use App\DTO\Affiliate\SaleAffiliateDTO;
 use App\Repositories\Affiliate\AffiliateLinkRepository;
 use App\Repositories\Affiliate\AffiliateRepository;
+use App\Repositories\PaginationInterface;
 
 class AffiliateService
 {
@@ -37,14 +38,28 @@ class AffiliateService
     }
 
 
-    public function myAffiliations()
-    {
-        return $this->affiliateRepository->myAffiliations();
+    public function myAffiliations(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->affiliateRepository->myAffiliations(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
     }
 
-    public function myAffiliates(): object|null
-    {
-        return $this->affiliateRepository->myAffiliates();
+    public function myAffiliates(
+        int $page = 1,
+        int $totalPerPage  = 10,
+        string $filter = null
+    ): PaginationInterface {
+        return $this->affiliateRepository->myAffiliates(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter
+        );
     }
 
     public function saleAffiliate(SaleAffiliateDTO $dto)
