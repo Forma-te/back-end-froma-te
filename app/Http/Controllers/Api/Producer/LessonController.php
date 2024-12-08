@@ -169,7 +169,6 @@ class LessonController extends Controller
 
     public function updateLesson(StoreUpdateLessonRequest $request, string $id)
     {
-
         $lesson = $this->lessonService->update(
             UpdateLessonDTO::makeFromRequest($request, $id)
         );

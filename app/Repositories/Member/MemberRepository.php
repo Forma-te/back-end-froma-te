@@ -2,7 +2,15 @@
 
 namespace App\Repositories\Member;
 
+use App\DTO\Product\CourseByIdDTO;
+use App\DTO\Product\CourseDTO;
+use App\DTO\Product\EbookByIdDTO;
+use App\DTO\Product\EbookDTO;
+use App\DTO\Product\FileByIdDTO;
+use App\DTO\Product\FileDTO;
 use App\Models\Product;
+use App\Repositories\PaginationInterface;
+use App\Repositories\PaginationPresenter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -15,38 +23,81 @@ class MemberRepository
         $this->entity = $model;
     }
 
-    public function getAllCourseMember()
-    {
-        if (Auth::check()) {
-            $loggedInUserId = Auth::id();
-
-            return $this->entity->whereHas('users', function ($query) use ($loggedInUserId) {
-                $query->where('users.id', $loggedInUserId);
-            })->whereHas('sales', function ($query) {
-                $query->where('sales.status', 'A');
-            })->with('modules.lessons.views')->get();
-        } else {
-            return [];
+    public function getAllProductsMember(
+        int $page = 1,
+        int $totalPerPage = 10,
+        string $filter = null
+    ): PaginationInterface {
+        if (!Auth::check()) {
+            // Retorna uma instância vazia de PaginationPresenter se o utilizador não estiver autenticado
+            return new PaginationPresenter(collect([])->paginate($totalPerPage, ['*'], 'page', $page));
         }
+
+        $loggedInUserId = Auth::id();
+
+        $query = $this->entity
+            ->whereHas('users', function ($query) use ($loggedInUserId) {
+                $query->where('users.id', $loggedInUserId);
+            });
+
+        // Aplica o filtro, se fornecido
+        if ($filter) {
+            $query->where('name', 'like', "%{$filter}%");
+        }
+
+        // Carrega os relacionamentos necessários
+        $query->with(['files', 'modules.lessons.views']);
+
+        // Pagina os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+
+        // Transforma os produtos em DTOs com base no tipo
+        $data = $result->getCollection()->map(function ($product) {
+            return match ($product->product_type) {
+                'course' => CourseDTO::fromModel($product),
+                'ebook' => EbookDTO::fromModel($product),
+                'file' => FileDTO::fromModel($product),
+                default => null,
+            };
+        })->filter();
+
+        // Substitui a coleção paginada pelos DTOs processados
+        $result->setCollection($data);
+
+        // Retorna os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
     }
 
-    public function getCourseByIdMember(string $identify)
+
+    public function getProductByIdMember(string $identify)
     {
-        // Tenta encontrar o curso pelo ID
-        $course = $this->entity->findOrFail($identify);
+        if (!Auth::check()) {
+            return [];
+        }
 
-        // Verifica se o curso tem usuários associados e vendas com status "A"
-        $course = $this->entity->where('id', $identify)
-                               ->whereHas('users', function ($query) {
-                               })
-                               ->whereHas('sales', function ($query) {
-                                   $query->where('sales.status', 'A');
-                               })
-                               ->with('modules.lessons')
-                               ->first();
+        $loggedInUserId = Auth::id();
 
-        // Retorna o resultado ou um array vazio se não encontrar nada
-        return $course ?: [];
+        $result = $this->entity
+                        ->where('id', $identify)
+                        ->whereHas('users', function ($query) use ($loggedInUserId) {
+                            $query->where('users.id', $loggedInUserId);
+                        })
+                        ->with('files', 'user')
+                        ->get();
+
+        return $result->map(function ($product) {
+            // Carrega modules.lessons.views apenas para produtos do tipo 'course'
+            if ($product->product_type === 'course') {
+                $product->load('modules.lessons.views');
+            }
+
+            return match ($product->product_type) {
+                'course' => CourseByIdDTO::fromModel($product),
+                'ebook' => EbookByIdDTO::fromModel($product),
+                'file' => FileByIdDTO::fromModel($product),
+                default => null,
+            };
+        })->filter()->toArray();
     }
 
 }

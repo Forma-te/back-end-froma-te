@@ -67,6 +67,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
+
+    public static function scopeUserByAuth($query)
+    {
+        return $query->where('id', Auth::user()->id);
+    }
+
     // Relacionamento com os links de afiliação
     public function affiliateLinks()
     {
@@ -112,11 +122,6 @@ class User extends Authenticatable
     public function product()
     {
         return $this->belongsToMany(Product::class);
-    }
-
-    public static function scopeUserByAuth($query)
-    {
-        return $query->where('id', Auth::user()->id);
     }
 
     public function banks()

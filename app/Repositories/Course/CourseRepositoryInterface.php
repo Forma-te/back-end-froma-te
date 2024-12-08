@@ -29,7 +29,6 @@ interface CourseRepositoryInterface
     public function publishedCourse(UpdatePublishedDTO $dto): ?Product;
     public function delete(string $id): void;
     public function getCoursesForModuleCreation(): array;
-    public function getCoursesForAuthenticatedUser(): array;
     public function getCourseById(string $id): object|null;
     public function getProductsByUrl(string $url): ?Product;
     public function getCourseByUrl(string $url): ?Product;

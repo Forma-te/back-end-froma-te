@@ -293,21 +293,4 @@ class CourseRepository implements CourseRepositoryInterface
                     ->all()->toArray();
     }
 
-    public function getCoursesForAuthenticatedUser(): array
-    {
-        if (Auth::check()) {
-            $loggedInUserId = Auth::id();
-
-            return $this->entity->whereHas('users', function ($query) use ($loggedInUserId) {
-                $query->where('users.id', $loggedInUserId);
-            })->whereHas('sales', function ($query) {
-
-                $query->where('sales.status', 'approved');
-            })->with('modules.lessons.views')->get();
-
-        } else {
-            return [];
-        }
-    }
-
 }

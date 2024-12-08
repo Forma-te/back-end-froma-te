@@ -136,6 +136,24 @@ class LessonRepository implements LessonRepositoryInterface
         return null;
     }
 
+    public function markLessonViewed(string $lessonId)
+    {
+
+        $user = $this->getUserAuth();
+
+        $view = $user->views()->where('lesson_id', $lessonId)->first();
+
+        if ($view) {
+            return $view->update([
+                'qty' => $view->qty,
+            ]);
+        }
+
+        return $user->views()->create([
+            'lesson_id' => $lessonId,
+        ]);
+    }
+
     public function delete(string $id): void
     {
         $this->entity->findOrFail($id)->delete();

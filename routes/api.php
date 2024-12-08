@@ -112,7 +112,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/lesson/file/create', [LessonController::class, 'createFileLesson']);
     Route::put('/lesson/{id}/file', [LessonController::class, 'updateFileLesson']);
     Route::delete('/lesson/{id}', [LessonController::class, 'destroyLesson']);
-    // Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
+    Route::post('/lessons/viewed', [LessonController::class, 'viewed']);
 
     /**
     * Route Ebook
@@ -169,8 +169,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route Member
     */
-    Route::get('/courses-member', [MemberController::class, 'getAllCourseMember']);
-    Route::get('/course/{id}/member', [MemberController::class, 'getCourseByIdMember']);
+    Route::get('/products-member', [MemberController::class, 'getAllProductsMember']);
+    Route::get('/product-member/{id}', [MemberController::class, 'getProductByIdMember']);
 
     /**
     * Route Sale
