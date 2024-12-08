@@ -12,6 +12,7 @@ class CreateLessonDTO
         public string $url,
         public string $description,
         public string $video,
+        public bool $is_presentation,
         public string|bool $published,
         public $file = null
     ) {
@@ -31,6 +32,7 @@ class CreateLessonDTO
             $url,
             $data['description'],
             $data['video'],
+            $data['is_presentation'],
             $data['published'],
             $file
         );

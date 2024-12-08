@@ -12,6 +12,7 @@ class UpdateLessonDTO
         public string $name,
         public string $description,
         public string $video,
+        public bool $is_presentation,
         public bool $published,
         public $file,
     ) {
@@ -28,6 +29,7 @@ class UpdateLessonDTO
             $request->input('name'),
             $request->input('description'),
             $request->input('video'),
+            $request['is_presentation'],
             $request->input('published'),
             $file
         );

@@ -37,11 +37,6 @@ class LessonController extends Controller
         return ApiAdapter::paginateToJson($module);
     }
 
-    private function errorResponse($message, $statusCode)
-    {
-        return response()->json(['error' => $message], $statusCode);
-    }
-
     public function createLesson(StoreUpdateLessonRequest $request)
     {
         $lesson = $this->lessonService->new(
