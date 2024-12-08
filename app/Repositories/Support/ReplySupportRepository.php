@@ -23,10 +23,10 @@ class ReplySupportRepository implements ReplySupportRepositoryInterface
         $user = $this->getUserAuth();
 
         $replySupport = $this->entity
-        ->create([
-        'support_id' => $data['support_id'],
-        'description' => $data['description'],
-        'producer_id' => $user->id,
+                            ->create([
+                            'support_id' => $data['support_id'],
+                            'description' => $data['description'],
+                            'producer_id' => $user->id,
     ]);
 
         event(new SupportReplied($replySupport));

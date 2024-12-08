@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateEditNameLessonRequest;
 use App\Http\Requests\StoreUpdateFileLessonRequest;
 use App\Http\Requests\StoreUpdateLessonRequest;
+use App\Http\Requests\StoreView;
 use App\Http\Resources\LessonFileResource;
 use App\Http\Resources\LessonProducerResource;
 use App\Services\LessonService;
@@ -41,33 +42,6 @@ class LessonController extends Controller
         return response()->json(['error' => $message], $statusCode);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/lesson",
-     *     summary="Create a new lesson",
-     *     description="Creates a new lesson based on the provided request data.",
-     *     operationId="createLesson",
-     *     tags={"Lessons"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/StoreUpdateLessonRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Lesson created successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/LessonProducerResource")
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid request data"
-     *     ),
-     *     @OA\Response(
-     *         response=500,P
-     *         description="Server error"
-     *     )
-     * )
-     */
-
     public function createLesson(StoreUpdateLessonRequest $request)
     {
         $lesson = $this->lessonService->new(
@@ -77,43 +51,6 @@ class LessonController extends Controller
         return new LessonProducerResource($lesson);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/module/{moduleId}/lessons",
-     *     summary="Get lessons by module ID",
-     *     description="Retrieves all lessons associated with a given module ID.",
-     *     operationId="getLessonByModuleId",
-     *     tags={"Lessons"},
-     *     @OA\Parameter(
-     *         name="moduleId",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the module",
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful response",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/LessonProducerResource")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Resource not found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Resource not found")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error"
-     *     )
-     * )
-     */
 
     public function getLessonByModuleId(string $moduleId)
     {
@@ -128,44 +65,6 @@ class LessonController extends Controller
         return LessonProducerResource::collection($lessons);
     }
 
-    /**
-     * @OA\Put(
-     *     path="/api/lesson/{id}",
-     *     summary="Update a lesson",
-     *     description="Updates an existing lesson based on the provided request data.",
-     *     operationId="updateLesson",
-     *     tags={"Lessons"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the lesson to update",
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/StoreUpdateLessonRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Lesson updated successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/LessonProducerResource")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not Found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Not Found")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error"
-     *     )
-     * )
-     */
 
     public function updateLesson(StoreUpdateLessonRequest $request, string $id)
     {
@@ -231,39 +130,12 @@ class LessonController extends Controller
         return new LessonFileResource($lessonFile);
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/lesson/{id}",
-     *     summary="Delete a lesson",
-     *     description="Deletes an existing lesson based on the provided ID.",
-     *     operationId="deleteLesson",
-     *     tags={"Lessons"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the lesson to delete",
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Lesson deleted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not Found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Not Found")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Server error"
-     *     )
-     * )
-     */
+    public function viewed(StoreView $request)
+    {
+        $this->lessonService->markLessonViewed($request->lessonId);
+
+        return response()->json(['success' => true]);
+    }
 
     public function destroyLesson(string $id)
     {

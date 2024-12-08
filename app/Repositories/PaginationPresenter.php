@@ -96,26 +96,9 @@ class PaginationPresenter implements PaginationInterface
     private function resolveItems(array $items): array
     {
         $response = [];
-
         foreach ($items as $item) {
-            $stdClassObject = new stdClass();
-
-            // Verifica se o item é um objeto e tem o método toArray
-            if (is_object($item) && method_exists($item, 'toArray')) {
-                // Caso o item seja um objeto, chamamos o método toArray
-                foreach ($item->toArray() as $key => $value) {
-                    $stdClassObject->{$key} = $value;
-                }
-            } else {
-                // Caso contrário, tratamos o item como um array simples
-                foreach ($item as $key => $value) {
-                    $stdClassObject->{$key} = $value;
-                }
-            }
-
-            array_push($response, $stdClassObject);
+            $response[] = is_object($item) ? (object) $item : (object) $item;
         }
-
         return $response;
     }
 }

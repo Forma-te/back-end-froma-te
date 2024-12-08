@@ -15,9 +15,12 @@ use App\Repositories\PaginationInterface;
 use App\Repositories\PaginationPresenter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Gate;
+use App\Repositories\Traits\RepositoryTrait;
 
 class LessonRepository implements LessonRepositoryInterface
 {
+    use RepositoryTrait;
+
     public function __construct(
         protected Lesson $entity,
         protected Module $module,
@@ -136,9 +139,8 @@ class LessonRepository implements LessonRepositoryInterface
         return null;
     }
 
-    public function markLessonViewed(string $lessonId)
+    public function markLessonViewed(int $lessonId)
     {
-
         $user = $this->getUserAuth();
 
         $view = $user->views()->where('lesson_id', $lessonId)->first();

@@ -152,11 +152,14 @@ class LessonService
 
     }
 
+    public function markLessonViewed(int $lessonId)
+    {
+        return $this->repository->markLessonViewed($lessonId);
+    }
+
     public function delete(string $id): void
     {
         $this->repository->delete($id);
     }
-
-
 
 }

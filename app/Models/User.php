@@ -77,6 +77,11 @@ class User extends Authenticatable
         return $query->where('id', Auth::user()->id);
     }
 
+    public function supports()
+    {
+        return $this->hasMany(Support::class);
+    }
+
     // Relacionamento com os links de afiliação
     public function affiliateLinks()
     {

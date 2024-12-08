@@ -25,5 +25,6 @@ interface LessonRepositoryInterface
     public function createNameLesson(CreateNameLessonDTO $dto): ?Lesson;
     public function createFileLesson(CreateFileLessonDTO $dto): ?LessonFile;
     public function updateFileLesson(UpdateFileLessonDTO $dto): ?LessonFile;
+    public function markLessonViewed(int $lessonId);
     public function delete(string $id): void;
 }

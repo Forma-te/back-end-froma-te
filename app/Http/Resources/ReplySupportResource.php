@@ -18,7 +18,7 @@ class ReplySupportResource extends JsonResource
         return [
             'description' => $this->description,
             'support' => new SupportResource($this->support),
-            'producer' => new UserResource($this->producer),
+            'producer' => new SupportUserResource($this->producer),
         ];
     }
 }

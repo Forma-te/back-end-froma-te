@@ -2,7 +2,7 @@
 
 namespace App\Adapters;
 
-use App\Http\Resources\ReplySupportAdapterResource;
+use App\Http\Resources\SupportResource;
 use App\Repositories\PaginationInterface;
 
 /**
@@ -12,7 +12,7 @@ use App\Repositories\PaginationInterface;
  */
 
 
-class ReplySupportAdapters
+class SupportAdapter
 {
     /**
      * Converte dados paginados para o formato JSON desejado.
@@ -24,7 +24,7 @@ class ReplySupportAdapters
     public static function paginateToJson(PaginationInterface $data, array $statusOptions): array
     {
         return [
-            'data' => ReplySupportAdapterResource::collection($data->items()),
+            'data' => SupportResource::collection($data->items()),
             'meta' => [
                 'total' => $data->total(),
                 'is_first_page' => $data->isFirstPage(),

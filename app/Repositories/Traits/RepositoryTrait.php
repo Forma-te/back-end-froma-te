@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 trait RepositoryTrait
 {
-    private function getUserAuth(): User
+    private function getUserAuth(): ?User
     {
-        return Auth::user();
-
+        return Auth::check() ? Auth::user() : null;
     }
 }

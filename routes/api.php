@@ -188,15 +188,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
     * Route supports
     */
-    Route::post('/supports', [SupportController::class, 'createSupport']);
-    Route::get('/my-supports', [SupportController::class, 'mySupports']);
+    Route::post('/create-supports', [SupportController::class, 'createSupport']);
+    Route::get('/get-supports/member', [SupportController::class, 'getSupportsMember']);
 
     /**
     * Route Reply support
     */
-    // Route::post('/replies', [ReplySupportController::class, 'createReply']);
     Route::post('/support/reply', [ReplySupportController::class, 'createReply']);
-    Route::get('/supports', [ReplySupportController::class, 'getSupportProducerByStatus']);
+    Route::get('/get-supports/producer', [ReplySupportController::class, 'getSupportProducerByStatus']);
     Route::get('/support/{Id}', [ReplySupportController::class, 'message']);
 
     /**

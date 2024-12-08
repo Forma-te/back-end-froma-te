@@ -20,7 +20,7 @@ class SupportRepository implements SupportRepositoryInterface
         $this->entity = $model;
     }
 
-    public function getSupportProducerByStatus(int $page = 1, int $totalPerPage  = 15, string $status): PaginationInterface
+    public function getSupportProducerByStatus(int $page = 1, int $totalPerPage  = 10, string $status): PaginationInterface
     {
         $query = $this->entity
                         ->ownedByAuthUser()
@@ -52,19 +52,18 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function createNewSupport(array $data): Support
     {
-        // Recuperar a lição pelo ID
-        $lesson = Lesson::findOrFail($data['lesson']);
-        // Verificar se a lição tem um módulo associado
+        $lesson = Lesson::findOrFail($data['lessonId']);
+
         $module = $lesson->modules;
         if (!$module) {
             throw new \Exception("Module not found for the given lesson ID.");
         }
-        // Verificar se o módulo tem um curso associado
+
         $course = $module->course;
         if (!$course) {
             throw new \Exception("Course not found for the given module ID.");
         }
-        // Obter o instrutor associado ao curso
+
         $producer = $course->user;
         if (!$producer) {
             throw new \Exception("Instructor not found for the given course ID.");
@@ -73,48 +72,32 @@ class SupportRepository implements SupportRepositoryInterface
         $support = $this->getUserAuth()
                 ->supports()
                 ->create([
-                    'lesson_id' => $data['lesson'],
+                    'lesson_id' => $data['lessonId'],
                     'producer_id' => $producer->id,
                     'description' => $data['description'],
-                    'status' => $data['status'],
+                    'status' => 'P',
                 ]);
 
         return $support;
     }
 
-    public function getMySupports(array $filters = [])
+    public function getSupportsMember(int $page = 1, int $totalPerPage  = 10, string $status = null, string $filter = null): PaginationInterface
     {
-        $filters['user'] = true;
-        return $this->getSupports($filters);
-    }
-
-    public function getSupports(array $filters = [])
-    {
-        return $this->entity
-                    ->where(function ($query) use ($filters) {
-                        if (isset($filters['lesson'])) {
-                            $query->where('lesson_id', $filters['lesson']);
-                        }
-
-                        if (isset($filters['status'])) {
-                            $query->where('status', $filters['status']);
-                        }
-
-                        if (isset($filters['filter'])) {
-                            $filters = $filters['filter'];
-                            $query->where('description', 'LIKE', "%{$filters}%");
-                        }
-
-                        if (isset($filters['user'])) {
-                            $user = $this->getUserAuth();
-                            $query->where('user_id', $user->id);
-                        }
-
-                    })
-
+        $query = $this->entity
                     ->with('replies')
-                    ->orderBy('updated_at')
-                    ->get();
-    }
+                    ->orderBy('updated_at');
 
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($filter) {
+            $query->where('description', 'LIKE', "%{$filter}%");
+        }
+
+        // Paginar os resultados
+        $result = $query->paginate($totalPerPage, ['*'], 'page', $page);
+        // Retornar os resultados paginados usando o PaginationPresenter
+        return new PaginationPresenter($result);
+    }
 }
