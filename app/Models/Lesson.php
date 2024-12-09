@@ -25,9 +25,8 @@ class Lesson extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
-        'module_id', 'name', 'file', 'url', 'description', 'video', 'published'
+        'module_id', 'name', 'file', 'url', 'description', 'video', 'published', 'is_presentation'
     ];
 
     public function views()
